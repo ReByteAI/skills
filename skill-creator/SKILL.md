@@ -1,6 +1,6 @@
 ---
 name: skill-creator
-description: Guide for creating effective skills. This skill should be used when users want to create a new skill (or update an existing skill) that extends Claude's capabilities with specialized knowledge, workflows, or tool integrations.
+description: Guide for creating effective Claude skills with SKILL.md files. Use when user wants to create, write, or update a skill that extends Claude's capabilities. Triggers include "create a skill", "write a skill", "make a SKILL.md", "build a skill", "skill template", "new skill", "update skill", "skill file". Do NOT use for general coding tasks or non-skill documentation.
 license: Complete terms in LICENSE.txt
 ---
 

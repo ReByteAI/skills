@@ -396,3 +396,22 @@ After deployment, you'll have:
 **API Endpoints** (for programmatic access):
 - **JSON**: `GET https://api.rebyte.ai/api/forms/results/{formId}`
 - **CSV**: `GET https://api.rebyte.ai/api/forms/results/{formId}/csv`
+
+## IMPORTANT: Always Return Both URLs
+
+When you finish building and deploying a form, you **MUST** tell the user both URLs:
+
+1. **Form URL** (for respondents): The deployed site URL (e.g., `https://my-form-xyz.rebyte.pro`)
+2. **Admin URL** (for viewing results): The `adminUrl` from the form backend (e.g., `https://rebyte.ai/app/forms/abc123`)
+
+Example response to user:
+```
+Your form is ready!
+
+📝 Form URL (share with respondents): https://my-form-xyz.rebyte.pro
+📊 Admin URL (view submissions): https://rebyte.ai/app/forms/abc123def456
+
+The Admin URL opens a spreadsheet where you can see all responses and export to CSV.
+```
+
+**Never forget the Admin URL** - without it, the user cannot see their form submissions!

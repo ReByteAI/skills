@@ -325,43 +325,74 @@ const composer = new Composer({
 
 ## Collecting Form Submissions
 
-To collect responses, set up the backend using the Forms API.
+To collect responses, you need to:
+1. Create a form backend (stores submissions)
+2. Add `postUrl` to your HTML form
+3. Deploy the HTML form (using web-app-deploy skill)
 
-### Step 1: Create Form Backend
+### Complete Workflow
+
+#### Step 1: Create Form Backend
+
+Call the Forms API to create a backend that stores submissions:
 
 ```bash
-POST https://api.rebyte.ai/api/forms/create
-Content-Type: application/json
-
-{
-  "taskId": "current-task-attempt-id",
-  "title": "My Survey",
-  "fields": ["name", "email", "rating", "feedback"]
-}
+curl -X POST https://api.rebyte.ai/api/forms/create \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "My Survey",
+    "fields": ["name", "email", "rating", "feedback"]
+  }'
 ```
+
+**IMPORTANT:** The `fields` array must contain the exact field names you use in your form (e.g., `composer.textInput("name", ...)` means `"name"` goes in fields).
 
 Response:
 ```json
 {
-  "formId": "abc123",
-  "submitUrl": "https://api.rebyte.ai/api/forms/submit/TASK_ID/FORM_ID",
-  "resultsUrl": "https://api.rebyte.ai/api/forms/results/TASK_ID/FORM_ID"
+  "formId": "abc123def456",
+  "submitUrl": "https://api.rebyte.ai/api/forms/submit/abc123def456",
+  "adminUrl": "https://rebyte.ai/app/forms/abc123def456",
+  "fields": ["name", "email", "rating", "feedback"]
 }
 ```
 
-### Step 2: Configure Form
+**Save these URLs:**
+- **`submitUrl`**: Where form data is POSTed (use as `postUrl` in Composer)
+- **`adminUrl`**: Spreadsheet UI to view all submissions (share with form creator)
 
-Add `postUrl` to composer settings:
+#### Step 2: Configure Form HTML
+
+Add the `submitUrl` as `postUrl` in your Composer settings:
 
 ```javascript
 const composer = new Composer({
     title: "My Survey",
-    postUrl: "https://api.rebyte.ai/api/forms/submit/TASK_ID/FORM_ID",
+    postUrl: "https://api.rebyte.ai/api/forms/submit/abc123def456",
     // ... other settings
 });
 ```
 
+#### Step 3: Deploy Form
+
+After creating the HTML file, deploy it using the **web-app-deploy** skill:
+
+1. Save your form as `index.html`
+2. Deploy: `curl -X POST https://api.rebyte.ai/api/data/netlify/get-upload-url ...`
+3. Your form will be live at `https://your-form-xyz.rebyte.pro`
+
+See the **web-app-deploy** skill for full deployment instructions.
+
+### Final URLs to Share
+
+After deployment, you'll have:
+- **Form URL**: `https://your-form-xyz.rebyte.pro` - Share with respondents
+- **Admin URL**: `https://rebyte.ai/app/forms/abc123def456` - View responses in spreadsheet
+
 ### Viewing Results
 
-- **JSON**: `GET https://api.rebyte.ai/api/forms/results/TASK_ID/FORM_ID`
-- **CSV**: `GET https://api.rebyte.ai/api/forms/results/TASK_ID/FORM_ID/csv`
+**Admin UI (Recommended)**: Open `adminUrl` in a browser to view responses in a spreadsheet interface with CSV/JSON export.
+
+**API Endpoints** (for programmatic access):
+- **JSON**: `GET https://api.rebyte.ai/api/forms/results/{formId}`
+- **CSV**: `GET https://api.rebyte.ai/api/forms/results/{formId}/csv`

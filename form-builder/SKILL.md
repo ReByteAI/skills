@@ -375,13 +375,37 @@ const composer = new Composer({
 
 #### Step 3: Deploy Form
 
-After creating the HTML file, deploy it using the **web-app-deploy** skill:
+After creating the HTML file, deploy it:
 
-1. Save your form as `index.html`
-2. Deploy: `curl -X POST https://api.rebyte.ai/api/data/netlify/get-upload-url ...`
-3. Your form will be live at `https://your-form-xyz.rebyte.pro`
+```bash
+# 1. Save form as index.html
+cat > index.html << 'HTMLEOF'
+<!DOCTYPE html>
+... your form HTML ...
+HTMLEOF
 
-See the **web-app-deploy** skill for full deployment instructions.
+# 2. Get upload URL
+RESPONSE=$(curl -s -X POST https://api.rebyte.ai/api/data/netlify/get-upload-url \
+  -H "Content-Type: application/json" \
+  -d '{"id": "form"}')
+DEPLOY_ID=$(echo $RESPONSE | jq -r '.deployId')
+UPLOAD_URL=$(echo $RESPONSE | jq -r '.uploadUrl')
+
+# 3. Create ZIP with index.html AT THE ROOT (CRITICAL!)
+zip site.zip index.html
+
+# 4. Upload ZIP
+curl -X PUT "$UPLOAD_URL" -H "Content-Type: application/zip" --data-binary @site.zip
+
+# 5. Deploy
+curl -s -X POST https://api.rebyte.ai/api/data/netlify/deploy \
+  -H "Content-Type: application/json" \
+  -d "{\"deployId\": \"$DEPLOY_ID\"}"
+```
+
+**CRITICAL:** The ZIP must have `index.html` at the root, NOT inside a subdirectory.
+- ✅ Correct: `zip site.zip index.html`
+- ❌ Wrong: `zip site.zip code/` (creates `code/index.html` inside ZIP)
 
 ### Final URLs to Share
 

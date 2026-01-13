@@ -352,7 +352,7 @@ Response:
 {
   "formId": "abc123def456",
   "submitUrl": "https://api.rebyte.ai/api/forms/submit/abc123def456",
-  "adminUrl": "https://rebyte.ai/app/forms/abc123def456",
+  "adminUrl": "https://app.rebyte.ai/forms/abc123def456",
   "fields": ["name", "email", "rating", "feedback"]
 }
 ```
@@ -387,7 +387,7 @@ See the **web-app-deploy** skill for full deployment instructions.
 
 After deployment, you'll have:
 - **Form URL**: `https://your-form-xyz.rebyte.pro` - Share with respondents
-- **Admin URL**: `https://rebyte.ai/app/forms/abc123def456` - View responses in spreadsheet
+- **Admin URL**: `https://app.rebyte.ai/forms/abc123def456` - View responses in spreadsheet
 
 ### Viewing Results
 
@@ -401,17 +401,29 @@ After deployment, you'll have:
 
 When you finish building and deploying a form, you **MUST** tell the user both URLs:
 
-1. **Form URL** (for respondents): The deployed site URL (e.g., `https://my-form-xyz.rebyte.pro`)
-2. **Admin URL** (for viewing results): The `adminUrl` from the form backend (e.g., `https://rebyte.ai/app/forms/abc123`)
+1. **Form URL** (for respondents): The deployed site URL from Netlify (e.g., `https://app-xyz123.rebyte.pro`)
+2. **Admin URL** (for viewing results): Copy the EXACT `adminUrl` from the form creation API response
 
-Example response to user:
+**CRITICAL:**
+- The Admin URL comes from the **form creation API** (Step 1), NOT from the deploy step
+- You MUST use the EXACT `adminUrl` returned by the API - do NOT construct it manually
+- The form ID and deploy ID are DIFFERENT - don't mix them up
+
+Example workflow:
 ```
-Your form is ready!
+Step 1: Create form backend
+→ API returns: {"formId": "form-abc123", "adminUrl": "https://app.rebyte.ai/forms/form-abc123", ...}
+→ SAVE this adminUrl!
 
-📝 Form URL (share with respondents): https://my-form-xyz.rebyte.pro
-📊 Admin URL (view submissions): https://rebyte.ai/app/forms/abc123def456
+Step 2: Build HTML with postUrl
 
-The Admin URL opens a spreadsheet where you can see all responses and export to CSV.
+Step 3: Deploy to Netlify
+→ Returns: {"url": "https://app-xyz789.rebyte.pro", ...}
+→ This is the Form URL (different ID!)
+
+Step 4: Return to user:
+📝 Form URL: https://app-xyz789.rebyte.pro (from deploy)
+📊 Admin URL: https://app.rebyte.ai/forms/form-abc123 (from form creation API - EXACT!)
 ```
 
 **Never forget the Admin URL** - without it, the user cannot see their form submissions!

@@ -1,5 +1,5 @@
 ---
-name: formsmd-builder
+name: Form Builder
 description: |
   Build stylish, Typeform-like multi-step forms and surveys using Forms.md library.
   Use when user asks to: create a form, build a survey, make a questionnaire,

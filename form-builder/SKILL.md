@@ -407,6 +407,39 @@ curl -s -X POST https://api.rebyte.ai/api/data/netlify/deploy \
 - ✅ Correct: `zip site.zip index.html`
 - ❌ Wrong: `zip site.zip code/` (creates `code/index.html` inside ZIP)
 
+#### Step 4: Validate Deployment
+
+**You MUST run these validation checks before telling the user the form is ready:**
+
+```bash
+# 1. Verify ZIP structure (BEFORE uploading)
+unzip -l site.zip | grep -E "^\s+\d+.*index\.html$"
+# ✅ Should show: "index.html" (at root)
+# ❌ If shows: "code/index.html" or "dist/index.html" - WRONG! Recreate ZIP
+
+# 2. After deploy, verify site returns HTML (not 404)
+FORM_URL="https://${DEPLOY_ID}.rebyte.pro"
+HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$FORM_URL")
+if [ "$HTTP_STATUS" != "200" ]; then
+  echo "ERROR: Site returned $HTTP_STATUS, expected 200"
+fi
+
+# 3. Verify Content-Type is HTML (not text/plain)
+CONTENT_TYPE=$(curl -sI "$FORM_URL" | grep -i "content-type" | head -1)
+echo "Content-Type: $CONTENT_TYPE"
+# ✅ Should contain: text/html
+# ❌ If text/plain - deployment issue
+
+# 4. Verify admin URL works
+ADMIN_URL="<the adminUrl from form creation API>"
+ADMIN_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$ADMIN_URL")
+if [ "$ADMIN_STATUS" != "200" ]; then
+  echo "ERROR: Admin URL returned $ADMIN_STATUS"
+fi
+```
+
+**If any validation fails, debug and fix before returning URLs to user.**
+
 ### Final URLs to Share
 
 After deployment, you'll have:

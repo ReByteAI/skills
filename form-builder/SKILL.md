@@ -16,7 +16,7 @@ Build production-ready, Typeform-style forms using the Composer API.
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{TITLE}}</title>
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/rebyte-forms@1.0.0/dist/css/formsmd.min.css">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/rebyte-forms/dist/css/formsmd.min.css">
 </head>
 <body class="fmd-body">
     <noscript>Please turn on JavaScript to see this page.</noscript>
@@ -28,8 +28,8 @@ Build production-ready, Typeform-style forms using the Composer API.
         </div>
     </div>
 
-    <script src="https://unpkg.com/rebyte-forms@1.0.0/dist/js/composer.bundle.min.js"></script>
-    <script src="https://unpkg.com/rebyte-forms@1.0.0/dist/js/formsmd.bundle.min.js"></script>
+    <script src="https://unpkg.com/rebyte-forms/dist/js/composer.bundle.min.js"></script>
+    <script src="https://unpkg.com/rebyte-forms/dist/js/formsmd.bundle.min.js"></script>
     <script>
         const composer = new Composer({
             title: "{{TITLE}}",

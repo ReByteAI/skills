@@ -5,22 +5,11 @@ Fix text errors in generated images using image-to-image.
 ## Usage
 
 ```bash
-# 1. Read the image as base64
-IMAGE_BASE64=$(base64 -i slide-01.png)
-
-# 2. Call API with correction prompt
-RESPONSE=$(curl -s -X POST "https://api.eng0.ai/api/data/images/generate" \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"prompt\": \"Fix the text: change 'Helo' to 'Hello'. Keep everything else unchanged.\",
-    \"image\": \"$IMAGE_BASE64\",
-    \"imageMimeType\": \"image/png\",
-    \"model\": \"pro\",
-    \"aspectRatio\": \"16:9\"
-  }")
-
-# 3. Save the corrected image
-echo "$RESPONSE" | jq -r '.image.base64' | base64 -d > "slide-01-fixed.png"
+python scripts/generate.py \
+  --input slide-01.png \
+  --prompt "Fix the text: change Helo to Hello. Keep everything else unchanged." \
+  --model pro \
+  --output slide-01-fixed.png
 ```
 
 ## Prompt Tips

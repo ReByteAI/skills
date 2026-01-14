@@ -27,52 +27,52 @@ See `tips/article-to-ascii-ppt.md` for detailed methodology.
 
 ## Step 2: Generate Images
 
+Use `scripts/generate.py` for all image generation tasks.
+
 ### Text-to-Image (New slides)
 
 ```bash
-RESPONSE=$(curl -s -X POST "https://api.eng0.ai/api/data/images/generate" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Doraemon style, presentation slide, title: Hello World",
-    "model": "pro",
-    "aspectRatio": "16:9",
-    "imageSize": "2K"
-  }')
-
-echo "$RESPONSE" | jq -r '.image.base64' | base64 -d > "slide-01.png"
+python scripts/generate.py \
+  --prompt "Doraemon style, presentation slide, title: Hello World" \
+  --model pro \
+  --aspect-ratio 16:9 \
+  --size 2K \
+  --output slide-01.png
 ```
 
 ### Image-to-Image (Edit/Enhance existing)
 
 ```bash
-# Read local image as base64
-IMAGE_BASE64=$(base64 -i slide-01.png)
+python scripts/generate.py \
+  --input slide-01.png \
+  --prompt "Fix the text: change Helo to Hello" \
+  --model pro \
+  --output slide-01-fixed.png
+```
 
-RESPONSE=$(curl -s -X POST "https://api.eng0.ai/api/data/images/generate" \
-  -H "Content-Type: application/json" \
-  -d "{
-    \"prompt\": \"Fix the text: change 'Helo' to 'Hello'\",
-    \"image\": \"$IMAGE_BASE64\",
-    \"imageMimeType\": \"image/png\",
-    \"model\": \"pro\",
-    \"aspectRatio\": \"16:9\"
-  }")
+### Script Options
 
-echo "$RESPONSE" | jq -r '.image.base64' | base64 -d > "slide-01-fixed.png"
+```
+--prompt, -p    Text prompt or editing instructions (required)
+--input, -i     Input image path (for image-to-image editing)
+--output, -o    Output image path (required)
+--model, -m     flash (fast, default) or pro (high quality)
+--aspect-ratio  16:9, 1:1, 9:16, etc. (default: 16:9)
+--size          1K, 2K, 4K (pro model only)
 ```
 
 ---
 
 ## API Reference
 
-**Endpoint:** `POST https://api.eng0.ai/api/data/images/generate`
+**Endpoint:** `POST https://api.rebyte.ai/api/data/images/generate`
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
 | `prompt` | Yes | Text description or editing instructions |
 | `image` | No | Base64-encoded source image (for image-to-image) |
 | `imageMimeType` | No | `image/png`, `image/jpeg`, or `image/webp` (default: `image/png`) |
-| `model` | No | `flash` (fast) or `pro` (high quality, default) |
+| `model` | No | `flash` (fast, default) or `pro` (high quality) |
 | `aspectRatio` | No | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `21:9`, etc. |
 | `imageSize` | No | `1K`, `2K`, `4K` (pro model only) |
 

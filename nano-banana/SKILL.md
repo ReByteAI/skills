@@ -7,6 +7,16 @@ description: Generate images from text prompts using Google Nano Banana (Gemini 
 
 Generate images from text prompts using Google Nano Banana (Gemini's native image generation).
 
+## Authentication
+
+**IMPORTANT:** All requests require authentication. Get your auth token by running:
+
+```bash
+AUTH_TOKEN=$(rebyte-auth)
+```
+
+Include this token in all API requests as a Bearer token.
+
 ## Base URL
 
 ```
@@ -27,7 +37,9 @@ https://api.rebyte.ai/api/data
 Create an image from a text description.
 
 ```bash
+AUTH_TOKEN=$(rebyte-auth)
 curl -X POST https://api.rebyte.ai/api/data/images/generate \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "A futuristic cityscape at sunset with flying cars",
@@ -83,10 +95,17 @@ curl -X POST https://api.rebyte.ai/api/data/images/generate \
 
 ## Common Workflows
 
+First, get your auth token (can be reused for multiple requests):
+
+```bash
+AUTH_TOKEN=$(rebyte-auth)
+```
+
 ### Generate a Simple Image
 
 ```bash
 curl -X POST https://api.rebyte.ai/api/data/images/generate \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "A cute robot holding a cup of coffee"
@@ -97,6 +116,7 @@ curl -X POST https://api.rebyte.ai/api/data/images/generate \
 
 ```bash
 curl -X POST https://api.rebyte.ai/api/data/images/generate \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "Professional product photo of a sleek smartphone on marble surface",
@@ -110,6 +130,7 @@ curl -X POST https://api.rebyte.ai/api/data/images/generate \
 
 ```bash
 curl -X POST https://api.rebyte.ai/api/data/images/generate \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "Abstract gradient background with geometric shapes in blue and purple",
@@ -121,6 +142,7 @@ curl -X POST https://api.rebyte.ai/api/data/images/generate \
 
 ```bash
 curl -X POST https://api.rebyte.ai/api/data/images/generate \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "Cozy coffee shop interior with warm lighting",
@@ -133,11 +155,16 @@ curl -X POST https://api.rebyte.ai/api/data/images/generate \
 ## Using with Python
 
 ```python
+import subprocess
 import requests
 import base64
 from pathlib import Path
 
 BASE_URL = "https://api.rebyte.ai/api/data"
+
+# Get auth token
+AUTH_TOKEN = subprocess.check_output(["rebyte-auth"]).decode().strip()
+HEADERS = {"Authorization": f"Bearer {AUTH_TOKEN}"}
 
 def generate_image(
     prompt: str,
@@ -148,6 +175,7 @@ def generate_image(
     """Generate an image from a text prompt."""
     response = requests.post(
         f"{BASE_URL}/images/generate",
+        headers=HEADERS,
         json={
             "prompt": prompt,
             "model": model,
@@ -188,13 +216,20 @@ save_image(result, "product.png")
 
 ```javascript
 const fs = require('fs');
+const { execSync } = require('child_process');
 
 const BASE_URL = 'https://api.rebyte.ai/api/data';
+
+// Get auth token
+const AUTH_TOKEN = execSync('rebyte-auth').toString().trim();
 
 async function generateImage(prompt, options = {}) {
   const response = await fetch(`${BASE_URL}/images/generate`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Authorization': `Bearer ${AUTH_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
       prompt,
       model: options.model || 'flash',
@@ -283,6 +318,14 @@ Good: "A golden retriever puppy playing in autumn leaves, warm sunlight"
 ---
 
 ## Error Handling
+
+**Missing or Invalid Auth Token:**
+```json
+{
+  "error": "Missing sandbox token"
+}
+```
+Solution: Run `rebyte-auth` and include the token in your request.
 
 **No Image Generated:**
 ```json

@@ -7,6 +7,16 @@ description: Build stylish, Typeform-like multi-step forms and surveys using the
 
 Build production-ready, Typeform-style forms using the Composer API.
 
+## Authentication
+
+**IMPORTANT:** All API requests require authentication. Get your auth token by running:
+
+```bash
+AUTH_TOKEN=$(rebyte-auth)
+```
+
+Include this token in all API requests as a Bearer token.
+
 ## Boilerplate Template
 
 ```html
@@ -337,7 +347,9 @@ To collect responses, you need to:
 Call the Forms API to create a backend that stores submissions:
 
 ```bash
+AUTH_TOKEN=$(rebyte-auth)
 curl -X POST https://api.rebyte.ai/api/forms/create \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "My Survey",
@@ -384,8 +396,9 @@ cat > index.html << 'HTMLEOF'
 ... your form HTML ...
 HTMLEOF
 
-# 2. Get upload URL
+# 2. Get upload URL (reuse AUTH_TOKEN from Step 1)
 RESPONSE=$(curl -s -X POST https://api.rebyte.ai/api/data/netlify/get-upload-url \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"id": "form"}')
 DEPLOY_ID=$(echo $RESPONSE | jq -r '.deployId')
@@ -399,6 +412,7 @@ curl -X PUT "$UPLOAD_URL" -H "Content-Type: application/zip" --data-binary @site
 
 # 5. Deploy
 curl -s -X POST https://api.rebyte.ai/api/data/netlify/deploy \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"deployId\": \"$DEPLOY_ID\"}"
 ```

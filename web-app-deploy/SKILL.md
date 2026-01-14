@@ -7,6 +7,16 @@ description: Build and deploy web apps to the cloud. Supports React, Vue, Astro,
 
 Build and deploy web apps to the cloud with automatic SSL and custom subdomains.
 
+## Authentication
+
+**IMPORTANT:** All deploy API requests require authentication. Get your auth token by running:
+
+```bash
+AUTH_TOKEN=$(rebyte-auth)
+```
+
+Include this token in all API requests as a Bearer token.
+
 ---
 
 ## Supported Frameworks
@@ -173,7 +183,9 @@ npm run build
 ### Step 1: Get Upload URL
 
 ```bash
+AUTH_TOKEN=$(rebyte-auth)
 curl -X POST https://api.rebyte.ai/api/data/netlify/get-upload-url \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{}'
 ```
@@ -219,6 +231,7 @@ curl -X PUT "${uploadUrl}" \
 
 ```bash
 curl -X POST https://api.rebyte.ai/api/data/netlify/deploy \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"deployId": "my-app-x7k2"}'
 ```
@@ -248,6 +261,9 @@ BUILD_CMD="npm run build"
 BUILD_OUTPUT="dist"
 API_URL="https://api.rebyte.ai/api/data/netlify"
 
+# Get auth token
+AUTH_TOKEN=$(rebyte-auth)
+
 # Step 1: Build
 echo "Building project..."
 cd "$PROJECT_DIR"
@@ -260,6 +276,7 @@ echo "/*    /index.html   200" > "$BUILD_OUTPUT/_redirects"
 # Step 2: Get upload URL
 echo "Getting upload URL..."
 RESPONSE=$(curl -s -X POST "$API_URL/get-upload-url" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d "{}")
 
@@ -281,6 +298,7 @@ curl -s -X PUT "$UPLOAD_URL" \
 # Step 5: Deploy
 echo "Deploying..."
 RESULT=$(curl -s -X POST "$API_URL/deploy" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"deployId\": \"$DEPLOY_ID\"}")
 
@@ -298,12 +316,16 @@ echo "========================================="
 ## Complete Python Example
 
 ```python
+import subprocess
 import requests
 import zipfile
 import os
-import subprocess
 
 API_URL = "https://api.rebyte.ai/api/data/netlify"
+
+# Get auth token
+AUTH_TOKEN = subprocess.check_output(["rebyte-auth"]).decode().strip()
+HEADERS = {"Authorization": f"Bearer {AUTH_TOKEN}"}
 
 def build_and_deploy(
     project_dir: str,
@@ -345,6 +367,7 @@ def build_and_deploy(
     print("Getting upload URL...")
     response = requests.post(
         f"{API_URL}/get-upload-url",
+        headers=HEADERS,
         json={}
     )
     response.raise_for_status()
@@ -378,6 +401,7 @@ def build_and_deploy(
     print("Deploying...")
     response = requests.post(
         f"{API_URL}/deploy",
+        headers=HEADERS,
         json={"deployId": deploy_id}
     )
     response.raise_for_status()

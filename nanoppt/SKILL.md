@@ -67,6 +67,8 @@ python scripts/generate.py \
 
 **Endpoint:** `POST https://api.rebyte.ai/api/data/images/generate`
 
+**Authentication:** Required. Use `Authorization: Bearer $(rebyte-auth)` header.
+
 | Parameter | Required | Description |
 |-----------|----------|-------------|
 | `prompt` | Yes | Text description or editing instructions |
@@ -75,6 +77,14 @@ python scripts/generate.py \
 | `model` | No | `flash` (fast, default) or `pro` (high quality) |
 | `aspectRatio` | No | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `21:9`, etc. |
 | `imageSize` | No | `1K`, `2K`, `4K` (pro model only) |
+
+**Example curl:**
+```bash
+curl -X POST https://api.rebyte.ai/api/data/images/generate \
+  -H "Authorization: Bearer $(rebyte-auth)" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt": "Doraemon style presentation slide", "model": "flash", "aspectRatio": "16:9"}'
+```
 
 **Response:**
 ```json

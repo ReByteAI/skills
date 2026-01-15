@@ -16,10 +16,18 @@ Usage:
 import argparse
 import base64
 import json
+import os
 import sys
 import urllib.request
 
 API_URL = "https://api.rebyte.ai/api/data/images/generate"
+AUTH_FILE = os.path.expanduser("~/.rebyte.ai/auth.json")
+
+
+def get_auth_token() -> str:
+    """Get auth token from ~/.rebyte.ai/auth.json"""
+    with open(AUTH_FILE) as f:
+        return json.load(f)["sandbox"]["token"]
 
 
 def generate_image(
@@ -50,10 +58,14 @@ def generate_image(
         mime_map = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg", "webp": "image/webp"}
         payload["imageMimeType"] = mime_map.get(ext, "image/png")
 
+    token = get_auth_token()
     req = urllib.request.Request(
         API_URL,
         data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
+        headers={
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}",
+        },
         method="POST",
     )
 

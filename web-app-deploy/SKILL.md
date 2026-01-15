@@ -57,6 +57,72 @@ Include this token in all API requests as a Bearer token.
 4. **Don't include `.env` files** - Use Netlify environment variables for secrets
 5. **Don't skip the build step** - Raw source won't work
 6. **Don't use server-side rendering** - Only static exports are supported (no SSR)
+7. **Don't guess icon names** - Only use verified icons from the list below
+
+---
+
+## Valid Tabler Icons (IMPORTANT)
+
+When using `tabler:*` icons in Astro templates, **ONLY use these verified icons**. Using invalid icons will cause build failures.
+
+### Safe Icons to Use
+
+**Navigation & UI:**
+- `tabler:home`, `tabler:menu`, `tabler:menu-2`, `tabler:arrow-left`, `tabler:arrow-right`, `tabler:arrow-down`
+- `tabler:chevron-down`, `tabler:chevron-right`, `tabler:chevron-left`, `tabler:chevron-up`
+- `tabler:x`, `tabler:check`, `tabler:plus`, `tabler:minus`, `tabler:dots`
+
+**Actions:**
+- `tabler:download`, `tabler:upload`, `tabler:refresh`, `tabler:search`, `tabler:settings`
+- `tabler:edit`, `tabler:trash`, `tabler:copy`, `tabler:share`, `tabler:link`
+
+**Communication:**
+- `tabler:mail`, `tabler:phone`, `tabler:message`, `tabler:send`, `tabler:at`
+
+**Social & Brands:**
+- `tabler:brand-github`, `tabler:brand-twitter`, `tabler:brand-x`, `tabler:brand-facebook`
+- `tabler:brand-instagram`, `tabler:brand-linkedin`, `tabler:brand-youtube`, `tabler:brand-discord`
+- `tabler:brand-tailwind`, `tabler:rss`
+
+**Content & Files:**
+- `tabler:file`, `tabler:folder`, `tabler:image`, `tabler:video`, `tabler:music`
+- `tabler:document`, `tabler:book`, `tabler:notebook`, `tabler:clipboard`
+
+**Status & Alerts:**
+- `tabler:alert-circle`, `tabler:info-circle`, `tabler:help-circle`, `tabler:check-circle`
+- `tabler:alert-triangle`, `tabler:ban`, `tabler:lock`, `tabler:shield`, `tabler:shield-check`
+
+**Objects:**
+- `tabler:sun`, `tabler:moon`, `tabler:star`, `tabler:heart`, `tabler:bulb`
+- `tabler:clock`, `tabler:calendar`, `tabler:calendar-event`, `tabler:map-pin`, `tabler:location`
+- `tabler:user`, `tabler:users`, `tabler:building`, `tabler:briefcase`
+- `tabler:rocket`, `tabler:package`, `tabler:paint`, `tabler:palette`
+- `tabler:code`, `tabler:terminal`, `tabler:database`, `tabler:server`
+- `tabler:wifi`, `tabler:bluetooth`, `tabler:battery`, `tabler:plug`
+- `tabler:tool`, `tabler:hammer`, `tabler:wrench`, `tabler:bolt`
+
+**Layout:**
+- `tabler:layout`, `tabler:layout-grid`, `tabler:layout-list`, `tabler:template`
+- `tabler:components`, `tabler:squares`, `tabler:box`, `tabler:cube`
+
+**Lists & Checks:**
+- `tabler:list`, `tabler:list-check`, `tabler:checkbox`, `tabler:circle-check`
+- `tabler:letter-case`, `tabler:text-size`
+
+### Icons to AVOID (will cause build errors)
+
+❌ `tabler:layers` - Use `tabler:layout-grid` instead
+❌ `tabler:vacuum-cleaner` - Not in the icon set
+❌ `tabler:tools` - Use `tabler:tool` instead
+❌ Any made-up or guessed icon names
+
+### How to Verify Icons
+
+Before using an icon, run `npm run build` to check for errors. If you see:
+```
+Unable to locate "tabler:icon-name" icon!
+```
+Replace it with a verified icon from the list above.
 
 ---
 
@@ -545,9 +611,13 @@ Create `netlify.toml` in project root:
 POST https://api.rebyte.ai/api/data/netlify/get-upload-url
 ```
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `id` | string | No | Optional prefix for the deploy ID (default: "app") |
+No parameters needed. Returns a stable `deployId` that is unique per workspace (1 workspace = 1 deployment).
+
+**Response includes:**
+- `deployId`: Stable ID for your deployment (derived from workspace)
+- `uploadUrl`: Signed URL to upload your ZIP file
+- `isExisting`: Whether this workspace already has a deployment
+- `currentUrl`: If existing, the current live URL
 
 ### Deploy
 
@@ -558,6 +628,8 @@ POST https://api.rebyte.ai/api/data/netlify/deploy
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `deployId` | string | Yes | Deploy ID from get-upload-url |
+
+**Auto-detects create vs update:** If the site doesn't exist yet, creates a new one. If it already exists, updates it automatically. No need to use a separate `update` endpoint.
 
 ### Check Status
 
@@ -603,6 +675,9 @@ POST https://api.rebyte.ai/api/data/netlify/delete
 - Functions must be in `netlify/functions/`
 - Include `netlify.toml` in ZIP
 - Check function logs at admin URL
+
+### Icon build errors ("Unable to locate icon")
+You used an invalid icon name. Check the "Valid Tabler Icons" section above and replace with a verified icon.
 
 ---
 

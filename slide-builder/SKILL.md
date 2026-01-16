@@ -1,11 +1,11 @@
 ---
-name: slidev-presentation
-description: Create developer presentations using Slidev with Markdown. Supports code highlighting, Mermaid diagrams, animations. Deploy to rebyte.pro. Triggers include "create presentation", "make slides", "tech talk", "conference slides".
+name: slide-builder
+description: Create presentations using Slidev with Markdown. Supports code highlighting, Mermaid diagrams, animations. Deploy to rebyte.pro. Triggers include "create presentation", "make slides", "build slides", "slide deck", "tech talk", "conference slides".
 ---
 
-# Slidev Presentation Builder
+# Slide Builder
 
-Create developer-style presentations with Markdown.
+Create presentations with Markdown using Slidev.
 
 ## Workflow
 

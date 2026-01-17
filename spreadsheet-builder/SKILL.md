@@ -1,15 +1,17 @@
 ---
 name: Spreadsheet Builder
-description: Build online spreadsheets, create shareable spreadsheets with data, financial models, reports. Share instantly via link - no Office installation required
+description: Build and edit online spreadsheets, create shareable spreadsheets with data, financial models, reports. Share instantly via link - no Office installation required
 ---
 
 # Spreadsheet Builder
 
-Build professional online spreadsheets using Univer. Better than Excel for sharing - recipients can view instantly via link without installing Office.
+Build and edit professional online spreadsheets using Univer. Better than Excel for sharing - recipients can view instantly via link without installing Office.
 
 {{include:auth.md}}
 
-## API Endpoint
+## API Endpoints
+
+### Create Spreadsheet
 
 ```bash
 curl -X POST "$API_URL/api/data/spreadsheet/create" \
@@ -28,6 +30,58 @@ curl -X POST "$API_URL/api/data/spreadsheet/create" \
   "docId": "ss-Kj2mN8xQ1pRt3Y5z",
   "title": "My Spreadsheet",
   "commandCount": 15,
+  "url": "https://.../drive/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
+}
+```
+
+### Get Spreadsheet
+
+Retrieve an existing spreadsheet by its docId. Returns metadata and all commands.
+
+```bash
+curl -X POST "$API_URL/api/data/spreadsheet/get" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "docId": "ss-Kj2mN8xQ1pRt3Y5z"
+  }'
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "docId": "ss-Kj2mN8xQ1pRt3Y5z",
+  "title": "My Spreadsheet",
+  "createdAt": "2024-01-15T10:30:00Z",
+  "updatedAt": "2024-01-15T14:20:00Z",
+  "commandCount": 15,
+  "commands": [...],
+  "url": "https://.../drive/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
+}
+```
+
+### Append to Spreadsheet
+
+Add more commands to an existing spreadsheet. Use this to update data, add rows, or modify cells.
+
+```bash
+curl -X POST "$API_URL/api/data/spreadsheet/append" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "docId": "ss-Kj2mN8xQ1pRt3Y5z",
+    "commands": [...]
+  }'
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "docId": "ss-Kj2mN8xQ1pRt3Y5z",
+  "commandsAppended": 5,
+  "seq": 2,
   "url": "https://.../drive/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
 }
 ```
@@ -361,10 +415,10 @@ Create additional sheets in the workbook:
 
 ## Workflow
 
-1. **Gather data** - Collect the information needed for the spreadsheet
-2. **Structure commands** - Build the commands array with headers, data rows, and formulas
-3. **Call API** - Send to `$API_URL/api/data/spreadsheet/create`
-4. **Return URL** - Give user the link to view the spreadsheet
+1. **Create** - Call `create` with title and initial commands → get back `docId`
+2. **Append** - Call `append` with docId to add/update data (repeat as needed)
+
+The `get` endpoint is only needed when user provides a docId/URL from elsewhere and you need to see the current state.
 
 ## Tips
 

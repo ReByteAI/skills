@@ -1,11 +1,11 @@
 ---
 name: nano-banana
-description: Generate images from text prompts using Google Nano Banana (Gemini image generation) via Rebyte data API. Use when user asks to generate, create, or make images, pictures, illustrations, or artwork from descriptions. Triggers include "generate image", "create image", "make a picture", "draw", "illustrate", "image of", "picture of", "nano banana". Do NOT use for image editing or manipulation of existing images.
+description: Generate images from text prompts or edit existing images using Google Nano Banana (Gemini image generation) via Rebyte data API. Use for text-to-image generation or image-to-image editing/enhancement. Triggers include "generate image", "create image", "make a picture", "draw", "illustrate", "image of", "picture of", "edit image", "modify image", "enhance image", "style transfer", "nano banana".
 ---
 
 # Nano Banana - Image Generation API
 
-Generate images from text prompts using Google Nano Banana (Gemini's native image generation).
+Generate images from text prompts or edit existing images using Google Nano Banana (Gemini's native image generation).
 
 {{include:auth.md}}
 
@@ -18,7 +18,7 @@ Generate images from text prompts using Google Nano Banana (Gemini's native imag
 
 ---
 
-## Generate Image
+## Text-to-Image Generation
 
 Create an image from a text description.
 
@@ -33,11 +33,39 @@ curl -X POST "$API_URL/api/data/images/generate" \
   }'
 ```
 
-**Parameters:**
+---
+
+## Image-to-Image Generation
+
+Edit, enhance, or transform an existing image by providing it as base64.
+
+```bash
+curl -X POST "$API_URL/api/data/images/generate" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "Transform this into a watercolor painting style",
+    "image": "<base64-encoded-image>",
+    "imageMimeType": "image/png",
+    "model": "pro"
+  }'
+```
+
+**Use Cases:**
+- **Style Transfer**: "Make this photo look like a Van Gogh painting"
+- **Enhancement**: "Improve the lighting and colors"
+- **Editing**: "Remove the background and replace with a beach scene"
+- **Text Correction**: "Fix the text in this image: change 'Helo' to 'Hello'"
+
+---
+
+## Parameters
 
 | Name | Type | Required | Default | Description |
 |------|------|----------|---------|-------------|
-| `prompt` | string | Yes | - | Text description of the image to generate |
+| `prompt` | string | Yes | - | Text description or editing instructions |
+| `image` | string | No | - | Base64-encoded source image (for image-to-image) |
+| `imageMimeType` | string | No | `image/png` | MIME type: `image/png`, `image/jpeg`, `image/webp` |
 | `model` | string | No | `flash` | `flash` (fast, 1024px) or `pro` (high-quality, up to 4K) |
 | `aspectRatio` | string | No | `1:1` | Output aspect ratio |
 | `imageSize` | string | No | `1K` | `1K`, `2K`, or `4K` (4K only with `pro` model) |
@@ -54,7 +82,9 @@ curl -X POST "$API_URL/api/data/images/generate" \
 | `21:9` | Ultra-wide (cinematic) |
 | `2:3`, `3:2`, `4:5`, `5:4` | Various formats |
 
-**Response:**
+---
+
+## Response
 
 ```json
 {
@@ -67,55 +97,12 @@ curl -X POST "$API_URL/api/data/images/generate" \
 }
 ```
 
-**Response Fields:**
-
 | Field | Description |
 |-------|-------------|
 | `image.base64` | Base64-encoded image data |
 | `image.mimeType` | Image MIME type (typically `image/png`) |
 | `image.dataUrl` | Ready-to-use data URL for HTML/CSS |
 | `description` | Model's description of the generated image |
-
----
-
-## Common Workflows
-
-### Generate a Simple Image
-
-```bash
-curl -X POST "$API_URL/api/data/images/generate" \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "A cute robot holding a cup of coffee"
-  }'
-```
-
-### Generate High-Quality 4K Image
-
-```bash
-curl -X POST "$API_URL/api/data/images/generate" \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Professional product photo of a sleek smartphone on marble surface",
-    "model": "pro",
-    "imageSize": "4K",
-    "aspectRatio": "4:3"
-  }'
-```
-
-### Generate Social Media Banner
-
-```bash
-curl -X POST "$API_URL/api/data/images/generate" \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Abstract gradient background with geometric shapes in blue and purple",
-    "aspectRatio": "16:9"
-  }'
-```
 
 ---
 
@@ -137,20 +124,32 @@ HEADERS = {"Authorization": f"Bearer {AUTH_TOKEN}"}
 
 def generate_image(
     prompt: str,
+    image_path: str = None,
     model: str = "flash",
     aspect_ratio: str = "1:1",
     image_size: str = "1K"
 ) -> dict:
-    """Generate an image from a text prompt."""
+    """Generate an image from text, or edit an existing image."""
+    payload = {
+        "prompt": prompt,
+        "model": model,
+        "aspectRatio": aspect_ratio,
+        "imageSize": image_size
+    }
+
+    # Add source image for image-to-image
+    if image_path:
+        image_data = Path(image_path).read_bytes()
+        payload["image"] = base64.b64encode(image_data).decode()
+        # Detect mime type from extension
+        ext = Path(image_path).suffix.lower()
+        mime_map = {'.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp'}
+        payload["imageMimeType"] = mime_map.get(ext, 'image/png')
+
     response = requests.post(
         f"{API_URL}/api/data/images/generate",
         headers=HEADERS,
-        json={
-            "prompt": prompt,
-            "model": model,
-            "aspectRatio": aspect_ratio,
-            "imageSize": image_size
-        }
+        json=payload
     )
     return response.json()
 
@@ -163,12 +162,28 @@ def save_image(result: dict, filepath: str) -> None:
     else:
         print(f"Error: {result.get('error', 'Unknown error')}")
 
-# Example: Generate and save an image
+# Example 1: Text-to-image
 result = generate_image(
     prompt="A serene mountain landscape at dawn with mist in the valley",
     aspect_ratio="16:9"
 )
 save_image(result, "landscape.png")
+
+# Example 2: Image-to-image (style transfer)
+result = generate_image(
+    prompt="Transform this into a watercolor painting",
+    image_path="photo.jpg",
+    model="pro"
+)
+save_image(result, "watercolor.png")
+
+# Example 3: Image editing
+result = generate_image(
+    prompt="Remove the background and add a sunset beach scene",
+    image_path="portrait.png",
+    model="pro"
+)
+save_image(result, "portrait_beach.png")
 ```
 
 ---
@@ -177,6 +192,7 @@ save_image(result, "landscape.png")
 
 ```javascript
 const fs = require('fs');
+const path = require('path');
 const { execSync } = require('child_process');
 
 // Get auth token and API URL
@@ -185,18 +201,29 @@ const authConfig = JSON.parse(fs.readFileSync('/home/user/.rebyte.ai/auth.json')
 const API_URL = authConfig.sandbox.relay_url;
 
 async function generateImage(prompt, options = {}) {
+  const payload = {
+    prompt,
+    model: options.model || 'flash',
+    aspectRatio: options.aspectRatio || '1:1',
+    imageSize: options.imageSize || '1K'
+  };
+
+  // Add source image for image-to-image
+  if (options.imagePath) {
+    const imageBuffer = fs.readFileSync(options.imagePath);
+    payload.image = imageBuffer.toString('base64');
+    const ext = path.extname(options.imagePath).toLowerCase();
+    const mimeMap = {'.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.webp': 'image/webp'};
+    payload.imageMimeType = mimeMap[ext] || 'image/png';
+  }
+
   const response = await fetch(`${API_URL}/api/data/images/generate`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${AUTH_TOKEN}`,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      prompt,
-      model: options.model || 'flash',
-      aspectRatio: options.aspectRatio || '1:1',
-      imageSize: options.imageSize || '1K'
-    })
+    body: JSON.stringify(payload)
   });
   return response.json();
 }
@@ -211,7 +238,7 @@ function saveImage(result, filepath) {
   }
 }
 
-// Example usage
+// Example: Text-to-image
 (async () => {
   const result = await generateImage(
     'A neon-lit cyberpunk street scene at night',
@@ -219,37 +246,33 @@ function saveImage(result, filepath) {
   );
   saveImage(result, 'cyberpunk.png');
 })();
+
+// Example: Image-to-image
+(async () => {
+  const result = await generateImage(
+    'Make this look like a Studio Ghibli animation',
+    { imagePath: 'photo.jpg', model: 'pro' }
+  );
+  saveImage(result, 'ghibli_style.png');
+})();
 ```
 
 ---
 
 ## Prompt Tips
 
-### Be Specific
+### Text-to-Image
 ```
 Bad:  "A dog"
 Good: "A golden retriever puppy playing in autumn leaves, warm sunlight"
 ```
 
-### Include Style
+### Image-to-Image
 ```
-"Oil painting style portrait of a woman in Renaissance clothing"
-"Minimalist vector illustration of a mountain range"
-"Photorealistic close-up of a dewdrop on a leaf"
-```
-
-### Specify Lighting
-```
-"... with dramatic side lighting"
-"... golden hour sunlight"
-"... soft diffused studio lighting"
-```
-
-### Add Context
-```
-"... in the style of Studio Ghibli"
-"... professional product photography"
-"... vintage 1970s film aesthetic"
+Style Transfer: "Transform into oil painting style", "Make it look like anime"
+Enhancement: "Improve lighting and contrast", "Make colors more vibrant"
+Editing: "Remove the person in the background", "Add a rainbow to the sky"
+Text Fix: "Change the text from 'Helo' to 'Hello'"
 ```
 
 ---
@@ -262,19 +285,8 @@ Good: "A golden retriever puppy playing in autumn leaves, warm sunlight"
 | Max Resolution | 1024px | 4K |
 | Complex Prompts | Good | Excellent |
 | Text Rendering | Good | Sharp |
-| Best For | Quick iterations, previews | Final assets, print |
-
-**When to use Flash:**
-- Rapid prototyping
-- Social media content
-- High-volume generation
-- When speed matters
-
-**When to use Pro:**
-- Professional/commercial use
-- Print materials
-- Complex compositions
-- When quality matters
+| Image-to-Image | Good | Excellent |
+| Best For | Quick iterations, previews | Final assets, print, complex edits |
 
 ---
 
@@ -306,3 +318,4 @@ This occurs when the prompt triggers content safety filters.
 - The `pro` model takes longer but produces higher quality
 - 4K resolution is only available with the `pro` model
 - Content safety filters may block certain prompts
+- For image-to-image, the source image is sent as base64 in the request body

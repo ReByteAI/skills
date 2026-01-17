@@ -7,15 +7,7 @@ description: Build and deploy web apps to the cloud. Supports React, Vue, Astro,
 
 Build and deploy web apps to the cloud with automatic SSL and custom subdomains.
 
-## Authentication
-
-**IMPORTANT:** All deploy API requests require authentication. Get your auth token by running:
-
-```bash
-AUTH_TOKEN=$(rebyte-auth)
-```
-
-Include this token in all API requests as a Bearer token.
+{{include:auth.md}}
 
 ---
 
@@ -250,7 +242,7 @@ npm run build
 
 ```bash
 AUTH_TOKEN=$(rebyte-auth)
-curl -X POST https://api.rebyte.ai/api/data/netlify/get-upload-url \
+curl -X POST $API_URL/api/data/netlify/get-upload-url \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{}'
@@ -296,7 +288,7 @@ curl -X PUT "${uploadUrl}" \
 ### Step 4: Deploy
 
 ```bash
-curl -X POST https://api.rebyte.ai/api/data/netlify/deploy \
+curl -X POST $API_URL/api/data/netlify/deploy \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"deployId": "my-app-x7k2"}'
@@ -325,7 +317,7 @@ set -e
 PROJECT_DIR="."
 BUILD_CMD="npm run build"
 BUILD_OUTPUT="dist"
-API_URL="https://api.rebyte.ai/api/data/netlify"
+API_URL="$API_URL/api/data/netlify"
 
 # Get auth token
 AUTH_TOKEN=$(rebyte-auth)
@@ -386,11 +378,13 @@ import subprocess
 import requests
 import zipfile
 import os
+import json
 
-API_URL = "https://api.rebyte.ai/api/data/netlify"
-
-# Get auth token
+# Get auth token and API URL
 AUTH_TOKEN = subprocess.check_output(["rebyte-auth"]).decode().strip()
+with open('/home/user/.rebyte.ai/auth.json') as f:
+    API_URL = json.load(f)['sandbox']['relay_url'] + "/api/data/netlify"
+
 HEADERS = {"Authorization": f"Bearer {AUTH_TOKEN}"}
 
 def build_and_deploy(
@@ -608,7 +602,7 @@ Create `netlify.toml` in project root:
 ### Get Upload URL
 
 ```
-POST https://api.rebyte.ai/api/data/netlify/get-upload-url
+POST $API_URL/api/data/netlify/get-upload-url
 ```
 
 No parameters needed. Returns a stable `deployId` that is unique per workspace (1 workspace = 1 deployment).
@@ -622,7 +616,7 @@ No parameters needed. Returns a stable `deployId` that is unique per workspace (
 ### Deploy
 
 ```
-POST https://api.rebyte.ai/api/data/netlify/deploy
+POST $API_URL/api/data/netlify/deploy
 ```
 
 | Parameter | Type | Required | Description |
@@ -634,7 +628,7 @@ POST https://api.rebyte.ai/api/data/netlify/deploy
 ### Check Status
 
 ```
-POST https://api.rebyte.ai/api/data/netlify/status
+POST $API_URL/api/data/netlify/status
 ```
 
 | Parameter | Type | Required | Description |
@@ -644,7 +638,7 @@ POST https://api.rebyte.ai/api/data/netlify/status
 ### Delete Site
 
 ```
-POST https://api.rebyte.ai/api/data/netlify/delete
+POST $API_URL/api/data/netlify/delete
 ```
 
 | Parameter | Type | Required | Description |

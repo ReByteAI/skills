@@ -20,14 +20,20 @@ import os
 import sys
 import urllib.request
 
-API_URL = "https://api.rebyte.ai/api/data/images/generate"
 AUTH_FILE = os.path.expanduser("~/.rebyte.ai/auth.json")
 
 
-def get_auth_token() -> str:
-    """Get auth token from ~/.rebyte.ai/auth.json"""
+def get_auth() -> tuple[str, str]:
+    """Get auth token and relay URL from ~/.rebyte.ai/auth.json"""
     with open(AUTH_FILE) as f:
-        return json.load(f)["sandbox"]["token"]
+        data = json.load(f)
+    return data["sandbox"]["token"], data["sandbox"]["relay_url"]
+
+
+def get_api_url() -> str:
+    """Get the images API URL from auth.json relay_url"""
+    _, relay_url = get_auth()
+    return f"{relay_url}/api/data/images/generate"
 
 
 def generate_image(
@@ -58,9 +64,10 @@ def generate_image(
         mime_map = {"png": "image/png", "jpg": "image/jpeg", "jpeg": "image/jpeg", "webp": "image/webp"}
         payload["imageMimeType"] = mime_map.get(ext, "image/png")
 
-    token = get_auth_token()
+    token, _ = get_auth()
+    api_url = get_api_url()
     req = urllib.request.Request(
-        API_URL,
+        api_url,
         data=json.dumps(payload).encode("utf-8"),
         headers={
             "Content-Type": "application/json",

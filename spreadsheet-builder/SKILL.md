@@ -7,11 +7,13 @@ description: Build online spreadsheets, create shareable spreadsheets with data,
 
 Build professional online spreadsheets using Univer. Better than Excel for sharing - recipients can view instantly via link without installing Office.
 
+{{include:auth.md}}
+
 ## API Endpoint
 
 ```bash
-curl -X POST "https://api.rebyte.ai/api/data/spreadsheet/create" \
-  -H "Authorization: Bearer $(rebyte-auth)" \
+curl -X POST "$API_URL/api/data/spreadsheet/create" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "title": "My Spreadsheet",
@@ -26,7 +28,7 @@ curl -X POST "https://api.rebyte.ai/api/data/spreadsheet/create" \
   "docId": "ss-Kj2mN8xQ1pRt3Y5z",
   "title": "My Spreadsheet",
   "commandCount": 15,
-  "url": "https://app.rebyte.ai/drive/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
+  "url": "https://.../drive/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
 }
 ```
 
@@ -357,153 +359,11 @@ Create additional sheets in the workbook:
 }
 ```
 
-### Example 3: DCF Model Structure (from real Excel conversion)
-
-```json
-{
-  "title": "DCF Valuation Model",
-  "commands": [
-    {
-      "id": "sheet.mutation.set-worksheet-name",
-      "params": { "unitId": "workbook-1", "subUnitId": "sheet-1", "name": "Assumptions" }
-    },
-    {
-      "id": "sheet.mutation.set-worksheet-col-width",
-      "params": { "unitId": "workbook-1", "subUnitId": "sheet-1", "colIndex": 0, "width": 200 }
-    },
-    {
-      "id": "sheet.mutation.set-worksheet-col-width",
-      "params": { "unitId": "workbook-1", "subUnitId": "sheet-1", "colIndex": 1, "width": 100 }
-    },
-    {
-      "id": "sheet.mutation.set-range-values",
-      "params": {
-        "unitId": "workbook-1",
-        "subUnitId": "sheet-1",
-        "range": { "startRow": 0, "endRow": 0, "startColumn": 0, "endColumn": 1 },
-        "value": [[{ "v": "DCF Model Assumptions", "s": "title" }, {}]]
-      }
-    },
-    {
-      "id": "sheet.mutation.set-range-values",
-      "params": {
-        "unitId": "workbook-1",
-        "subUnitId": "sheet-1",
-        "range": { "startRow": 2, "endRow": 8, "startColumn": 0, "endColumn": 1 },
-        "value": [
-          [{ "v": "Revenue Growth Rate" }, { "v": 0.05 }],
-          [{ "v": "Operating Margin" }, { "v": 0.22 }],
-          [{ "v": "Tax Rate" }, { "v": 0.21 }],
-          [{ "v": "Discount Rate (WACC)" }, { "v": 0.08 }],
-          [{ "v": "Terminal Growth Rate" }, { "v": 0.025 }],
-          [{ "v": "Shares Outstanding (M)" }, { "v": 4300 }],
-          [{ "v": "Current Stock Price" }, { "v": 62.50 }]
-        ]
-      }
-    },
-    {
-      "id": "sheet.mutation.set-range-values",
-      "params": {
-        "unitId": "workbook-1",
-        "subUnitId": "sheet-1",
-        "range": { "startRow": 11, "endRow": 11, "startColumn": 0, "endColumn": 1 },
-        "value": [[{ "v": "Implied Share Price", "s": "header" }, { "f": "=B15/B8" }]]
-      }
-    }
-  ]
-}
-```
-
-### Example 4: Multi-Sheet Workbook
-
-A workbook with multiple sheets that reference each other:
-
-```json
-{
-  "title": "Sales Report Q4 2024",
-  "commands": [
-    {
-      "id": "sheet.mutation.set-worksheet-name",
-      "params": { "unitId": "workbook-1", "subUnitId": "sheet-1", "name": "Raw Data" }
-    },
-    {
-      "id": "sheet.mutation.insert-sheet",
-      "params": {
-        "unitId": "workbook-1",
-        "sheet": { "id": "sheet-2", "name": "Summary" },
-        "index": 1
-      }
-    },
-    {
-      "id": "sheet.mutation.insert-sheet",
-      "params": {
-        "unitId": "workbook-1",
-        "sheet": { "id": "sheet-3", "name": "Charts Data" },
-        "index": 2
-      }
-    },
-    {
-      "id": "sheet.mutation.set-range-values",
-      "params": {
-        "unitId": "workbook-1",
-        "subUnitId": "sheet-1",
-        "range": { "startRow": 0, "endRow": 0, "startColumn": 0, "endColumn": 3 },
-        "value": [[
-          { "v": "Date", "s": "header" },
-          { "v": "Product", "s": "header" },
-          { "v": "Units", "s": "header" },
-          { "v": "Revenue", "s": "header" }
-        ]]
-      }
-    },
-    {
-      "id": "sheet.mutation.set-range-values",
-      "params": {
-        "unitId": "workbook-1",
-        "subUnitId": "sheet-1",
-        "range": { "startRow": 1, "endRow": 4, "startColumn": 0, "endColumn": 3 },
-        "value": [
-          [{ "v": "2024-10-01" }, { "v": "Widget A" }, { "v": 150 }, { "v": 4500 }],
-          [{ "v": "2024-10-15" }, { "v": "Widget B" }, { "v": 200 }, { "v": 8000 }],
-          [{ "v": "2024-11-01" }, { "v": "Widget A" }, { "v": 180 }, { "v": 5400 }],
-          [{ "v": "2024-11-15" }, { "v": "Widget B" }, { "v": 250 }, { "v": 10000 }]
-        ]
-      }
-    },
-    {
-      "id": "sheet.mutation.set-range-values",
-      "params": {
-        "unitId": "workbook-1",
-        "subUnitId": "sheet-2",
-        "range": { "startRow": 0, "endRow": 0, "startColumn": 0, "endColumn": 1 },
-        "value": [[{ "v": "Q4 Summary", "s": "title" }, {}]]
-      }
-    },
-    {
-      "id": "sheet.mutation.set-range-values",
-      "params": {
-        "unitId": "workbook-1",
-        "subUnitId": "sheet-2",
-        "range": { "startRow": 2, "endRow": 5, "startColumn": 0, "endColumn": 1 },
-        "value": [
-          [{ "v": "Total Units", "s": "header" }, { "f": "=SUM('Raw Data'!C2:C5)" }],
-          [{ "v": "Total Revenue", "s": "header" }, { "f": "=SUM('Raw Data'!D2:D5)" }],
-          [{ "v": "Average Order", "s": "header" }, { "f": "=AVERAGE('Raw Data'!D2:D5)" }],
-          [{ "v": "Max Sale", "s": "header" }, { "f": "=MAX('Raw Data'!D2:D5)" }]
-        ]
-      }
-    }
-  ]
-}
-```
-
-**Cross-sheet formula syntax:** Use `'Sheet Name'!CellRange` to reference other sheets.
-
 ## Workflow
 
 1. **Gather data** - Collect the information needed for the spreadsheet
 2. **Structure commands** - Build the commands array with headers, data rows, and formulas
-3. **Call API** - Send to `/api/data/spreadsheet/create`
+3. **Call API** - Send to `$API_URL/api/data/spreadsheet/create`
 4. **Return URL** - Give user the link to view the spreadsheet
 
 ## Tips

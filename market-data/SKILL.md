@@ -7,21 +7,7 @@ description: Access US stock market data including price bars, news with sentime
 
 Access US stock market data through rebyte's data proxy service.
 
-## Authentication
-
-**IMPORTANT:** All requests require authentication. Get your auth token by running:
-
-```bash
-AUTH_TOKEN=$(rebyte-auth)
-```
-
-Include this token in all API requests as a Bearer token.
-
-## Base URL
-
-```
-https://api.rebyte.ai/api/data
-```
+{{include:auth.md}}
 
 ## Data Coverage
 
@@ -36,10 +22,9 @@ https://api.rebyte.ai/api/data
 
 | Endpoint | Purpose |
 |----------|---------|
-| `POST /stocks/bars` | OHLCV price bars (1min to 1week intervals) |
-| `POST /stocks/news` | News articles with sentiment analysis |
-| `POST /stocks/details` | Company information and market cap |
-| `GET /schema` | API schema discovery |
+| `POST $API_URL/api/data/stocks/bars` | OHLCV price bars (1min to 1week intervals) |
+| `POST $API_URL/api/data/stocks/news` | News articles with sentiment analysis |
+| `POST $API_URL/api/data/stocks/details` | Company information and market cap |
 
 ---
 
@@ -48,8 +33,7 @@ https://api.rebyte.ai/api/data
 Retrieve OHLCV (Open, High, Low, Close, Volume) bars for a stock.
 
 ```bash
-AUTH_TOKEN=$(rebyte-auth)
-curl -X POST https://api.rebyte.ai/api/data/stocks/bars \
+curl -X POST "$API_URL/api/data/stocks/bars" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -109,8 +93,7 @@ curl -X POST https://api.rebyte.ai/api/data/stocks/bars \
 Retrieve financial news articles with sentiment analysis.
 
 ```bash
-AUTH_TOKEN=$(rebyte-auth)
-curl -X POST https://api.rebyte.ai/api/data/stocks/news \
+curl -X POST "$API_URL/api/data/stocks/news" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -156,8 +139,7 @@ curl -X POST https://api.rebyte.ai/api/data/stocks/news \
 Retrieve company information for a stock ticker.
 
 ```bash
-AUTH_TOKEN=$(rebyte-auth)
-curl -X POST https://api.rebyte.ai/api/data/stocks/details \
+curl -X POST "$API_URL/api/data/stocks/details" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"ticker": "AAPL"}'
@@ -189,86 +171,24 @@ curl -X POST https://api.rebyte.ai/api/data/stocks/details \
 
 ---
 
-## Common Workflows
-
-First, get your auth token (can be reused for multiple requests):
-
-```bash
-AUTH_TOKEN=$(rebyte-auth)
-```
-
-### Get Last 30 Days of Daily Prices
-
-```bash
-curl -X POST https://api.rebyte.ai/api/data/stocks/bars \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "ticker": "NVDA",
-    "interval": "1day",
-    "from": "2024-12-07",
-    "to": "2025-01-07"
-  }'
-```
-
-### Get Intraday Data (1-minute bars)
-
-```bash
-curl -X POST https://api.rebyte.ai/api/data/stocks/bars \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "ticker": "AAPL",
-    "interval": "1min",
-    "from": "2025-01-06",
-    "to": "2025-01-06"
-  }'
-```
-
-### Get Weekly Bars for 1 Year
-
-```bash
-curl -X POST https://api.rebyte.ai/api/data/stocks/bars \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "ticker": "MSFT",
-    "interval": "1week",
-    "from": "2024-01-01",
-    "to": "2025-01-01"
-  }'
-```
-
-### Get Recent News with Sentiment
-
-```bash
-curl -X POST https://api.rebyte.ai/api/data/stocks/news \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "ticker": "GOOGL",
-    "limit": 20
-  }'
-```
-
----
-
 ## Using with Python
 
 ```python
 import subprocess
 import requests
+import json
 
-BASE_URL = "https://api.rebyte.ai/api/data"
-
-# Get auth token
+# Get auth token and API URL
 AUTH_TOKEN = subprocess.check_output(["rebyte-auth"]).decode().strip()
+with open('/home/user/.rebyte.ai/auth.json') as f:
+    API_URL = json.load(f)['sandbox']['relay_url']
+
 HEADERS = {"Authorization": f"Bearer {AUTH_TOKEN}"}
 
 def get_price_bars(ticker: str, interval: str, from_date: str, to_date: str):
     """Get OHLCV price bars for a stock."""
     response = requests.post(
-        f"{BASE_URL}/stocks/bars",
+        f"{API_URL}/api/data/stocks/bars",
         headers=HEADERS,
         json={
             "ticker": ticker,
@@ -282,7 +202,7 @@ def get_price_bars(ticker: str, interval: str, from_date: str, to_date: str):
 def get_news(ticker: str, limit: int = 10):
     """Get news articles with sentiment for a stock."""
     response = requests.post(
-        f"{BASE_URL}/stocks/news",
+        f"{API_URL}/api/data/stocks/news",
         headers=HEADERS,
         json={"ticker": ticker, "limit": limit}
     )
@@ -291,7 +211,7 @@ def get_news(ticker: str, limit: int = 10):
 def get_company_details(ticker: str):
     """Get company information."""
     response = requests.post(
-        f"{BASE_URL}/stocks/details",
+        f"{API_URL}/api/data/stocks/details",
         headers=HEADERS,
         json={"ticker": ticker}
     )
@@ -329,14 +249,6 @@ Solution: Run `rebyte-auth` and include the token in your request.
 }
 ```
 
-**Unknown Operation:**
-```json
-{
-  "error": "Unknown operation",
-  "message": "Operation 'invalid' not found. Available: bars, news, details"
-}
-```
-
 ---
 
 ## Important Notes
@@ -353,8 +265,8 @@ Solution: Run `rebyte-auth` and include the token in your request.
 
 This skill provides **market data**. Combine with:
 
-- **sec-edgar-skill** (EdgarTools) → SEC filings, financial statements
-- **financial-deep-research** → Full research workflow and reports
+- **sec-edgar-skill** (EdgarTools) - SEC filings, financial statements
+- **financial-deep-research** - Full research workflow and reports
 
 **Example combined workflow:**
 1. Get company details and recent price bars (this skill)

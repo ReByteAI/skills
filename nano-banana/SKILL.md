@@ -7,21 +7,7 @@ description: Generate images from text prompts using Google Nano Banana (Gemini 
 
 Generate images from text prompts using Google Nano Banana (Gemini's native image generation).
 
-## Authentication
-
-**IMPORTANT:** All requests require authentication. Get your auth token by running:
-
-```bash
-AUTH_TOKEN=$(rebyte-auth)
-```
-
-Include this token in all API requests as a Bearer token.
-
-## Base URL
-
-```
-https://api.rebyte.ai/api/data
-```
+{{include:auth.md}}
 
 ## Models
 
@@ -37,8 +23,7 @@ https://api.rebyte.ai/api/data
 Create an image from a text description.
 
 ```bash
-AUTH_TOKEN=$(rebyte-auth)
-curl -X POST https://api.rebyte.ai/api/data/images/generate \
+curl -X POST "$API_URL/api/data/images/generate" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -95,16 +80,10 @@ curl -X POST https://api.rebyte.ai/api/data/images/generate \
 
 ## Common Workflows
 
-First, get your auth token (can be reused for multiple requests):
-
-```bash
-AUTH_TOKEN=$(rebyte-auth)
-```
-
 ### Generate a Simple Image
 
 ```bash
-curl -X POST https://api.rebyte.ai/api/data/images/generate \
+curl -X POST "$API_URL/api/data/images/generate" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -115,7 +94,7 @@ curl -X POST https://api.rebyte.ai/api/data/images/generate \
 ### Generate High-Quality 4K Image
 
 ```bash
-curl -X POST https://api.rebyte.ai/api/data/images/generate \
+curl -X POST "$API_URL/api/data/images/generate" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -129,24 +108,12 @@ curl -X POST https://api.rebyte.ai/api/data/images/generate \
 ### Generate Social Media Banner
 
 ```bash
-curl -X POST https://api.rebyte.ai/api/data/images/generate \
+curl -X POST "$API_URL/api/data/images/generate" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
     "prompt": "Abstract gradient background with geometric shapes in blue and purple",
     "aspectRatio": "16:9"
-  }'
-```
-
-### Generate Mobile Story Image
-
-```bash
-curl -X POST https://api.rebyte.ai/api/data/images/generate \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "prompt": "Cozy coffee shop interior with warm lighting",
-    "aspectRatio": "9:16"
   }'
 ```
 
@@ -158,12 +125,14 @@ curl -X POST https://api.rebyte.ai/api/data/images/generate \
 import subprocess
 import requests
 import base64
+import json
 from pathlib import Path
 
-BASE_URL = "https://api.rebyte.ai/api/data"
-
-# Get auth token
+# Get auth token and API URL
 AUTH_TOKEN = subprocess.check_output(["rebyte-auth"]).decode().strip()
+with open('/home/user/.rebyte.ai/auth.json') as f:
+    API_URL = json.load(f)['sandbox']['relay_url']
+
 HEADERS = {"Authorization": f"Bearer {AUTH_TOKEN}"}
 
 def generate_image(
@@ -174,7 +143,7 @@ def generate_image(
 ) -> dict:
     """Generate an image from a text prompt."""
     response = requests.post(
-        f"{BASE_URL}/images/generate",
+        f"{API_URL}/api/data/images/generate",
         headers=HEADERS,
         json={
             "prompt": prompt,
@@ -200,14 +169,6 @@ result = generate_image(
     aspect_ratio="16:9"
 )
 save_image(result, "landscape.png")
-
-# Example: Generate high-quality product image
-result = generate_image(
-    prompt="Minimalist tech gadget on white background, studio lighting",
-    model="pro",
-    image_size="4K"
-)
-save_image(result, "product.png")
 ```
 
 ---
@@ -218,13 +179,13 @@ save_image(result, "product.png")
 const fs = require('fs');
 const { execSync } = require('child_process');
 
-const BASE_URL = 'https://api.rebyte.ai/api/data';
-
-// Get auth token
+// Get auth token and API URL
 const AUTH_TOKEN = execSync('rebyte-auth').toString().trim();
+const authConfig = JSON.parse(fs.readFileSync('/home/user/.rebyte.ai/auth.json'));
+const API_URL = authConfig.sandbox.relay_url;
 
 async function generateImage(prompt, options = {}) {
-  const response = await fetch(`${BASE_URL}/images/generate`, {
+  const response = await fetch(`${API_URL}/api/data/images/generate`, {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${AUTH_TOKEN}`,
@@ -336,14 +297,6 @@ Solution: Run `rebyte-auth` and include the token in your request.
 ```
 This occurs when the prompt triggers content safety filters.
 
-**Invalid Parameters:**
-```json
-{
-  "error": "Invalid parameters",
-  "message": "Missing required parameter: prompt"
-}
-```
-
 ---
 
 ## Important Notes
@@ -353,17 +306,3 @@ This occurs when the prompt triggers content safety filters.
 - The `pro` model takes longer but produces higher quality
 - 4K resolution is only available with the `pro` model
 - Content safety filters may block certain prompts
-
----
-
-## Combining with Other Skills
-
-This skill provides **image generation**. Combine with:
-
-- **deep-research** - Generate illustrations for research reports
-- **market-data** - Create visualizations of financial data
-
-**Example workflow:**
-1. Research a topic (deep-research)
-2. Generate relevant illustrations (this skill)
-3. Compile into a report

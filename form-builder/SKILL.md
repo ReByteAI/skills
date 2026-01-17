@@ -7,15 +7,7 @@ description: Build stylish, Typeform-like multi-step forms and surveys using the
 
 Build production-ready, Typeform-style forms using the Composer API.
 
-## Authentication
-
-**IMPORTANT:** All API requests require authentication. Get your auth token by running:
-
-```bash
-AUTH_TOKEN=$(rebyte-auth)
-```
-
-Include this token in all API requests as a Bearer token.
+{{include:auth.md}}
 
 ## Boilerplate Template
 
@@ -347,8 +339,7 @@ To collect responses, you need to:
 Call the Forms API to create a backend that stores submissions:
 
 ```bash
-AUTH_TOKEN=$(rebyte-auth)
-curl -X POST https://api.rebyte.ai/api/forms/create \
+curl -X POST "$API_URL/api/forms/create" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -363,8 +354,8 @@ Response:
 ```json
 {
   "formId": "abc123def456",
-  "submitUrl": "https://api.rebyte.ai/api/forms/submit/abc123def456",
-  "adminUrl": "https://app.rebyte.ai/forms/abc123def456",
+  "submitUrl": "https://.../api/forms/submit/abc123def456",
+  "adminUrl": "https://.../forms/abc123def456",
   "fields": ["name", "email", "rating", "feedback"]
 }
 ```
@@ -380,7 +371,7 @@ Add the `submitUrl` as `postUrl` in your Composer settings:
 ```javascript
 const composer = new Composer({
     title: "My Survey",
-    postUrl: "https://api.rebyte.ai/api/forms/submit/abc123def456",
+    postUrl: "<submitUrl from API response>",
     // ... other settings
 });
 ```
@@ -396,8 +387,8 @@ cat > index.html << 'HTMLEOF'
 ... your form HTML ...
 HTMLEOF
 
-# 2. Get upload URL (reuse AUTH_TOKEN from Step 1)
-RESPONSE=$(curl -s -X POST https://api.rebyte.ai/api/data/netlify/get-upload-url \
+# 2. Get upload URL
+RESPONSE=$(curl -s -X POST "$API_URL/api/data/netlify/get-upload-url" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"id": "form"}')
@@ -411,15 +402,13 @@ zip site.zip index.html
 curl -X PUT "$UPLOAD_URL" -H "Content-Type: application/zip" --data-binary @site.zip
 
 # 5. Deploy
-curl -s -X POST https://api.rebyte.ai/api/data/netlify/deploy \
+curl -s -X POST "$API_URL/api/data/netlify/deploy" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"deployId\": \"$DEPLOY_ID\"}"
 ```
 
 **CRITICAL:** The ZIP must have `index.html` at the root, NOT inside a subdirectory.
-- ✅ Correct: `zip site.zip index.html`
-- ❌ Wrong: `zip site.zip code/` (creates `code/index.html` inside ZIP)
 
 #### Step 4: Validate Deployment
 
@@ -428,8 +417,7 @@ curl -s -X POST https://api.rebyte.ai/api/data/netlify/deploy \
 ```bash
 # 1. Verify ZIP structure (BEFORE uploading)
 unzip -l site.zip | grep -E "^\s+\d+.*index\.html$"
-# ✅ Should show: "index.html" (at root)
-# ❌ If shows: "code/index.html" or "dist/index.html" - WRONG! Recreate ZIP
+# Should show: "index.html" (at root)
 
 # 2. After deploy, verify site returns HTML (not 404)
 FORM_URL="https://${DEPLOY_ID}.rebyte.pro"
@@ -438,63 +426,30 @@ if [ "$HTTP_STATUS" != "200" ]; then
   echo "ERROR: Site returned $HTTP_STATUS, expected 200"
 fi
 
-# 3. Verify Content-Type is HTML (not text/plain)
+# 3. Verify Content-Type is HTML
 CONTENT_TYPE=$(curl -sI "$FORM_URL" | grep -i "content-type" | head -1)
 echo "Content-Type: $CONTENT_TYPE"
-# ✅ Should contain: text/html
-# ❌ If text/plain - deployment issue
-
-# 4. Verify admin URL works
-ADMIN_URL="<the adminUrl from form creation API>"
-ADMIN_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$ADMIN_URL")
-if [ "$ADMIN_STATUS" != "200" ]; then
-  echo "ERROR: Admin URL returned $ADMIN_STATUS"
-fi
 ```
-
-**If any validation fails, debug and fix before returning URLs to user.**
 
 ### Final URLs to Share
 
 After deployment, you'll have:
-- **Form URL**: `https://your-form-xyz.rebyte.pro` - Share with respondents
-- **Admin URL**: `https://app.rebyte.ai/forms/abc123def456` - View responses in spreadsheet
+- **Form URL**: `https://<deploy-id>.rebyte.pro` - Share with respondents
+- **Admin URL**: From the form creation API response - View responses in spreadsheet
 
 ### Viewing Results
 
 **Admin UI (Recommended)**: Open `adminUrl` in a browser to view responses in a spreadsheet interface with CSV/JSON export.
 
 **API Endpoints** (for programmatic access):
-- **JSON**: `GET https://api.rebyte.ai/api/forms/results/{formId}`
-- **CSV**: `GET https://api.rebyte.ai/api/forms/results/{formId}/csv`
+- **JSON**: `GET $API_URL/api/forms/results/{formId}`
+- **CSV**: `GET $API_URL/api/forms/results/{formId}/csv`
 
 ## IMPORTANT: Always Return Both URLs
 
 When you finish building and deploying a form, you **MUST** tell the user both URLs:
 
-1. **Form URL** (for respondents): The deployed site URL from Netlify (e.g., `https://app-xyz123.rebyte.pro`)
+1. **Form URL** (for respondents): The deployed site URL from Netlify
 2. **Admin URL** (for viewing results): Copy the EXACT `adminUrl` from the form creation API response
-
-**CRITICAL:**
-- The Admin URL comes from the **form creation API** (Step 1), NOT from the deploy step
-- You MUST use the EXACT `adminUrl` returned by the API - do NOT construct it manually
-- The form ID and deploy ID are DIFFERENT - don't mix them up
-
-Example workflow:
-```
-Step 1: Create form backend
-→ API returns: {"formId": "form-abc123", "adminUrl": "https://app.rebyte.ai/forms/form-abc123", ...}
-→ SAVE this adminUrl!
-
-Step 2: Build HTML with postUrl
-
-Step 3: Deploy to Netlify
-→ Returns: {"url": "https://app-xyz789.rebyte.pro", ...}
-→ This is the Form URL (different ID!)
-
-Step 4: Return to user:
-📝 Form URL: https://app-xyz789.rebyte.pro (from deploy)
-📊 Admin URL: https://app.rebyte.ai/forms/form-abc123 (from form creation API - EXACT!)
-```
 
 **Never forget the Admin URL** - without it, the user cannot see their form submissions!

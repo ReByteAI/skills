@@ -18,12 +18,14 @@ if [ ! -d "dist" ] || [ ! -f "dist/index.html" ]; then
     exit 1
 fi
 
-# Get auth token
-AUTH_TOKEN=$(rebyte-auth)
+# Get auth token and relay URL from auth.json
+AUTH_JSON="/home/user/.rebyte.ai/auth.json"
+AUTH_TOKEN=$(python3 -c "import json; print(json.load(open('$AUTH_JSON'))['sandbox']['token'])")
+RELAY_URL=$(python3 -c "import json; print(json.load(open('$AUTH_JSON'))['sandbox']['relay_url'])")
 
 # Get upload URL
-echo "Getting upload URL..."
-RESPONSE=$(curl -s -X POST https://api.rebyte.ai/api/data/netlify/get-upload-url \
+echo "Getting upload URL from $RELAY_URL..."
+RESPONSE=$(curl -s -X POST "$RELAY_URL/api/data/netlify/get-upload-url" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"id": "slides"}')
@@ -49,7 +51,7 @@ curl -s -X PUT "$UPLOAD_URL" \
 
 # Deploy
 echo "Deploying..."
-RESULT=$(curl -s -X POST https://api.rebyte.ai/api/data/netlify/deploy \
+RESULT=$(curl -s -X POST "$RELAY_URL/api/data/netlify/deploy" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d "{\"deployId\": \"$DEPLOY_ID\"}")

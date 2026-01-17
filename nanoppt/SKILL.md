@@ -1,18 +1,20 @@
 ---
 name: nanoppt
-description: NanoPPT - Generate stylized presentation images using Nano Banana AI. Article → ASCII framework → AI-generated slides.
+description: NanoPPT - Generate stylized presentation images using Nano Banana AI. Article -> ASCII framework -> AI-generated slides.
 ---
 
 # NanoPPT
 
 Generate stylized presentation images using Nano Banana (Google Gemini) image generation.
 
+{{include:auth.md}}
+
 ---
 
 ## Workflow
 
 ```
-Article → ASCII Framework → Select Style → Generate Images → Use in PPT
+Article -> ASCII Framework -> Select Style -> Generate Images -> Use in PPT
 ```
 
 ---
@@ -65,9 +67,9 @@ python scripts/generate.py \
 
 ## API Reference
 
-**Endpoint:** `POST https://api.rebyte.ai/api/data/images/generate`
+**Endpoint:** `POST $API_URL/api/data/images/generate`
 
-**Authentication:** Required. Use `Authorization: Bearer $(rebyte-auth)` header.
+**Authentication:** Required. Use `Authorization: Bearer $AUTH_TOKEN` header.
 
 | Parameter | Required | Description |
 |-----------|----------|-------------|
@@ -80,8 +82,8 @@ python scripts/generate.py \
 
 **Example curl:**
 ```bash
-curl -X POST https://api.rebyte.ai/api/data/images/generate \
-  -H "Authorization: Bearer $(rebyte-auth)" \
+curl -X POST "$API_URL/api/data/images/generate" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"prompt": "Doraemon style presentation slide", "model": "flash", "aspectRatio": "16:9"}'
 ```

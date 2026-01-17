@@ -1,6 +1,6 @@
 ---
-name: Spreadsheet Builder
-description: Build and edit online spreadsheets, create shareable spreadsheets with data, financial models, reports. Share instantly via link - no Office installation required
+name: spreadsheet-builder
+description: Build and edit online spreadsheets using Univer. Use when user wants to create data tables, trackers, or reports that can be shared via link. Triggers include "build spreadsheet", "create spreadsheet", "spreadsheet for", "expense tracker", "budget spreadsheet", "data table", "financial model", "tracking spreadsheet". Do NOT use for Excel file manipulation (use xlsx skill instead).
 ---
 
 # Spreadsheet Builder

@@ -28,9 +28,10 @@ curl -X POST "$API_URL/api/data/spreadsheet/create" \
 {
   "success": true,
   "docId": "ss-Kj2mN8xQ1pRt3Y5z",
+  "workspaceId": "54a8f3c3-5e94-4296-85d4-6fceee344922",
   "title": "My Spreadsheet",
   "commandCount": 15,
-  "url": "https://.../drive/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
+  "url": "https://.../workspace/54a8f3c3-5e94-4296-85d4-6fceee344922/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
 }
 ```
 
@@ -52,12 +53,13 @@ curl -X POST "$API_URL/api/data/spreadsheet/get" \
 {
   "success": true,
   "docId": "ss-Kj2mN8xQ1pRt3Y5z",
+  "workspaceId": "54a8f3c3-5e94-4296-85d4-6fceee344922",
   "title": "My Spreadsheet",
   "createdAt": "2024-01-15T10:30:00Z",
   "updatedAt": "2024-01-15T14:20:00Z",
   "commandCount": 15,
   "commands": [...],
-  "url": "https://.../drive/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
+  "url": "https://.../workspace/54a8f3c3-5e94-4296-85d4-6fceee344922/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
 }
 ```
 
@@ -80,9 +82,11 @@ curl -X POST "$API_URL/api/data/spreadsheet/append" \
 {
   "success": true,
   "docId": "ss-Kj2mN8xQ1pRt3Y5z",
+  "workspaceId": "54a8f3c3-5e94-4296-85d4-6fceee344922",
   "commandsAppended": 5,
-  "seq": 2,
-  "url": "https://.../drive/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
+  "startSeq": 16,
+  "endSeq": 20,
+  "url": "https://.../workspace/54a8f3c3-5e94-4296-85d4-6fceee344922/spreadsheets/ss-Kj2mN8xQ1pRt3Y5z"
 }
 ```
 

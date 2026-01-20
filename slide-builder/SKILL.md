@@ -52,7 +52,13 @@ Choose theme during **Step 2: Initialize**. Consider:
 
 ### Available Themes
 
-**Official Themes:**
+**Theme Package Naming Convention:**
+- **Official themes**: `@slidev/theme-*` (e.g., `@slidev/theme-seriph`)
+- **Community themes**: `slidev-theme-*` (e.g., `slidev-theme-dracula`)
+
+The init script handles this automatically. When changing themes manually, use the correct package name format.
+
+**Official Themes** (package: `@slidev/theme-<name>`):
 | Theme | Style | Best For |
 |-------|-------|----------|
 | `seriph` | Elegant serif | Conference talks, keynotes |
@@ -61,7 +67,7 @@ Choose theme during **Step 2: Initialize**. Consider:
 | `shibainu` | Warm friendly | Team updates, casual talks |
 | `bricks` | Bold colorful | Creative pitches, workshops |
 
-**Community Themes (Actively Maintained):**
+**Community Themes** (package: `slidev-theme-<name>`):
 | Theme | Style | Best For |
 |-------|-------|----------|
 | `dracula` | Dark purple | Developer talks, tech deep-dives |
@@ -81,20 +87,19 @@ Choose theme during **Step 2: Initialize**. Consider:
 
 Match topic to theme:
 
-| Topic/Audience | Recommended Theme |
-|----------------|-------------------|
-| Tech conference, keynote | `seriph` (default) |
-| Developer/engineering | `dracula` or `the-unnamed` |
-| Startup pitch, investor | `seriph` or `mint` |
-| Product launch, demo | `apple-basic` |
-| Internal team meeting | `default` |
-| Workshop, training | `shibainu` |
-| Creative/marketing | `bricks` or `unicorn` |
-| Meetup, community talk | `penguin` or `mokkapps` |
-| Thesis defense, research | `academic` or `frankfurt` |
-| Scientific/physics | `hep` or `neversink` |
-| Whiteboard/sketch style | `excali-slide` |
-| Fast-paced lightning talk | `takahashi` |
+| Topic/Audience | Recommended Theme | Package Type |
+|----------------|-------------------|--------------|
+| Tech conference, keynote | `seriph` | Official |
+| Developer/engineering | `dracula` or `the-unnamed` | Community |
+| Startup pitch, investor | `seriph` or `mint` | Official/Community |
+| Product launch, demo | `apple-basic` | Official |
+| Internal team meeting | `default` | Official |
+| Workshop, training | `shibainu` | Official |
+| Creative/marketing | `bricks` or `unicorn` | Official/Community |
+| Meetup, community talk | `penguin` or `mokkapps` | Community |
+| Thesis defense, research | `academic` or `frankfurt` | Community |
+| Scientific/physics | `hep` or `neversink` | Community |
+| Whiteboard/sketch style | `excali-slide` | Community |
 
 ### Selection Flow
 
@@ -103,17 +108,35 @@ Match topic to theme:
    > "What's the presentation context? I'll recommend a theme:
    > - Conference/keynote → `seriph`
    > - Developer audience → `dracula`
-   > - Startup pitch → `geist`
+   > - Startup pitch → `seriph` or `mint`
    > - Or just use default `seriph`?"
 3. **User says "auto" or "你选"** → Agent picks based on content topic
 
 ### Changing Theme Later
 
 To change theme after init:
-1. Edit `theme:` in slides.md frontmatter
-2. Update package.json: change theme package
-3. Run `pnpm install`
+1. Edit `theme:` in slides.md frontmatter (e.g., `theme: dracula`)
+2. Update package.json dependency with correct package name:
+   - **Official themes**: `"@slidev/theme-<name>": "latest"` (default, seriph, apple-basic, shibainu, bricks)
+   - **Community themes**: `"slidev-theme-<name>": "latest"` (all others)
+3. Run `pnpm install` (or `npm install`)
 4. Redeploy with `bash scripts/build-deploy.sh`
+
+Example for switching to `dracula` (community theme):
+```json
+"dependencies": {
+  "@slidev/cli": "^51.0.0",
+  "slidev-theme-dracula": "latest"
+}
+```
+
+Example for switching to `bricks` (official theme):
+```json
+"dependencies": {
+  "@slidev/cli": "^51.0.0",
+  "@slidev/theme-bricks": "latest"
+}
+```
 
 ## Modification Workflow
 
@@ -746,14 +769,17 @@ Speaker notes here (press P to view)
 See [Theme Selection](#theme-selection) for the full list of 23 supported themes.
 
 **Quick reference (most used):**
-| Theme | Style | Best For |
-|-------|-------|----------|
-| `seriph` | Elegant serif | Conference talks (default) |
-| `default` | Clean minimal | Internal meetings |
-| `dracula` | Dark purple | Developer audiences |
-| `academic` | Paper-style | Thesis defense, research |
-| `apple-basic` | Apple-inspired | Product demos |
-| `mint` | Fresh minimal | Startup pitches |
+| Theme | Package | Style |
+|-------|---------|-------|
+| `seriph` | `@slidev/theme-seriph` | Elegant serif (default) |
+| `default` | `@slidev/theme-default` | Clean minimal |
+| `bricks` | `@slidev/theme-bricks` | Bold colorful |
+| `dracula` | `slidev-theme-dracula` | Dark purple |
+| `academic` | `slidev-theme-academic` | Paper-style |
+
+**Package naming rule:**
+- Official (5 themes): `@slidev/theme-<name>` — default, seriph, apple-basic, shibainu, bricks
+- Community (all others): `slidev-theme-<name>`
 
 To change theme: see [Changing Theme Later](#changing-theme-later).
 

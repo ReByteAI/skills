@@ -234,13 +234,12 @@ theme: seriph
 
 | Theme | Package | Style |
 |-------|---------|-------|
-| default | Built-in | Clean minimal |
+| default | @slidev/theme-default | Clean minimal |
 | seriph | @slidev/theme-seriph | Elegant serif |
 | apple-basic | @slidev/theme-apple-basic | Apple style |
+| shibainu | @slidev/theme-shibainu | Warm friendly |
+| bricks | @slidev/theme-bricks | Bold colorful |
 | dracula | slidev-theme-dracula | Dark purple |
-| geist | slidev-theme-geist | Vercel style |
-| shibainu | slidev-theme-shibainu | Warm friendly |
-| bricks | slidev-theme-bricks | Bold colorful |
 
 ### Installing Themes
 

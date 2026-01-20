@@ -23,15 +23,17 @@ echo "Project: $PROJECT_DIR"
 echo "Theme: $THEME"
 
 # Theme to package mapping
+# Official themes use @slidev/theme-* namespace
+# Community themes use slidev-theme-* format
 get_theme_package() {
     case "$1" in
-        # Official themes
+        # Official themes (@slidev/ namespace)
         default)      echo "@slidev/theme-default" ;;
         seriph)       echo "@slidev/theme-seriph" ;;
         apple-basic)  echo "@slidev/theme-apple-basic" ;;
-        shibainu)     echo "slidev-theme-shibainu" ;;
-        bricks)       echo "slidev-theme-bricks" ;;
-        # Community themes (actively maintained, updated within 3 years)
+        shibainu)     echo "@slidev/theme-shibainu" ;;
+        bricks)       echo "@slidev/theme-bricks" ;;
+        # Community themes (slidev-theme-* format)
         dracula)      echo "slidev-theme-dracula" ;;
         eloc)         echo "slidev-theme-eloc" ;;
         unicorn)      echo "slidev-theme-unicorn" ;;
@@ -44,7 +46,7 @@ get_theme_package() {
         excali-slide) echo "slidev-theme-excali-slide" ;;
         mint)         echo "slidev-theme-mint" ;;
         neversink)    echo "slidev-theme-neversink" ;;
-        # Fallback for any other theme
+        # Fallback: assume community theme format
         *)            echo "slidev-theme-$1" ;;
     esac
 }

@@ -13,7 +13,82 @@ Create presentations with Slidev. Deploy to rebyte.pro.
 2. **Initialize** - `bash scripts/init.sh <name> [theme]`
 3. **Write slides** - Edit `/code/<name>/slides.md`
 4. **Deploy** - `bash scripts/build-deploy.sh` → returns preview URL
-5. **Export** (optional) - `bash scripts/export.sh pdf|pptx`
+5. **Review & Modify** - User reviews preview, requests changes by slide number
+6. **Export** (optional) - `bash scripts/export.sh pdf|pptx`
+
+## Modification Workflow
+
+### After Deployment: Show Slide Index
+
+After deploying, ALWAYS show users a slide index so they can easily reference pages:
+
+```
+✅ Deployed: https://abc123.rebyte.pro
+
+📑 Slide Index:
+  1. Cover - "Customer Success Story"
+  2. Agenda
+  3. The Challenge
+  4. Our Approach
+  5. Implementation
+  6. Key Results (metrics)
+  7. Before vs After
+  8. Testimonial
+  9. Next Steps
+  10. Thank You
+
+💬 To request changes, quote the page number:
+  "Page 3: change title to 'The Problem We Solved'"
+  "Page 6: the metric should be 85%, not 75%"
+  "Page 4-5: combine into one slide"
+```
+
+### Handling User Feedback
+
+When user quotes a page with comments:
+
+**User says:**
+```
+Page 3: The title should be more impactful, try "The $2M Problem"
+Page 6: Add another metric about time savings
+Page 8: Remove this slide, testimonial feels weak
+```
+
+**Response:**
+1. Apply each change to the specified slide
+2. Redeploy with `bash scripts/build-deploy.sh`
+3. Confirm changes with updated index:
+
+```
+✅ Updated 3 slides:
+  - Page 3: Title changed to "The $2M Problem"
+  - Page 6: Added time savings metric
+  - Page 8: Removed (pages renumbered)
+
+🔗 New preview: https://abc123.rebyte.pro
+
+📑 Updated Slide Index:
+  1. Cover - "Customer Success Story"
+  2. Agenda
+  3. The $2M Problem ← updated
+  4. Our Approach
+  5. Implementation
+  6. Key Results ← updated
+  7. Before vs After
+  8. Next Steps ← was page 9
+  9. Thank You ← was page 10
+
+💬 More changes? Just quote the page number.
+```
+
+### Locating Slides in Code
+
+Slides are separated by `---` in slides.md:
+- Page 1 = content before first `---`
+- Page 2 = content after first `---`
+- Page N = content after (N-1)th `---`
+
+When editing, count separators to find the right slide.
 
 ## Content Guidelines
 

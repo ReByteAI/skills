@@ -1,90 +1,94 @@
 # Slidev Configuration Reference
 
-**CRITICAL: Only use options listed in this file. Do NOT invent or guess frontmatter options.**
-
-Invalid frontmatter options will cause slide rendering errors.
+**CRITICAL: Only use options listed here. Invalid frontmatter causes rendering errors.**
 
 ---
 
 ## Deck Configuration (First Slide Only)
 
-The first slide's frontmatter configures the entire presentation.
-
-### Essential Options
-
 ```yaml
 ---
-theme: seriph                    # Theme name (required for non-default)
-title: My Presentation           # Deck title
-transition: slide-left           # Global transition
----
-```
+# Theme ID or package name
+theme: seriph
 
-### All Valid Deck Options
+# Presentation title (used in browser tab)
+title: My Presentation
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `theme` | string | `"default"` | Theme ID or package name |
-| `title` | string | `"Slidev"` | Presentation title |
-| `titleTemplate` | string | `"%s - Slidev"` | Title template (`%s` = slide title) |
-| `author` | string | - | Author for PDF/PPTX exports |
-| `keywords` | string | - | Comma-delimited keywords for PDF |
-| `info` | string | - | Markdown description |
+# Title template for browser tab (%s = slide title)
+titleTemplate: '%s - Slidev'
 
-### Display Options
+# Author for PDF/PPTX exports
+author: undefined # or string
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `aspectRatio` | string | `"16/9"` | Slide aspect ratio |
-| `canvasWidth` | number | `980` | Canvas width in pixels |
-| `colorSchema` | string | `"auto"` | `"auto"`, `"light"`, or `"dark"` |
-| `background` | string | - | Default background (image URL or color) |
-| `class` | string | - | Default CSS class for slides |
-| `transition` | string | - | Global slide transition |
-| `highlighter` | string | `"shiki"` | Code highlighter (`"shiki"` or `"prism"`) |
-| `lineNumbers` | boolean | `false` | Show line numbers in code blocks |
+# Keywords for exported PDFs (comma-delimited)
+keywords: undefined # or string
 
-### Feature Toggles
+# Markdown description for info dialog
+info: undefined # or string
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `download` | boolean | `false` | Enable PDF download in SPA |
-| `exportFilename` | string | `"slidev-exported"` | Export filename |
-| `selectable` | boolean | `false` | Allow text selection |
-| `record` | boolean/string | `"dev"` | Enable recording |
-| `presenter` | boolean/string | `true` | Enable presenter mode |
-| `drawings` | object | - | Drawing configuration |
-| `wakeLock` | boolean/string | `true` | Prevent screen sleep |
-| `contextMenu` | boolean/string | `true` | Enable right-click menu |
-| `mdc` | boolean | `false` | Enable MDC (Markdown Components) syntax |
+# Slide aspect ratio
+aspectRatio: 16/9
 
-### Font Configuration
+# Canvas width in pixels
+canvasWidth: 980
 
-```yaml
----
+# Force color scheme
+colorSchema: auto # or 'light' or 'dark'
+
+# Default background (image URL or color)
+background: undefined # or string
+
+# Default CSS class for all slides
+class: undefined # or string
+
+# Global slide transition
+# Valid: fade, fade-out, slide-left, slide-right, slide-up, slide-down, view-transition
+transition: undefined # or string
+
+# Code highlighter
+highlighter: shiki # or 'prism'
+
+# Show line numbers in code blocks
+lineNumbers: false
+
+# Enable MDC (Markdown Components) syntax
+mdc: false
+
+# Enable PDF download in SPA builds
+download: false
+
+# Export filename (without extension)
+exportFilename: slidev-exported
+
+# Allow text selection in slides
+selectable: false
+
+# Enable slide recording
+record: dev # or true or false or 'build'
+
+# Enable presenter mode
+presenter: true # or false or 'dev' or 'build'
+
+# Prevent screen sleep during presentation
+wakeLock: true # or false or 'dev' or 'build'
+
+# Enable right-click context menu
+contextMenu: true # or false or 'dev' or 'build'
+
+# Google Fonts configuration
 fonts:
-  sans: Robot
-  serif: Robot Slab
+  sans: Roboto
+  serif: Roboto Slab
   mono: Fira Code
----
-```
 
-### Drawings Configuration
-
-```yaml
----
+# Drawing/annotation options
 drawings:
   enabled: true
   persist: false
   presenterOnly: false
   syncAll: true
----
-```
 
-### Theme Configuration
-
-```yaml
----
+# Theme-specific customization
 themeConfig:
   primary: '#5d8392'
 ---
@@ -94,67 +98,77 @@ themeConfig:
 
 ## Per-Slide Configuration
 
-Each slide can have its own frontmatter.
+```yaml
+---
+# Layout component for this slide
+# Valid: default, cover, center, two-cols, two-cols-header, image, image-right, image-left, iframe, iframe-right, iframe-left, quote, fact, end, section, statement, intro
+layout: default # 'cover' if first slide
 
-### All Valid Slide Options
+# Additional CSS classes
+class: undefined # or string
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `layout` | string | `"default"` | Slide layout |
-| `class` | string | - | Additional CSS classes |
-| `transition` | string | - | Override transition for this slide |
-| `background` | string | - | Background image URL or color |
-| `clicks` | number | auto | Total click count for slide |
-| `clicksStart` | number | `0` | Starting click number |
-| `disabled` | boolean | `false` | Hide slide completely |
-| `hide` | boolean | `false` | Same as `disabled` |
-| `hideInToc` | boolean | `false` | Hide from table of contents |
-| `level` | number | - | Override title level (1-5) |
-| `title` | string | - | Override slide title |
-| `preload` | boolean | `true` | Preload slide before entering |
-| `zoom` | number | `1` | Zoom scale (e.g., `0.8` for dense content) |
-| `dragPos` | object | - | Draggable element positions |
+# Background image URL or color
+background: undefined # or string
+
+# Override transition for this slide
+transition: undefined # or string
+
+# Custom total click count for animations
+clicks: auto # or number
+
+# Custom starting click number
+clicksStart: 0
+
+# Completely hide this slide
+disabled: false
+hide: false # same as disabled
+
+# Hide from table of contents
+hideInToc: false
+
+# Override title level (1-5)
+level: 1
+
+# Override slide title for <Toc>
+title: undefined # or string
+
+# Preload slide before entering
+preload: true
+
+# URL route alias for this slide
+routeAlias: undefined # or string
+
+# Include content from another markdown file
+src: undefined # or string
+
+# Custom zoom scale (useful for dense content)
+zoom: 1
+
+# Draggable element positions
+dragPos: {} # Record<string, string>
+---
+```
 
 ### Layout-Specific Options
 
-Some layouts accept additional options:
-
-**`image-right` / `image-left` / `image`:**
 ```yaml
+# For image layouts (image, image-right, image-left)
 ---
 layout: image-right
-image: https://example.com/image.png
-backgroundSize: contain    # or 'cover'
+image: https://example.com/photo.jpg
+backgroundSize: cover # or 'contain'
 ---
-```
 
-**`two-cols` / `two-cols-header`:**
-```yaml
+# For two-cols layouts
 ---
 layout: two-cols
-layoutClass: gap-16       # UnoCSS class for gap
+layoutClass: gap-16 # UnoCSS class
 ---
-```
 
-**`iframe` / `iframe-right` / `iframe-left`:**
-```yaml
+# For iframe layouts
 ---
 layout: iframe
 url: https://example.com
----
-```
-
-**`quote`:**
-```yaml
----
-layout: quote
----
-```
-
-**`fact`:**
-```yaml
----
-layout: fact
 ---
 ```
 
@@ -162,106 +176,55 @@ layout: fact
 
 ## Valid Transitions
 
-**Only use these transition values:**
-
-| Transition | Description |
-|------------|-------------|
-| `fade` | Crossfade |
-| `fade-out` | Fade out then fade in |
-| `slide-left` | Slide left (recommended) |
-| `slide-right` | Slide right |
-| `slide-up` | Slide up |
-| `slide-down` | Slide down |
-| `view-transition` | View Transitions API |
-
-### Transition Syntax
-
 ```yaml
-# Global (first slide)
----
-transition: slide-left
----
-
-# Per-slide override
----
-transition: fade
----
+transition: fade          # Crossfade
+transition: fade-out      # Fade out then in
+transition: slide-left    # Slide left (recommended)
+transition: slide-right   # Slide right
+transition: slide-up      # Slide up
+transition: slide-down    # Slide down
+transition: view-transition # View Transitions API
 
 # Directional (forward | backward)
----
 transition: slide-left | slide-right
----
 ```
 
 ---
 
-## Common Mistakes to Avoid
-
-### ❌ Invalid Options (Will Cause Errors)
+## Common Mistakes (AVOID THESE)
 
 ```yaml
-# These options DO NOT EXIST - never use them:
----
-animation: fade           # ❌ Use 'transition' instead
-animate: true             # ❌ Not a valid option
-style: dark               # ❌ Use 'colorSchema' or 'class'
-highlight: true           # ❌ Use 'highlighter: shiki'
-code: true                # ❌ Not a valid option
-footer: "text"            # ❌ Not built-in (use HTML in slides)
-header: "text"            # ❌ Not built-in (use HTML in slides)
-showSlideNumber: true     # ❌ Not a valid option
-pageNumber: true          # ❌ Not a valid option
----
-```
-
-### ✅ Correct Usage
-
-```yaml
-# First slide (deck config)
----
-theme: seriph
-title: My Talk
-transition: slide-left
-highlighter: shiki
-mdc: true
----
-
-# Content slide
----
-layout: two-cols
-class: text-center
----
-
-# Image slide
----
-layout: image-right
-image: https://example.com/photo.jpg
----
+# ❌ These options DO NOT EXIST:
+animation: fade           # Use 'transition'
+animate: true             # Not valid
+style: dark               # Use 'colorSchema' or 'class'
+highlight: true           # Use 'highlighter: shiki'
+code: true                # Not valid
+footer: "text"            # Not built-in
+header: "text"            # Not built-in
+showSlideNumber: true     # Not valid
+pageNumber: true          # Not valid
+theme: "dark"             # theme is a theme name, not color scheme
 ```
 
 ---
 
-## Minimal Recommended Setup
+## Minimal Setup
 
-For most presentations, use this first slide frontmatter:
+Most presentations only need:
 
 ```yaml
+# First slide
 ---
 theme: seriph
 title: Your Title
-background: https://cover.sli.dev
-class: text-center
 transition: slide-left
-mdc: true
 ---
-```
 
-Then for content slides, only add frontmatter when needed:
-
-```yaml
+# Content slides (only add when needed)
 ---
 layout: two-cols
 ---
 ```
 
-**Rule: If in doubt, omit the option.** Slidev has sensible defaults.
+**Rule: When in doubt, omit the option. Slidev has sensible defaults.**

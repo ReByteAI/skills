@@ -28,16 +28,21 @@ Agent thinking: I don't have PDF parsing capability built-in. Let me search for 
 1. Search for relevant skill:
    POST /api/data/skills/search {"query": "parse PDF extract tables"}
 
-   Response: [{slug: "pdf", name: "PDF", description: "Parse and extract content from PDF files..."}]
+   Response: [{slug: "pdf", name: "PDF", description: "Parse and extract content from PDF files...", source: "public"}]
 
-2. Install the skill:
+2. Get the download URL:
+   POST /api/data/skills/download {"slug": "pdf"}
+
+   Response: {slug: "pdf", source: "public", download_url: "https://..."}
+
+3. Install the skill:
    curl -fsSL -o /tmp/skill.zip "$download_url"
    unzip -q -o /tmp/skill.zip -d ~/.skills/
 
-3. Read the skill instructions:
+4. Read the skill instructions:
    cat ~/.skills/pdf/SKILL.md
 
-4. Use the skill to complete the task:
+5. Use the skill to complete the task:
    (Follow the instructions from SKILL.md to parse the PDF)
 ```
 
@@ -71,7 +76,7 @@ curl -X POST "$API_URL/api/data/skills/search" \
       "slug": "slide-builder",
       "name": "slide-builder",
       "description": "Create presentations using Slidev with Markdown...",
-      "download_url": "https://..."
+      "source": "public"
     }
   ]
 }
@@ -106,9 +111,37 @@ curl -X POST "$API_URL/api/data/skills/get" \
   -d '{"slug": "deep-research"}'
 ```
 
+### Download Skill (Get Download URL)
+
+**IMPORTANT:** After finding a skill via search/list/get, you must call this endpoint to get the download URL. Download URLs are temporary and expire after about 1 hour.
+
+```bash
+curl -X POST "$API_URL/api/data/skills/download" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"slug": "deep-research"}'
+```
+
+**Response:**
+```json
+{
+  "slug": "deep-research",
+  "source": "public",
+  "download_url": "https://storage.googleapis.com/..."
+}
+```
+
+For organization skills, specify the source:
+```bash
+curl -X POST "$API_URL/api/data/skills/download" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"slug": "my-org-skill", "source": "organization"}'
+```
+
 ## Installing a Skill
 
-After finding a skill, download and install it using the `download_url`:
+After getting the download URL, install the skill:
 
 ```bash
 # 1. Download the skill package
@@ -133,25 +166,37 @@ Here's a complete example of searching for and installing a skill:
 AUTH_TOKEN=$(rebyte-auth)
 API_URL=$(python3 -c "import json; print(json.load(open('/home/user/.rebyte.ai/auth.json'))['sandbox']['relay_url'])")
 
-# Search for skills
-RESPONSE=$(curl -s -X POST "$API_URL/api/data/skills/search" \
+# Step 1: Search for skills
+SEARCH_RESPONSE=$(curl -s -X POST "$API_URL/api/data/skills/search" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"query": "deep research and analysis", "limit": 3}')
 
-# Parse results
-echo "$RESPONSE" | jq '.skills[] | {slug, name, description, download_url}'
+# Parse the skill slug from search results
+SKILL_SLUG=$(echo "$SEARCH_RESPONSE" | jq -r '.skills[0].slug')
+SKILL_SOURCE=$(echo "$SEARCH_RESPONSE" | jq -r '.skills[0].source // "public"')
 
-# Install the first matching skill
-DOWNLOAD_URL=$(echo "$RESPONSE" | jq -r '.skills[0].download_url')
-SKILL_SLUG=$(echo "$RESPONSE" | jq -r '.skills[0].slug')
+echo "Found skill: $SKILL_SLUG (source: $SKILL_SOURCE)"
 
-if [ "$DOWNLOAD_URL" != "null" ]; then
-  curl -fsSL -o /tmp/skill.zip "$DOWNLOAD_URL"
-  unzip -q -o /tmp/skill.zip -d ~/.skills/
-  rm /tmp/skill.zip
-  echo "Installed skill: $SKILL_SLUG"
-  echo "Location: ~/.skills/$SKILL_SLUG/"
+if [ "$SKILL_SLUG" != "null" ]; then
+  # Step 2: Get the download URL
+  DOWNLOAD_RESPONSE=$(curl -s -X POST "$API_URL/api/data/skills/download" \
+    -H "Authorization: Bearer $AUTH_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d "{\"slug\": \"$SKILL_SLUG\", \"source\": \"$SKILL_SOURCE\"}")
+
+  DOWNLOAD_URL=$(echo "$DOWNLOAD_RESPONSE" | jq -r '.download_url')
+
+  if [ "$DOWNLOAD_URL" != "null" ]; then
+    # Step 3: Install the skill
+    curl -fsSL -o /tmp/skill.zip "$DOWNLOAD_URL"
+    unzip -q -o /tmp/skill.zip -d ~/.skills/
+    rm /tmp/skill.zip
+    echo "Installed skill: $SKILL_SLUG"
+    echo "Location: ~/.skills/$SKILL_SLUG/"
+  else
+    echo "Failed to get download URL"
+  fi
 fi
 ```
 
@@ -172,7 +217,14 @@ curl -X POST "$API_URL/api/data/skills/search" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"query": "create slides presentation"}'
-# Install slide-builder skill
+
+# Get download URL for the skill
+curl -X POST "$API_URL/api/data/skills/download" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"slug": "slide-builder"}'
+
+# Install using the returned download_url
 ```
 
 ### Need to analyze financial data
@@ -182,7 +234,8 @@ curl -X POST "$API_URL/api/data/skills/search" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"query": "SEC filings financial analysis stock data"}'
-# Install sec-edgar-skill and market-data skills
+
+# Get download URLs and install sec-edgar-skill and market-data skills
 ```
 
 ### Need to build and deploy a web form
@@ -192,11 +245,14 @@ curl -X POST "$API_URL/api/data/skills/search" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"query": "build forms surveys typeform"}'
-# Install form-builder skill
+
+# Get download URL and install form-builder skill
 ```
 
 ## Notes
 
 - The search uses semantic matching, so natural language queries work well
 - Always check if a skill is already installed before downloading
+- **Download URLs are temporary** - they expire after about 1 hour, so get a fresh URL each time you need to install
 - Installed skills are immediately available for use
+- Skills can come from the public store (`source: "public"`) or your organization (`source: "organization"`)

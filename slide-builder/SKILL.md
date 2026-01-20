@@ -246,6 +246,31 @@ Every presentation needs:
 2. **One slide at a time** - Never batch edit multiple slides
 3. **Get feedback** - Show progress before continuing
 4. **No premature polish** - Complete content before any animations
+5. **No invented frontmatter** - Only use options from `references/config.md`
+
+### Frontmatter Rules (CRITICAL)
+
+**Never invent or guess frontmatter options.** Invalid options cause rendering errors.
+
+Before writing any frontmatter, consult `references/config.md` for valid options.
+
+Common mistakes to avoid:
+```yaml
+# ❌ INVALID - these options do NOT exist:
+animation: fade       # Use 'transition' instead
+style: dark           # Use 'colorSchema' or 'class'
+footer: "text"        # Not built-in
+header: "text"        # Not built-in
+showSlideNumber: true # Not a valid option
+
+# ✅ VALID options:
+transition: slide-left
+colorSchema: dark
+class: text-center
+layout: two-cols
+```
+
+**Rule: If unsure about an option, check `references/config.md` or omit it.**
 
 ### Phase-Specific Rules
 
@@ -789,6 +814,7 @@ Load as needed based on presentation requirements:
 
 | Topic | File | Contents |
 |-------|------|----------|
+| **Config** | `references/config.md` | **Frontmatter options (MUST READ before writing frontmatter)** |
 | Layouts | `references/layouts.md` | All layout options, image layouts, iframe layouts |
 | Animations | `references/animations.md` | v-clicks, transitions, Magic Move, motion |
 | Components | `references/components.md` | Video, icons, Vue components, math |

@@ -203,8 +203,9 @@ Enable tooltip with shadow and add toolbox:
 tooltip_opts=opts.TooltipOpts(trigger="axis", axis_pointer_type="shadow")
 toolbox_opts=opts.ToolboxOpts(
     feature=opts.ToolBoxFeatureOpts(
-        save_as_image=opts.ToolBoxFeatureSaveAsImageOpts(),
-        data_zoom=opts.ToolBoxFeatureDataZoomOpts()
+        save_as_image=opts.ToolBoxFeatureSaveAsImageOpts(title="Save as Image"),
+        data_zoom=opts.ToolBoxFeatureDataZoomOpts(zoom_title="Zoom", back_title="Reset Zoom"),
+        restore=opts.ToolBoxFeatureRestoreOpts(title="Restore"),
     )
 )
 ```
@@ -221,7 +222,7 @@ chart.setOption({
   color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de'],
   grid: { left: 60, right: 40, top: 60, bottom: 40 },
   tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-  toolbox: { feature: { saveAsImage: {}, dataZoom: {} } },
+  toolbox: { feature: { saveAsImage: { title: 'Save as Image' }, dataZoom: { title: { zoom: 'Zoom', back: 'Reset Zoom' } }, restore: { title: 'Restore' } } },
   // ... chart-specific options
 });
 window.addEventListener('resize', () => chart.resize());

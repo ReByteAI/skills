@@ -25,14 +25,27 @@ echo "Theme: $THEME"
 # Theme to package mapping
 get_theme_package() {
     case "$1" in
-        default)     echo "@slidev/theme-default" ;;
-        seriph)      echo "@slidev/theme-seriph" ;;
-        apple-basic) echo "@slidev/theme-apple-basic" ;;
-        dracula)     echo "slidev-theme-dracula" ;;
-        geist)       echo "slidev-theme-geist" ;;
-        shibainu)    echo "slidev-theme-shibainu" ;;
-        bricks)      echo "slidev-theme-bricks" ;;
-        *)           echo "@slidev/theme-$1" ;;
+        # Official themes
+        default)      echo "@slidev/theme-default" ;;
+        seriph)       echo "@slidev/theme-seriph" ;;
+        apple-basic)  echo "@slidev/theme-apple-basic" ;;
+        shibainu)     echo "slidev-theme-shibainu" ;;
+        bricks)       echo "slidev-theme-bricks" ;;
+        # Community themes (actively maintained, updated within 3 years)
+        dracula)      echo "slidev-theme-dracula" ;;
+        eloc)         echo "slidev-theme-eloc" ;;
+        unicorn)      echo "slidev-theme-unicorn" ;;
+        penguin)      echo "slidev-theme-penguin" ;;
+        academic)     echo "slidev-theme-academic" ;;
+        mokkapps)     echo "slidev-theme-mokkapps" ;;
+        the-unnamed)  echo "slidev-theme-the-unnamed" ;;
+        frankfurt)    echo "slidev-theme-frankfurt" ;;
+        hep)          echo "slidev-theme-hep" ;;
+        excali-slide) echo "slidev-theme-excali-slide" ;;
+        mint)         echo "slidev-theme-mint" ;;
+        neversink)    echo "slidev-theme-neversink" ;;
+        # Fallback for any other theme
+        *)            echo "slidev-theme-$1" ;;
     esac
 }
 

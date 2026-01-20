@@ -7,14 +7,113 @@ description: Create presentations using Slidev (Markdown-based slides). Triggers
 
 Create presentations with Slidev. Deploy to rebyte.pro.
 
+## Two-Phase Methodology
+
+**Content first, polish later.**
+
+### Phase 1: Drafting
+
+Focus on narrative and structure:
+
+- Write speaker notes as you go
+- Use simple layouts
+- **NO animations** - save for polishing
+- Get content approved before styling
+
+### Phase 2: Polishing (after content is complete)
+
+Enhance selectively:
+
+- Add click animations where they aid understanding
+- Sync presenter notes with `[click]` markers
+- Test each slide before moving to next
+- Max 5-6 clicks per slide
+
+**Key principle:** A presentation with good content and no animations beats one with flashy animations and poor content.
+
 ## Workflow
 
-1. **Plan content** - Understand the presentation goal, audience, and structure
-2. **Initialize** - `bash scripts/init.sh <name> [theme]`
-3. **Write slides** - Edit `/code/<name>/slides.md`
+1. **Plan content** - Understand the presentation goal, audience, structure, **and tone**
+2. **Initialize** - `bash scripts/init.sh <name> [theme]` (see Theme Selection below)
+3. **Write slides (Drafting)** - Edit `/code/<name>/slides.md`, focus on content, NO animations
 4. **Deploy** - `bash scripts/build-deploy.sh` → returns preview URL
 5. **Review & Modify** - User reviews preview, requests changes by slide number
-6. **Export** (optional) - `bash scripts/export.sh pdf|pptx`
+6. **Polish (optional)** - After content is approved, add animations selectively
+7. **Export** (optional) - `bash scripts/export.sh pdf|pptx`
+
+## Theme Selection
+
+### When to Choose Theme
+
+Choose theme during **Step 2: Initialize**. Consider:
+- Presentation topic and tone
+- Target audience
+- Formality level
+
+### Available Themes
+
+**Official Themes:**
+| Theme | Style | Best For |
+|-------|-------|----------|
+| `seriph` | Elegant serif | Conference talks, keynotes |
+| `default` | Clean minimal | Internal meetings, docs |
+| `apple-basic` | Apple-inspired | Product demos, launches |
+| `shibainu` | Warm friendly | Team updates, casual talks |
+| `bricks` | Bold colorful | Creative pitches, workshops |
+
+**Community Themes (Actively Maintained):**
+| Theme | Style | Best For |
+|-------|-------|----------|
+| `dracula` | Dark purple | Developer talks, tech deep-dives |
+| `academic` | Paper-style | Thesis defense, research talks |
+| `frankfurt` | Beamer-inspired | Academic conferences |
+| `unicorn` | Rainbow/playful | Creative demos, fun topics |
+| `penguin` | Personal brand | Personal presentations |
+| `eloc` | Writing-focused | Documentation, tutorials |
+| `excali-slide` | Excalidraw style | Whiteboard-style talks |
+| `mint` | Fresh minimal | Clean presentations |
+| `neversink` | Modern academic | Academic presentations |
+| `the-unnamed` | VS Code theme | Developer audiences |
+| `mokkapps` | Professional | Tech talks, conferences |
+| `hep` | Scientific | Physics, science presentations |
+
+### Auto-Selection Guide
+
+Match topic to theme:
+
+| Topic/Audience | Recommended Theme |
+|----------------|-------------------|
+| Tech conference, keynote | `seriph` (default) |
+| Developer/engineering | `dracula` or `the-unnamed` |
+| Startup pitch, investor | `seriph` or `mint` |
+| Product launch, demo | `apple-basic` |
+| Internal team meeting | `default` |
+| Workshop, training | `shibainu` |
+| Creative/marketing | `bricks` or `unicorn` |
+| Meetup, community talk | `penguin` or `mokkapps` |
+| Thesis defense, research | `academic` or `frankfurt` |
+| Scientific/physics | `hep` or `neversink` |
+| Whiteboard/sketch style | `excali-slide` |
+| Fast-paced lightning talk | `takahashi` |
+
+### Selection Flow
+
+1. **User specifies theme** → Use that theme
+2. **User doesn't specify** → Agent asks:
+   > "What's the presentation context? I'll recommend a theme:
+   > - Conference/keynote → `seriph`
+   > - Developer audience → `dracula`
+   > - Startup pitch → `geist`
+   > - Or just use default `seriph`?"
+3. **User says "auto" or "你选"** → Agent picks based on content topic
+
+### Changing Theme Later
+
+To change theme after init:
+1. Edit `theme:` in slides.md frontmatter
+2. Update package.json: change theme package
+3. Run `pnpm install`
+4. Redeploy with `bash scripts/build-deploy.sh`
 
 ## Modification Workflow
 
@@ -114,7 +213,30 @@ Every presentation needs:
 2. **6 words per bullet, 6 bullets max** - Slides support speech, not replace it
 3. **No walls of text** - If reading takes >10 seconds, trim it
 4. **Show, don't tell** - Prefer diagrams, code, images over prose
-5. **Use animations sparingly** - Only for progressive reveals that aid understanding
+5. **Use animations sparingly** - Add during polishing phase only, max 5-6 clicks per slide
+
+## Agent Rules
+
+### Core Principles
+
+1. **Ask only when blocked** - Don't over-clarify, assume and proceed
+2. **One slide at a time** - Never batch edit multiple slides
+3. **Get feedback** - Show progress before continuing
+4. **No premature polish** - Complete content before any animations
+
+### Phase-Specific Rules
+
+**During Drafting:**
+- Focus on content and flow
+- Skip all animations (v-click, v-clicks, v-mark)
+- Use only basic layouts
+- Write speaker notes for every slide
+
+**During Polishing:**
+- Work on one slide at a time
+- Test each slide in browser before proceeding
+- Validate click alignment with speaker notes
+- See `references/animations.md` for Click Alignment system
 
 ### Layout Selection
 
@@ -621,14 +743,19 @@ Speaker notes here (press P to view)
 
 ## Available Themes
 
+See [Theme Selection](#theme-selection) for the full list of 23 supported themes.
+
+**Quick reference (most used):**
 | Theme | Style | Best For |
 |-------|-------|----------|
 | `seriph` | Elegant serif | Conference talks (default) |
 | `default` | Clean minimal | Internal meetings |
 | `dracula` | Dark purple | Developer audiences |
-| `geist` | Modern tech | Startup pitches |
+| `academic` | Paper-style | Thesis defense, research |
+| `apple-basic` | Apple-inspired | Product demos |
+| `mint` | Fresh minimal | Startup pitches |
 
-To change: edit `theme:` in frontmatter and add package to package.json.
+To change theme: see [Changing Theme Later](#changing-theme-later).
 
 ## References
 

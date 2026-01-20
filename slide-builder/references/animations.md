@@ -1,5 +1,19 @@
 # Slidev Animations Reference
 
+## When to Add Animations
+
+**IMPORTANT:** Only add animations during the Polishing phase, after content is complete.
+
+Before adding animations, verify:
+- Content is complete and structure is solid
+- Narrative flows well
+- Speaker notes are written
+- User has approved the content
+
+See main SKILL.md for the Two-Phase Methodology.
+
+---
+
 ## Click Animations
 
 ### v-clicks Container
@@ -119,6 +133,85 @@ clicks: 3
 <div v-click="2">Already visible (click >= 2)</div>
 <div v-click="3">Already visible (click >= 3)</div>
 <div v-click="4">Will appear on next click</div>
+```
+
+---
+
+## Click Alignment - CRITICAL
+
+When slides have 3+ clicks, use explicit click number comments for clarity and maintenance.
+
+### Click Counting Comments Pattern
+
+```html
+<!-- Click 1 -->
+<div v-click>First item</div>
+
+<!-- Click 2 (appears with Click 1) -->
+<div v-after>Also appears on click 1</div>
+
+<!-- Clicks 3-5 (v-clicks handles 3 items) -->
+<v-clicks>
+
+- Item 1
+- Item 2
+- Item 3
+
+</v-clicks>
+```
+
+### Understanding Click Counts
+
+| Directive | Click Behavior |
+|-----------|----------------|
+| `v-click` | Increments click counter by 1 |
+| `v-after` | Does NOT increment (appears with previous) |
+| `v-clicks` | Each child increments by 1 |
+| `v-click="N"` | Appears at specific click N |
+
+### Validation Checklist
+
+Before finalizing slides with animations:
+
+1. **Count v-click directives** - Each increments the counter
+2. **Check v-after** - Must appear with previous click (doesn't increment)
+3. **Match presenter notes** - Each `[click]` marker = one animation
+4. **Add comments** - `<!-- Click N -->` for slides with 3+ clicks
+5. **Test in browser** - Click through and verify timing
+
+### Example: Properly Aligned Slide
+
+```markdown
+# Migration Strategy
+
+<!-- Click 1 -->
+<div v-click>
+
+**Step 1:** Assessment and planning
+
+</div>
+
+<!-- Click 2 -->
+<div v-click>
+
+**Step 2:** Incremental migration
+
+</div>
+
+<!-- Click 3 -->
+<div v-click>
+
+**Step 3:** Validation and cutover
+
+</div>
+
+<!--
+Strategy overview
+
+[click] First, we assess and plan
+[click] Then migrate incrementally
+[click] Finally validate and cutover
+-->
 ```
 
 ---
@@ -361,20 +454,59 @@ const y = 2  // Line 7
 
 ---
 
-## Presenter Notes Animations
+## Presenter Notes with Click Markers
 
-Include timing hints in notes:
+Presenter notes MUST align with click animations. Notes highlight progressively as you click through.
+
+### Synchronization Rules
 
 ```markdown
 # Slide Title
 
-Content here
+Content visible initially
+
+<v-clicks>
+
+- First point
+- Second point
+- Third point
+
+</v-clicks>
 
 <!--
-[click] Reveal first point
-[click] Reveal second point
-[pause] Let audience absorb
-[click] Reveal conclusion
+Introduction (visible initially)
+
+[click] First point - explain the concept
+
+[click] Second point - describe importance
+
+[click] Third point - summarize
+-->
+```
+
+### Key Points
+
+- Each `[click]` corresponds to one v-click/v-clicks item
+- Notes before first `[click]` are visible when slide loads
+- Use `[click:N]` to skip multiple clicks (e.g., `[click:3]` skips 2)
+- `[pause]` is a timing hint, doesn't correspond to animations
+
+### Common Mistakes
+
+**Wrong:** More notes sections than clicks
+```markdown
+<div v-click>Item</div>
+<!--
+[click] Item appears
+[click] ← No animation for this!
+-->
+```
+
+**Right:** 1:1 correspondence
+```markdown
+<div v-click>Item</div>
+<!--
+[click] Item appears - explain in detail
 -->
 ```
 

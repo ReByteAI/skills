@@ -1,16 +1,19 @@
 #!/bin/bash
-# Slidev export script
-set -e
+# Export Slidev presentation to PDF/PPTX/PNG
+set -euo pipefail
 
 FORMAT="${1:-pdf}"
 OUTPUT="${2:-presentation}"
-PROJECT_DIR="${3:-.}"
 
 echo "=== Slidev Export ==="
 
-cd "$PROJECT_DIR"
+# Verify we're in a slidev project
+if [ ! -f "slides.md" ]; then
+    echo "ERROR: slides.md not found. Run from project directory."
+    exit 1
+fi
 
-# Ensure playwright is installed
+# Ensure playwright is installed (required for export)
 if [ ! -d "node_modules/playwright-chromium" ]; then
     echo "Installing playwright-chromium..."
     pnpm add -D playwright-chromium
@@ -24,17 +27,18 @@ case "$FORMAT" in
         echo "Output: ${OUTPUT}.pdf"
         ;;
     pptx)
-        echo "Exporting to PPTX (image-based)..."
+        echo "Exporting to PPTX..."
         npx slidev export --format pptx --output "${OUTPUT}.pptx"
         echo "Output: ${OUTPUT}.pptx"
         ;;
     png)
         echo "Exporting to PNG..."
         npx slidev export --format png --output "${OUTPUT}"
-        echo "Output: ${OUTPUT}/ directory"
+        echo "Output: ${OUTPUT}/"
         ;;
     *)
-        echo "Supported formats: pdf, pptx, png"
+        echo "ERROR: Unknown format '$FORMAT'"
+        echo "Supported: pdf, pptx, png"
         exit 1
         ;;
 esac

@@ -1,139 +1,114 @@
 ---
 name: slide-builder
-description: Create presentations using Slidev with Markdown. Supports code highlighting, Mermaid diagrams, animations. Deploy to rebyte.pro. Triggers include "create presentation", "make slides", "build slides", "slide deck", "tech talk", "conference slides".
+description: Create presentations using Slidev (Markdown-based slides). Triggers include "create presentation", "make slides", "build slides", "slide deck", "tech talk", "conference slides", "pitch deck". Handles the full workflow from content planning to deployment at rebyte.pro.
 ---
 
 # Slide Builder
 
-Create presentations with Markdown using Slidev.
+Create presentations with Slidev. Deploy to rebyte.pro.
 
 ## Workflow
 
-```
-1. Initialize project  → bash scripts/init.sh <name>
-2. cd /code/<name>
-3. Edit slides.md
-4. Build & deploy      → bash scripts/build-deploy.sh
-5. Iterate             → repeat 3-4
-6. Export (optional)   → bash scripts/export.sh pdf|pptx
-```
+1. **Plan content** - Understand the presentation goal, audience, and structure
+2. **Initialize** - `bash scripts/init.sh <name> [theme]`
+3. **Write slides** - Edit `/code/<name>/slides.md`
+4. **Deploy** - `bash scripts/build-deploy.sh` → returns preview URL
+5. **Export** (optional) - `bash scripts/export.sh pdf|pptx`
 
-Note: Projects are always created in `/code` directory.
+## Content Guidelines
 
-## Script Usage
+### Structure
 
-### Initialize New Project
+Every presentation needs:
+- **Opening** (1-2 slides): Hook + agenda
+- **Body** (80% of slides): Main content in logical sections
+- **Closing** (1-2 slides): Summary + call-to-action
 
-```bash
-bash scripts/init.sh my-presentation
-cd /code/my-presentation
-```
+### Slide Count by Duration
 
-### Build and Deploy Preview
+| Duration | Slides | Pace |
+|----------|--------|------|
+| 5 min | 5-7 | ~1 min/slide |
+| 15 min | 12-15 | ~1 min/slide |
+| 30 min | 20-25 | ~1.5 min/slide |
+| 45 min | 30-35 | ~1.5 min/slide |
 
-```bash
-# Run from /code/<project> directory
-bash scripts/build-deploy.sh
-# Output: https://xxx.rebyte.pro
-```
+### Content Rules
 
-### Export
+1. **One idea per slide** - If you need "and", split it
+2. **6 words per bullet, 6 bullets max** - Slides support speech, not replace it
+3. **No walls of text** - If reading takes >10 seconds, trim it
+4. **Show, don't tell** - Prefer diagrams, code, images over prose
+5. **Use animations sparingly** - Only for progressive reveals that aid understanding
 
-```bash
-# Run from /code/<project> directory
-bash scripts/export.sh pdf           # Export to PDF
-bash scripts/export.sh pptx          # Export to PPTX (image-based)
-```
+### Layout Selection
+
+| Content Type | Layout | When |
+|--------------|--------|------|
+| Title/section | `cover` | Opening, section breaks |
+| Regular content | `default` | Most slides |
+| Comparison | `two-cols` | A vs B, before/after |
+| Feature + visual | `image-right` | Screenshots, diagrams |
+| Key metric | `fact` | Statistics, numbers |
+| Quote | `quote` | Citations, testimonials |
+| Closing | `end` | Final slide |
+
+## Slidev Syntax Quick Reference
+
+### Slide Separator
+
+```markdown
+---
+
+# Slide 1
+
+Content
 
 ---
 
-## slides.md Guide
+# Slide 2
 
-### Basic Structure
+More content
+```
 
-```markdown
+### Frontmatter (First Slide)
+
+```yaml
 ---
 theme: seriph
-title: Presentation Title
+title: My Talk
+background: https://cover.sli.dev
+transition: slide-left
 ---
-
-# First Slide
-
-Content here
-
----
-
-# Second Slide
-
-- Point 1
-- Point 2
-
----
-layout: end
----
-
-# Thank You!
 ```
 
-### Available Themes
-
-| Theme | Style | Package |
-|-------|-------|---------|
-| `seriph` | Elegant & Professional | `@slidev/theme-seriph` |
-| `default` | Clean & Minimal | Built-in |
-| `dracula` | Dark Purple | `slidev-theme-dracula` |
-| `geist` | Modern Tech | `slidev-theme-geist` |
-
-### Common Layouts
+### Layouts
 
 ```markdown
----
-layout: cover
-background: https://cover.sli.dev
----
-# Cover Page
-
 ---
 layout: two-cols
 ---
-# Left Side
+
+# Left
+
 Content
+
 ::right::
-# Right Side
+
+# Right
+
 Content
-
----
-layout: image-right
-image: https://example.com/img.jpg
----
-# Image & Text
-
----
-layout: center
----
-# Centered Content
-
----
-layout: fact
----
-# 100%
-Key Metric
-
----
-layout: quote
----
-# "Quote text here"
-Author
 ```
 
-### Code Highlighting
+### Code with Highlighting
 
 ```markdown
-```typescript {1|3-4|all}
+```ts {2-3|5}
 const a = 1
-// Step 1: highlight line 1
-// Step 2: highlight lines 3-4
-// Step 3: highlight all
+const b = 2  // highlighted first
+const c = 3  // highlighted first
+const d = 4
+const e = 5  // highlighted second
 ```
 ```
 
@@ -142,9 +117,9 @@ const a = 1
 ```markdown
 <v-clicks>
 
-- First item appears on click
-- Second item appears on click
-- Third item appears on click
+- Appears first
+- Appears second
+- Appears third
 
 </v-clicks>
 ```
@@ -160,47 +135,103 @@ graph LR
 ```
 ```
 
-### LaTeX Math
-
-```markdown
-Inline: $E = mc^2$
-
-Block:
-$$
-\sum_{i=1}^{n} x_i
-$$
-```
-
 ### Speaker Notes
 
 ```markdown
----
-# Slide Content
+# Slide Title
+
+Content
 
 <!--
-Speaker notes here.
-Press P to toggle presenter mode.
+Speaker notes here (press P to view)
 -->
 ```
 
+## Available Themes
+
+| Theme | Style | Best For |
+|-------|-------|----------|
+| `seriph` | Elegant serif | Conference talks (default) |
+| `default` | Clean minimal | Internal meetings |
+| `dracula` | Dark purple | Developer audiences |
+| `geist` | Modern tech | Startup pitches |
+
+To change: edit `theme:` in frontmatter and add package to package.json.
+
+## References
+
+Load as needed based on presentation requirements:
+
+| Topic | File | Contents |
+|-------|------|----------|
+| Layouts | `references/layouts.md` | All layout options, image layouts, iframe layouts |
+| Animations | `references/animations.md` | v-clicks, transitions, Magic Move, motion |
+| Components | `references/components.md` | Video, icons, Vue components, math |
+| Diagrams | `references/diagrams.md` | Mermaid, PlantUML, all diagram types |
+| Styling | `references/styling.md` | UnoCSS, themes, fonts, colors |
+| Advanced | `references/advanced.md` | Presenter mode, export, recording, config |
+
+## Example: Tech Talk Structure
+
+```markdown
+---
+theme: seriph
+title: Building Fast APIs
 ---
 
-## Keyboard Shortcuts (During Presentation)
+# Building Fast APIs
+## Lessons from Production
 
-| Key | Action |
-|-----|--------|
-| `Space` / `→` | Next slide |
-| `←` | Previous slide |
-| `P` | Presenter mode |
-| `O` | Slides overview |
-| `D` | Dark mode |
-| `F` | Fullscreen |
+---
+layout: center
+---
+
+# The Problem
+
+Our API p99 was 2 seconds
 
 ---
 
-## Reference Docs
+# What We Tried
 
-See `references/` directory for detailed syntax:
-- `syntax.md` - Markdown syntax reference
-- `themes.md` - Theme configuration
-- `layouts.md` - Layout system
+<v-clicks>
+
+- Caching (helped 20%)
+- Database indexes (helped 30%)
+- Connection pooling (helped 50%)
+
+</v-clicks>
+
+---
+layout: fact
+---
+
+# 150ms
+Final p99 latency
+
+---
+layout: two-cols
+---
+
+# Before
+
+- 2s p99
+- 100 req/s max
+- Frequent timeouts
+
+::right::
+
+# After
+
+- 150ms p99
+- 2000 req/s
+- Zero timeouts
+
+---
+layout: end
+---
+
+# Questions?
+
+github.com/example/fast-api
+```

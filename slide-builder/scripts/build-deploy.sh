@@ -1,70 +1,108 @@
 #!/bin/bash
-# Slidev build and deploy script
-set -e
-
-PROJECT_DIR="${1:-.}"
+# Build and deploy Slidev presentation to rebyte.pro
+set -euo pipefail
 
 echo "=== Slidev Build & Deploy ==="
 
-cd "$PROJECT_DIR"
+# Verify we're in a slidev project
+if [ ! -f "slides.md" ]; then
+    echo "ERROR: slides.md not found. Run from project directory."
+    exit 1
+fi
+
+if [ ! -f "package.json" ]; then
+    echo "ERROR: package.json not found. Run 'bash scripts/init.sh' first."
+    exit 1
+fi
+
+# Check for required tools
+if ! command -v jq &> /dev/null; then
+    echo "ERROR: jq is required but not installed."
+    exit 1
+fi
 
 # Build
 echo "Building..."
 pnpm build
 
-# Check dist
-if [ ! -d "dist" ] || [ ! -f "dist/index.html" ]; then
-    echo "ERROR: Build failed, dist/index.html not found"
+if [ ! -f "dist/index.html" ]; then
+    echo "ERROR: Build failed - dist/index.html not found"
     exit 1
 fi
 
-# Get auth token and relay URL from auth.json
+# Get auth credentials
 AUTH_JSON="/home/user/.rebyte.ai/auth.json"
-AUTH_TOKEN=$(python3 -c "import json; print(json.load(open('$AUTH_JSON'))['sandbox']['token'])")
-RELAY_URL=$(python3 -c "import json; print(json.load(open('$AUTH_JSON'))['sandbox']['relay_url'])")
+if [ ! -f "$AUTH_JSON" ]; then
+    echo "ERROR: Auth file not found at $AUTH_JSON"
+    exit 1
+fi
+
+AUTH_TOKEN=$(jq -r '.sandbox.token' "$AUTH_JSON")
+RELAY_URL=$(jq -r '.sandbox.relay_url' "$AUTH_JSON")
+
+if [ -z "$AUTH_TOKEN" ] || [ "$AUTH_TOKEN" = "null" ]; then
+    echo "ERROR: Could not read auth token from $AUTH_JSON"
+    exit 1
+fi
+
+if [ -z "$RELAY_URL" ] || [ "$RELAY_URL" = "null" ]; then
+    echo "ERROR: Could not read relay URL from $AUTH_JSON"
+    exit 1
+fi
 
 # Get upload URL
-echo "Getting upload URL from $RELAY_URL..."
-RESPONSE=$(curl -s -X POST "$RELAY_URL/api/data/netlify/get-upload-url" \
+echo "Getting upload URL..."
+RESPONSE=$(curl -sf -X POST "$RELAY_URL/api/data/netlify/get-upload-url" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"id": "slides"}')
+  -d '{"id": "slides"}') || {
+    echo "ERROR: Failed to get upload URL from relay"
+    exit 1
+}
 
-DEPLOY_ID=$(echo $RESPONSE | jq -r '.deployId')
-UPLOAD_URL=$(echo $RESPONSE | jq -r '.uploadUrl')
+DEPLOY_ID=$(echo "$RESPONSE" | jq -r '.deployId')
+UPLOAD_URL=$(echo "$RESPONSE" | jq -r '.uploadUrl')
 
-if [ "$DEPLOY_ID" = "null" ] || [ -z "$DEPLOY_ID" ]; then
-    echo "ERROR: Failed to get upload URL"
+if [ -z "$DEPLOY_ID" ] || [ "$DEPLOY_ID" = "null" ]; then
+    echo "ERROR: Invalid response from relay"
     echo "$RESPONSE"
     exit 1
 fi
 
-# Create zip (from inside dist)
+# Create zip
 echo "Creating zip..."
-cd dist && zip -r ../site.zip . && cd ..
+(cd dist && zip -rq ../site.zip .)
 
 # Upload
 echo "Uploading..."
-curl -s -X PUT "$UPLOAD_URL" \
+curl -sf -X PUT "$UPLOAD_URL" \
   -H "Content-Type: application/zip" \
-  --data-binary @site.zip
+  --data-binary @site.zip || {
+    echo "ERROR: Upload failed"
+    rm -f site.zip
+    exit 1
+}
 
 # Deploy
 echo "Deploying..."
-RESULT=$(curl -s -X POST "$RELAY_URL/api/data/netlify/deploy" \
+curl -sf -X POST "$RELAY_URL/api/data/netlify/deploy" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
-  -d "{\"deployId\": \"$DEPLOY_ID\"}")
+  -d "{\"deployId\": \"$DEPLOY_ID\"}" > /dev/null || {
+    echo "ERROR: Deploy failed"
+    rm -f site.zip
+    exit 1
+}
 
 SITE_URL="https://${DEPLOY_ID}.rebyte.pro"
 
 # Verify
-echo "Verifying deployment..."
+echo "Verifying..."
 sleep 2
-HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$SITE_URL")
+HTTP_STATUS=$(curl -so /dev/null -w "%{http_code}" "$SITE_URL" || echo "000")
 
 if [ "$HTTP_STATUS" != "200" ]; then
-    echo "WARNING: Site returned $HTTP_STATUS"
+    echo "WARNING: Site returned HTTP $HTTP_STATUS (may still be propagating)"
 fi
 
 # Cleanup
@@ -72,4 +110,4 @@ rm -f site.zip
 
 echo ""
 echo "=== Deploy Complete ==="
-echo "Preview URL: $SITE_URL"
+echo "URL: $SITE_URL"

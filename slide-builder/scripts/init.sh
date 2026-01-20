@@ -1,51 +1,58 @@
 #!/bin/bash
-# Slidev project initialization script
-set -e
+# Initialize a new Slidev presentation project
+set -euo pipefail
 
-# Always work in /code directory
-cd /code
+PROJECT_NAME="${1:-}"
+THEME="${2:-seriph}"
 
-PROJECT_DIR="${1:-slidev-project}"
-THEME="${2:-seriph}"  # Default to seriph theme
+if [ -z "$PROJECT_NAME" ]; then
+    echo "Usage: bash scripts/init.sh <project-name> [theme]"
+    echo "Example: bash scripts/init.sh my-talk seriph"
+    exit 1
+fi
 
-echo "=== Slidev Project Init ==="
-echo "Project: /code/$PROJECT_DIR"
+# Determine project directory
+if [ -d "/code" ]; then
+    PROJECT_DIR="/code/$PROJECT_NAME"
+else
+    PROJECT_DIR="$PWD/$PROJECT_NAME"
+fi
+
+echo "=== Slidev Init ==="
+echo "Project: $PROJECT_DIR"
 echo "Theme: $THEME"
 
-# Theme package name mapping
+# Theme to package mapping
 get_theme_package() {
     case "$1" in
-        default)    echo "@slidev/theme-default" ;;
-        seriph)     echo "@slidev/theme-seriph" ;;
+        default)     echo "@slidev/theme-default" ;;
+        seriph)      echo "@slidev/theme-seriph" ;;
         apple-basic) echo "@slidev/theme-apple-basic" ;;
-        bricks)     echo "slidev-theme-bricks" ;;
-        shibainu)   echo "slidev-theme-shibainu" ;;
-        geist)      echo "slidev-theme-geist" ;;
-        dracula)    echo "slidev-theme-dracula" ;;
-        penguin)    echo "slidev-theme-penguin" ;;
-        purplin)    echo "slidev-theme-purplin" ;;
-        *)          echo "@slidev/theme-$1" ;;
+        dracula)     echo "slidev-theme-dracula" ;;
+        geist)       echo "slidev-theme-geist" ;;
+        shibainu)    echo "slidev-theme-shibainu" ;;
+        bricks)      echo "slidev-theme-bricks" ;;
+        *)           echo "@slidev/theme-$1" ;;
     esac
 }
 
 THEME_PACKAGE=$(get_theme_package "$THEME")
 
-# Check pnpm
+# Ensure pnpm is available
 if ! command -v pnpm &> /dev/null; then
     echo "Installing pnpm..."
     npm install -g pnpm
 fi
 
-# Create project directory
+# Create or enter project
 if [ -d "$PROJECT_DIR" ]; then
-    echo "Project directory $PROJECT_DIR exists, entering..."
+    echo "Project exists, entering..."
     cd "$PROJECT_DIR"
 else
-    echo "Creating project: $PROJECT_DIR"
     mkdir -p "$PROJECT_DIR"
     cd "$PROJECT_DIR"
 
-    # Initialize package.json
+    # package.json
     cat > package.json << EOF
 {
   "name": "slidev-presentation",
@@ -66,87 +73,75 @@ else
 }
 EOF
 
-    # Create default slides.md
-    cat > slides.md << EOF
+    # Default slides.md
+    cat > slides.md << 'EOF'
 ---
-theme: $THEME
+theme: THEME_PLACEHOLDER
 title: My Presentation
 background: https://cover.sli.dev
 class: text-center
-highlighter: shiki
 transition: slide-left
-mdc: true
 ---
 
-# Welcome to Slidev
+# Presentation Title
 
-Press Space to start
+Subtitle or tagline
 
 ---
 
-# What is Slidev?
-
-Slidev is a slides maker designed for developers
+# Agenda
 
 <v-clicks>
 
-- **Markdown-based** - focus on content
-- **Themable** - use any theme you like
-- **Developer Friendly** - code highlighting, live coding
-- **Interactive** - embed Vue components
-- **Recording** - built-in recording and camera view
+- Topic 1
+- Topic 2
+- Topic 3
 
 </v-clicks>
+
+---
+
+# Topic 1
+
+Key point here
 
 ---
 layout: two-cols
 ---
 
-# Left Side
+# Comparison
 
-- Point 1
-- Point 2
-- Point 3
+Left side content
 
 ::right::
 
-# Right Side
-
-\`\`\`ts
-console.log('Hello!')
-\`\`\`
+Right side content
 
 ---
-layout: center
-class: text-center
+layout: fact
 ---
 
-# Learn More
+# 100%
+Key Metric
 
-[Documentation](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev)
+---
+layout: end
+---
+
+# Thank You!
+
+Questions?
 EOF
+
+    # Replace theme placeholder
+    sed -i.bak "s/THEME_PLACEHOLDER/$THEME/" slides.md && rm -f slides.md.bak
 
     echo "Installing dependencies..."
     pnpm install
 fi
 
 echo ""
-echo "=== Init Complete ==="
-echo "Project: $(pwd)"
-echo "Theme: $THEME ($THEME_PACKAGE)"
+echo "=== Done ==="
+echo "Location: $PROJECT_DIR"
 echo ""
-echo "Available themes:"
-echo "  seriph      - Elegant & Professional (recommended)"
-echo "  default     - Clean & Minimal"
-echo "  apple-basic - Apple style"
-echo "  dracula     - Dark purple"
-echo "  geist       - Modern tech"
-echo "  shibainu    - Warm & Friendly"
-echo "  bricks      - Colorful geometric"
-echo ""
-echo "To change theme: edit slides.md frontmatter 'theme: xxx'"
-echo "                 and add the package to package.json"
-echo ""
-echo "Next steps:"
-echo "  pnpm dev    # Local preview"
-echo "  pnpm build  # Build for production"
+echo "Next: Edit slides.md, then run 'bash scripts/build-deploy.sh'"

@@ -524,6 +524,100 @@ Introduction (visible initially)
 | Animation Type | Use For |
 |----------------|---------|
 | v-clicks | Progressive reveals, bullet points |
+| v-mark | Highlighting key terms, emphasis |
 | Transitions | Slide changes, section breaks |
 | Magic Move | Showing evolution, code changes |
 | Motion | Emphasis, attention direction |
+
+---
+
+## v-mark (Rough Marker)
+
+Hand-drawn style highlighting using Rough Notation. Perfect for emphasizing key points during presentations.
+
+### Basic Usage
+
+```markdown
+<span v-mark>Important text</span>
+```
+
+### Mark Types
+
+```markdown
+<span v-mark.underline>Underlined text</span>
+<span v-mark.circle>Circled text</span>
+<span v-mark.highlight>Highlighted text</span>
+<span v-mark.strike-through>Strikethrough text</span>
+<span v-mark.crossed-off>Crossed off</span>
+<span v-mark.box>Boxed text</span>
+<span v-mark.bracket>Bracketed text</span>
+```
+
+Default is `underline` if no type specified.
+
+### Colors
+
+```markdown
+<!-- Using UnoCSS color modifiers -->
+<span v-mark.red>Red underline</span>
+<span v-mark.blue.circle>Blue circle</span>
+<span v-mark.highlight.yellow>Yellow highlight</span>
+
+<!-- Custom color with object syntax -->
+<span v-mark="{ color: '#f59e0b' }">Custom orange</span>
+```
+
+### Click Timing
+
+Control when the marker appears:
+
+```markdown
+<!-- Appears on first click (default) -->
+<span v-mark>Text</span>
+
+<!-- Appears at specific click -->
+<span v-mark="5">Appears at click 5</span>
+
+<!-- Relative timing -->
+<span v-mark="'+1'">One click after previous</span>
+```
+
+### Full Options
+
+```markdown
+<span v-mark="{
+  at: 3,
+  color: '#ef4444',
+  type: 'circle'
+}">
+  Circled in red at click 3
+</span>
+```
+
+### When to Use v-mark
+
+| Scenario | Mark Type |
+|----------|-----------|
+| Key terms | `underline` or `highlight` |
+| Important concepts | `circle` or `box` |
+| Deprecated/wrong | `strike-through` |
+| Side notes | `bracket` |
+
+### Example: Progressive Emphasis
+
+```markdown
+# Key Concepts
+
+The <span v-mark="1">first principle</span> is important.
+
+But the <span v-mark.circle.red="2">most critical</span> is this.
+
+<span v-mark.highlight.yellow="3">Remember this!</span>
+
+<!--
+Let me explain the key concepts
+
+[click] First principle - foundational idea
+[click] Most critical - circle for emphasis
+[click] Remember this - highlight for takeaway
+-->

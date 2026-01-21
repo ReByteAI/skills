@@ -138,6 +138,101 @@ drawings:
 
 ---
 
+## Global Layers
+
+Persistent Vue components across all slides. Perfect for headers, footers, page numbers, and watermarks.
+
+### Layer Files
+
+Create in project root:
+
+| File | Purpose | Scope |
+|------|---------|-------|
+| `global-top.vue` | Top layer (above content) | All slides |
+| `global-bottom.vue` | Bottom layer (below content) | All slides |
+| `custom-nav-controls.vue` | Custom navigation buttons | All slides |
+| `slide-top.vue` | Top of each slide | Per slide |
+| `slide-bottom.vue` | Bottom of each slide | Per slide |
+
+### Z-Index Order (top to bottom)
+
+1. NavControls
+2. Global Top
+3. Slide Top
+4. **Slide Content**
+5. Slide Bottom
+6. Global Bottom
+
+### Example: Page Footer
+
+```vue
+<!-- global-bottom.vue -->
+<template>
+  <footer class="absolute bottom-4 left-4 right-4 flex justify-between text-sm opacity-50">
+    <span>Company Name</span>
+    <span>{{ $nav.currentPage }} / {{ $nav.total }}</span>
+  </footer>
+</template>
+```
+
+### Conditional Display
+
+Hide on specific layouts:
+
+```vue
+<!-- global-bottom.vue -->
+<template>
+  <footer
+    v-if="$nav.currentLayout !== 'cover' && $nav.currentLayout !== 'end'"
+    class="absolute bottom-4 right-4 text-sm opacity-50"
+  >
+    Slide {{ $nav.currentPage }}
+  </footer>
+</template>
+```
+
+### Custom Navigation
+
+```vue
+<!-- custom-nav-controls.vue -->
+<template>
+  <div class="abs-br m-4 flex gap-2">
+    <button @click="$nav.prev" class="icon-btn">
+      <carbon-chevron-left />
+    </button>
+    <button @click="$nav.next" class="icon-btn">
+      <carbon-chevron-right />
+    </button>
+  </div>
+</template>
+```
+
+### Available Context Variables
+
+```vue
+<script setup>
+// Available in global layer components
+const { $nav, $slidev } = useSlideContext()
+
+$nav.currentPage     // Current slide number
+$nav.total           // Total slides
+$nav.currentLayout   // Current layout name
+$nav.clicks          // Current click count
+</script>
+```
+
+### When to Use Global Layers
+
+| Use Case | Layer |
+|----------|-------|
+| Company logo | `global-top.vue` |
+| Page numbers | `global-bottom.vue` |
+| Progress bar | `global-bottom.vue` |
+| Custom navigation | `custom-nav-controls.vue` |
+| Watermark | `global-bottom.vue` |
+
+---
+
 ## Recording
 
 ### Enabling Recording

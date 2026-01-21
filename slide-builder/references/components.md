@@ -128,6 +128,74 @@ Apply CSS transforms:
 </Transform>
 ```
 
+### v-drag (Draggable Elements)
+
+Make elements draggable during presentation. Perfect for interactive demos.
+
+#### Basic Usage with Frontmatter
+
+```markdown
+---
+dragPos:
+  box: 100,100,200,150,0
+---
+
+<img v-drag="'box'" src="/image.png" />
+```
+
+Position format: `Left, Top, Width, Height, Rotate`
+
+#### Component Syntax
+
+```markdown
+---
+dragPos:
+  demo: 50,200,300,_,0
+---
+
+<v-drag pos="demo" class="text-xl bg-blue-100 p-4 rounded">
+  Drag me around!
+</v-drag>
+```
+
+Use `_` for auto height.
+
+#### Inline Position
+
+```markdown
+<v-drag pos="100,100,200,150,0">
+  Positioned element
+</v-drag>
+```
+
+#### v-drag-arrow
+
+Draggable arrow pointing:
+
+```markdown
+---
+dragPos:
+  arrow1: 100,100,200,200,0
+---
+
+<v-drag-arrow pos="arrow1" color="red" />
+```
+
+#### Controls
+
+- **Double-click** to start dragging
+- **Arrow keys** to nudge position
+- **Shift + drag** to preserve aspect ratio
+- **Click outside** to stop dragging
+
+#### When to Use
+
+| Scenario | Example |
+|----------|---------|
+| Architecture diagrams | Drag boxes to show data flow |
+| Before/after | Drag elements to compare |
+| Interactive teaching | Let audience rearrange |
+
 ### Tweet
 
 Embed tweets:
@@ -337,6 +405,61 @@ const original = "hello"
 const modified = "hello world"
 ```
 ````
+
+### Code Groups
+
+Tabbed code blocks for showing multiple implementations (npm/yarn/pnpm, different languages, etc.)
+
+> Requires `mdc: true` in frontmatter or config.
+
+````markdown
+---
+mdc: true
+---
+
+::code-group
+
+```sh [npm]
+npm install @slidev/cli
+```
+
+```sh [yarn]
+yarn add @slidev/cli
+```
+
+```sh [pnpm]
+pnpm add @slidev/cli
+```
+
+::
+````
+
+#### With Custom Icons
+
+````markdown
+::code-group
+
+```js [Vue ~logos-vue~]
+export default {
+  data() { return { count: 0 } }
+}
+```
+
+```js [React ~logos-react~]
+const [count, setCount] = useState(0)
+```
+
+::
+````
+
+#### When to Use Code Groups
+
+| Scenario | Example |
+|----------|---------|
+| Package managers | npm / yarn / pnpm / bun |
+| Multi-language | Python / JavaScript / Go |
+| Framework comparison | Vue / React / Svelte |
+| Platform-specific | macOS / Windows / Linux |
 
 ---
 

@@ -7,6 +7,15 @@ description: Create presentations using Slidev (Markdown-based slides). Triggers
 
 Create presentations with Slidev. Deploy to rebyte.pro.
 
+## ⚠️ CRITICAL: Completion Requirements
+
+**A slide presentation task is NOT complete until:**
+1. ✅ Slides have been deployed with `bash scripts/build-deploy.sh`
+2. ✅ The live preview URL has been shared with the user
+3. ✅ A slide index has been provided (see "After Deployment: Show Slide Index")
+
+**NEVER tell the user the presentation is "done" or "ready" without deploying first.**
+
 ## Two-Phase Methodology
 
 **Content first, polish later.**

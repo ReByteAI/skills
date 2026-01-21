@@ -7,6 +7,16 @@ description: Build stylish, Typeform-like multi-step forms and surveys using the
 
 Build production-ready, Typeform-style forms using the Composer API.
 
+## ⚠️ CRITICAL: Completion Requirements
+
+**A form task is NOT complete until:**
+1. ✅ Form backend created (POST /api/forms/create)
+2. ✅ HTML deployed with proper ZIP structure (index.html at root)
+3. ✅ Deployment validated (HTTP 200 check)
+4. ✅ BOTH URLs shared with user: Form URL AND Admin URL
+
+**NEVER tell the user the form is "done" without completing ALL steps.**
+
 {{include:auth.md}}
 
 ## Boilerplate Template

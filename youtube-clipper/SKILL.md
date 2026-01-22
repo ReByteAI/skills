@@ -1,11 +1,6 @@
 ---
 name: youtube-clipper
-description: >
-  AI-powered YouTube video clipper. Download videos and subtitles, AI analyzes content
-  to generate fine-grained chapters (2-5 minutes each), user selects segments for clipping,
-  translates subtitles to bilingual format, burns subtitles into video, and generates summaries.
-  Use when: User needs to clip YouTube videos, create short video segments, or make bilingual subtitle versions.
-  Keywords: video clipping, YouTube, subtitle translation, bilingual subtitles, video download, clip video
+description: AI-powered YouTube video clipper. Download videos and subtitles, AI analyzes content to generate fine-grained chapters (2-5 minutes each), user selects segments for clipping, translates subtitles to bilingual format, burns subtitles into video, and generates summaries. Use when user needs to clip YouTube videos, create short video segments, or make bilingual subtitle versions.
 allowed-tools:
   - Read
   - Write

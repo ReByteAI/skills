@@ -80,7 +80,9 @@ else
   },
   "dependencies": {
     "@slidev/cli": "^51.0.0",
-    "$THEME_PACKAGE": "latest"
+    "$THEME_PACKAGE": "latest",
+    "@iconify-json/mdi": "latest",
+    "@iconify-json/logos": "latest"
   },
   "devDependencies": {
     "playwright-chromium": "^1.40.0"

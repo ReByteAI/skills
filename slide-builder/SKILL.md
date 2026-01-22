@@ -308,6 +308,62 @@ Every presentation needs:
 4. **Show, don't tell** - Prefer diagrams, code, images over prose
 5. **Use animations sparingly** - Add during polishing phase only, max 5-6 clicks per slide
 
+### Icons (IMPORTANT)
+
+**Always use Slidev icons instead of Unicode emoji.** The project includes `@iconify-json/mdi` and `@iconify-json/logos`.
+
+| Need | ❌ Don't use | ✅ Use instead |
+|------|-------------|----------------|
+| Checkmark | ✓ ✔️ | `<mdi-check />` |
+| Arrow | → ➡️ | `<mdi-arrow-right />` |
+| Star | ⭐ ★ | `<mdi-star />` |
+| Warning | ⚠️ | `<mdi-alert />` |
+| Info | ℹ️ | `<mdi-information />` |
+| GitHub | 🐙 | `<mdi-github />` |
+| Email | 📧 ✉️ | `<mdi-email />` |
+| Settings | ⚙️ | `<mdi-cog />` |
+| Search | 🔍 | `<mdi-magnify />` |
+| User | 👤 | `<mdi-account />` |
+
+**Common MDI icons:**
+```markdown
+<mdi-check />           <!-- checkmark -->
+<mdi-close />           <!-- X / close -->
+<mdi-plus />            <!-- plus -->
+<mdi-minus />           <!-- minus -->
+<mdi-arrow-right />     <!-- arrow -->
+<mdi-star />            <!-- star -->
+<mdi-heart />           <!-- heart -->
+<mdi-github />          <!-- GitHub -->
+<mdi-rocket-launch />   <!-- rocket -->
+<mdi-lightbulb />       <!-- idea -->
+<mdi-chart-line />      <!-- chart -->
+<mdi-clock />           <!-- time -->
+<mdi-calendar />        <!-- date -->
+<mdi-folder />          <!-- folder -->
+<mdi-file-document />   <!-- document -->
+```
+
+**Brand logos** (use `logos-*` for tech brands):
+```markdown
+<logos-vue />
+<logos-react />
+<logos-typescript-icon />
+<logos-nodejs-icon />
+<logos-python />
+<logos-docker-icon />
+<logos-kubernetes />
+<logos-aws />
+<logos-google-cloud />
+```
+
+**Styling icons:**
+```markdown
+<mdi-check class="text-green-500" />
+<mdi-star class="text-yellow-500 text-2xl" />
+<mdi-github class="text-3xl" />
+```
+
 ## Agent Rules
 
 ### Core Principles
@@ -428,7 +484,7 @@ Slide 15: end        - Thank you + contact/links
 2. **Consistent v-clicks** - Either use for all bullet lists or none
 3. **Same code style** - Pick one language highlighting, use throughout
 4. **Color harmony** - Stick to theme colors, avoid custom colors
-5. **Icon consistency** - Use one icon set (e.g., `mdi-*` or `carbon-*`)
+5. **Icons over emoji** - Always use `<mdi-*>` icons, never Unicode emoji (see Icons section above)
 
 ### Complete Professional Example (15 slides)
 

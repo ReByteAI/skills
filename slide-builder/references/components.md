@@ -218,56 +218,108 @@ Embed YouTube videos:
 
 ## Icons (Iconify)
 
-Slidev uses Iconify with UnoCSS. Format: `<prefix-icon-name />`
+**IMPORTANT: Always use Slidev icons instead of Unicode emoji.**
 
-### Common Icon Sets
+The project includes `@iconify-json/mdi` (Material Design) and `@iconify-json/logos` (brand logos).
+
+### MDI Icons (General Purpose)
 
 ```markdown
-<!-- Material Design Icons -->
-<mdi-account />
-<mdi-home />
-<mdi-github />
-<mdi-check-circle />
+<!-- Common actions -->
+<mdi-check />              <!-- ✓ checkmark -->
+<mdi-close />              <!-- ✗ close -->
+<mdi-plus />               <!-- + add -->
+<mdi-minus />              <!-- - remove -->
+<mdi-arrow-right />        <!-- → arrow -->
+<mdi-arrow-left />         <!-- ← arrow -->
 
-<!-- Carbon -->
-<carbon-api />
-<carbon-code />
-<carbon-cloud />
+<!-- Status -->
+<mdi-alert />              <!-- ⚠ warning -->
+<mdi-information />        <!-- ℹ info -->
+<mdi-check-circle />       <!-- ✓ success -->
+<mdi-close-circle />       <!-- ✗ error -->
 
-<!-- Logos -->
+<!-- Objects -->
+<mdi-star />               <!-- ★ star -->
+<mdi-heart />              <!-- ♥ heart -->
+<mdi-lightbulb />          <!-- 💡 idea -->
+<mdi-rocket-launch />      <!-- 🚀 rocket -->
+<mdi-clock />              <!-- ⏰ time -->
+<mdi-calendar />           <!-- 📅 date -->
+
+<!-- Tech -->
+<mdi-github />             <!-- GitHub -->
+<mdi-email />              <!-- ✉ email -->
+<mdi-cog />                <!-- ⚙ settings -->
+<mdi-magnify />            <!-- 🔍 search -->
+<mdi-account />            <!-- 👤 user -->
+<mdi-chart-line />         <!-- 📈 chart -->
+<mdi-file-document />      <!-- 📄 document -->
+<mdi-folder />             <!-- 📁 folder -->
+<mdi-database />           <!-- database -->
+<mdi-server />             <!-- server -->
+<mdi-cloud />              <!-- ☁ cloud -->
+<mdi-lock />               <!-- 🔒 security -->
+<mdi-code-tags />          <!-- </> code -->
+```
+
+### Logos (Brand/Tech)
+
+```markdown
+<!-- Languages -->
+<logos-typescript-icon />
+<logos-javascript />
+<logos-python />
+<logos-go />
+<logos-rust />
+<logos-java />
+
+<!-- Frameworks -->
 <logos-vue />
 <logos-react />
-<logos-typescript-icon />
+<logos-angular-icon />
+<logos-svelte-icon />
+<logos-nextjs-icon />
+<logos-nuxt-icon />
+
+<!-- Tools -->
 <logos-nodejs-icon />
+<logos-docker-icon />
+<logos-kubernetes />
+<logos-git-icon />
+<logos-github-icon />
+<logos-gitlab />
 
-<!-- Phosphor -->
-<ph-globe />
-<ph-code />
-<ph-rocket />
+<!-- Cloud -->
+<logos-aws />
+<logos-google-cloud />
+<logos-azure-icon />
+<logos-vercel-icon />
+<logos-netlify-icon />
 
-<!-- Tabler -->
-<tabler-brand-github />
-<tabler-settings />
-
-<!-- Heroicons -->
-<heroicons-academic-cap />
-<heroicons-code-bracket />
-
-<!-- Simple Icons (brands) -->
-<simple-icons-github />
-<simple-icons-twitter />
+<!-- Databases -->
+<logos-postgresql />
+<logos-mongodb-icon />
+<logos-redis />
+<logos-mysql-icon />
 ```
 
 ### Icon Styling
 
 ```markdown
-<mdi-account class="text-3xl text-blue-500" />
+<!-- Colors -->
+<mdi-check class="text-green-500" />
+<mdi-close class="text-red-500" />
+<mdi-alert class="text-yellow-500" />
 
-<div class="flex gap-4 text-4xl">
-  <logos-vue />
-  <logos-react />
-  <logos-angular-icon />
-</div>
+<!-- Sizes -->
+<mdi-star class="text-xl" />
+<mdi-star class="text-2xl" />
+<mdi-star class="text-3xl" />
+<mdi-star class="text-4xl" />
+
+<!-- Combined -->
+<mdi-rocket-launch class="text-3xl text-blue-500" />
 ```
 
 ### Icon with Text
@@ -275,6 +327,21 @@ Slidev uses Iconify with UnoCSS. Format: `<prefix-icon-name />`
 ```markdown
 <div class="flex items-center gap-2">
   <mdi-github /> GitHub Repository
+</div>
+
+<div class="flex items-center gap-2">
+  <logos-vue class="text-2xl" /> Built with Vue
+</div>
+```
+
+### Icon Grid Example
+
+```markdown
+<div class="grid grid-cols-4 gap-4 text-4xl">
+  <logos-vue />
+  <logos-react />
+  <logos-angular-icon />
+  <logos-svelte-icon />
 </div>
 ```
 

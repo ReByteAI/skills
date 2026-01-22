@@ -11,9 +11,10 @@ Create presentations with Slidev. Deploy to rebyte.pro.
 
 **A slide presentation task is NOT complete until:**
 1. ✅ Overflow check has passed (no content overflow issues)
-2. ✅ Slides have been deployed with `bash scripts/build-deploy.sh`
-3. ✅ The live preview URL has been shared with the user
-4. ✅ A slide index has been provided (see "After Deployment: Show Slide Index")
+2. ✅ Slides built with `pnpm build` (output in `dist/`)
+3. ✅ **Invoke the `web-app-deploy` skill** to deploy the `dist/` folder
+4. ✅ The live preview URL has been shared with the user
+5. ✅ A slide index has been provided (see "After Deployment: Show Slide Index")
 
 **NEVER deploy without checking for overflow first. NEVER tell the user the presentation is "done" without deploying.**
 
@@ -48,10 +49,11 @@ Enhance selectively:
 3. **Write slides (Drafting)** - Edit `/code/<name>/slides.md`, focus on content, NO animations
 4. **Check overflow** - Run overflow checker before deploy (see Overflow Detection below)
 5. **Fix overflow** - If issues found, fix them before proceeding
-6. **Deploy** - `bash scripts/build-deploy.sh` → returns preview URL
-7. **Review & Modify** - User reviews preview, requests changes by slide number
-8. **Polish (optional)** - After content is approved, add animations selectively
-9. **Export** (optional) - `bash scripts/export.sh pdf|pptx`
+6. **Build** - `cd /code/<name> && pnpm build` → outputs to `dist/`
+7. **Deploy** - **Invoke the `web-app-deploy` skill** to deploy the `dist/` folder → returns preview URL
+8. **Review & Modify** - User reviews preview, requests changes by slide number
+9. **Polish (optional)** - After content is approved, add animations selectively
+10. **Export** (optional) - `bash scripts/export.sh pdf|pptx`
 
 ## Overflow Detection (CRITICAL)
 
@@ -190,7 +192,7 @@ To change theme after init:
    - **Official themes**: `"@slidev/theme-<name>": "latest"` (default, seriph, apple-basic, shibainu, bricks)
    - **Community themes**: `"slidev-theme-<name>": "latest"` (all others)
 3. Run `pnpm install` (or `npm install`)
-4. Redeploy with `bash scripts/build-deploy.sh`
+4. Rebuild with `pnpm build` and redeploy using the `web-app-deploy` skill
 
 Example for switching to `dracula` (community theme):
 ```json
@@ -248,7 +250,7 @@ Page 8: Remove this slide, testimonial feels weak
 
 **Response:**
 1. Apply each change to the specified slide
-2. Redeploy with `bash scripts/build-deploy.sh`
+2. Rebuild with `pnpm build` and redeploy using the `web-app-deploy` skill
 3. Confirm changes with updated index:
 
 ```

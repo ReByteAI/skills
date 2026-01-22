@@ -11,9 +11,9 @@ Build production-ready, Typeform-style forms using the Composer API.
 
 **A form task is NOT complete until:**
 1. ✅ Form backend created (POST /api/forms/create)
-2. ✅ HTML deployed with proper ZIP structure (index.html at root)
-3. ✅ Deployment validated (HTTP 200 check)
-4. ✅ BOTH URLs shared with user: Form URL AND Admin URL
+2. ✅ HTML file saved as `index.html`
+3. ✅ **Invoke the `web-app-deploy` skill** to deploy the form
+4. ✅ BOTH URLs shared with user: **Form URL** (from deployment) AND **Admin URL** (from form creation API)
 
 **NEVER tell the user the form is "done" without completing ALL steps.**
 
@@ -340,7 +340,8 @@ const composer = new Composer({
 To collect responses, you need to:
 1. Create a form backend (stores submissions)
 2. Add `postUrl` to your HTML form
-3. Deploy the HTML form (using web-app-deploy skill)
+3. Save HTML as `index.html`
+4. **Invoke the `web-app-deploy` skill** to deploy
 
 ### Complete Workflow
 
@@ -372,7 +373,7 @@ Response:
 
 **Save these URLs:**
 - **`submitUrl`**: Where form data is POSTed (use as `postUrl` in Composer)
-- **`adminUrl`**: Spreadsheet UI to view all submissions (share with form creator)
+- **`adminUrl`**: Spreadsheet UI to view all submissions (**share with form creator**)
 
 #### Step 2: Configure Form HTML
 
@@ -386,66 +387,17 @@ const composer = new Composer({
 });
 ```
 
-#### Step 3: Deploy Form
+#### Step 3: Save and Deploy
 
-After creating the HTML file, deploy it:
-
-```bash
-# 1. Save form as index.html
-cat > index.html << 'HTMLEOF'
-<!DOCTYPE html>
-... your form HTML ...
-HTMLEOF
-
-# 2. Get upload URL
-RESPONSE=$(curl -s -X POST "$API_URL/api/data/netlify/get-upload-url" \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"id": "form"}')
-DEPLOY_ID=$(echo $RESPONSE | jq -r '.deployId')
-UPLOAD_URL=$(echo $RESPONSE | jq -r '.uploadUrl')
-
-# 3. Create ZIP with index.html AT THE ROOT (CRITICAL!)
-zip site.zip index.html
-
-# 4. Upload ZIP
-curl -X PUT "$UPLOAD_URL" -H "Content-Type: application/zip" --data-binary @site.zip
-
-# 5. Deploy
-curl -s -X POST "$API_URL/api/data/netlify/deploy" \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d "{\"deployId\": \"$DEPLOY_ID\"}"
-```
-
-**CRITICAL:** The ZIP must have `index.html` at the root, NOT inside a subdirectory.
-
-#### Step 4: Validate Deployment
-
-**You MUST run these validation checks before telling the user the form is ready:**
-
-```bash
-# 1. Verify ZIP structure (BEFORE uploading)
-unzip -l site.zip | grep -E "^\s+\d+.*index\.html$"
-# Should show: "index.html" (at root)
-
-# 2. After deploy, verify site returns HTML (not 404)
-FORM_URL="https://${DEPLOY_ID}.rebyte.pro"
-HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$FORM_URL")
-if [ "$HTTP_STATUS" != "200" ]; then
-  echo "ERROR: Site returned $HTTP_STATUS, expected 200"
-fi
-
-# 3. Verify Content-Type is HTML
-CONTENT_TYPE=$(curl -sI "$FORM_URL" | grep -i "content-type" | head -1)
-echo "Content-Type: $CONTENT_TYPE"
-```
+1. Save the form HTML as `index.html`
+2. **Invoke the `web-app-deploy` skill** to deploy it
+3. The skill will handle ZIP creation, upload, and deployment
 
 ### Final URLs to Share
 
 After deployment, you'll have:
-- **Form URL**: `https://<deploy-id>.rebyte.pro` - Share with respondents
-- **Admin URL**: From the form creation API response - View responses in spreadsheet
+- **Form URL**: From the `web-app-deploy` skill output - Share with respondents
+- **Admin URL**: From the form creation API response (Step 1) - View responses in spreadsheet
 
 ### Viewing Results
 
@@ -459,7 +411,7 @@ After deployment, you'll have:
 
 When you finish building and deploying a form, you **MUST** tell the user both URLs:
 
-1. **Form URL** (for respondents): The deployed site URL from Netlify
-2. **Admin URL** (for viewing results): Copy the EXACT `adminUrl` from the form creation API response
+1. **Form URL** (for respondents): From the `web-app-deploy` skill output
+2. **Admin URL** (for viewing results): From the form creation API response (Step 1)
 
 **Never forget the Admin URL** - without it, the user cannot see their form submissions!

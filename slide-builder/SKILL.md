@@ -10,11 +10,12 @@ Create presentations with Slidev. Deploy to rebyte.pro.
 ## ⚠️ CRITICAL: Completion Requirements
 
 **A slide presentation task is NOT complete until:**
-1. ✅ Slides have been deployed with `bash scripts/build-deploy.sh`
-2. ✅ The live preview URL has been shared with the user
-3. ✅ A slide index has been provided (see "After Deployment: Show Slide Index")
+1. ✅ Overflow check has passed (no content overflow issues)
+2. ✅ Slides have been deployed with `bash scripts/build-deploy.sh`
+3. ✅ The live preview URL has been shared with the user
+4. ✅ A slide index has been provided (see "After Deployment: Show Slide Index")
 
-**NEVER tell the user the presentation is "done" or "ready" without deploying first.**
+**NEVER deploy without checking for overflow first. NEVER tell the user the presentation is "done" without deploying.**
 
 ## Two-Phase Methodology
 
@@ -45,10 +46,70 @@ Enhance selectively:
 1. **Plan content** - Understand the presentation goal, audience, structure, **and tone**
 2. **Initialize** - `bash scripts/init.sh <name> [theme]` (see Theme Selection below)
 3. **Write slides (Drafting)** - Edit `/code/<name>/slides.md`, focus on content, NO animations
-4. **Deploy** - `bash scripts/build-deploy.sh` → returns preview URL
-5. **Review & Modify** - User reviews preview, requests changes by slide number
-6. **Polish (optional)** - After content is approved, add animations selectively
-7. **Export** (optional) - `bash scripts/export.sh pdf|pptx`
+4. **Check overflow** - Run overflow checker before deploy (see Overflow Detection below)
+5. **Fix overflow** - If issues found, fix them before proceeding
+6. **Deploy** - `bash scripts/build-deploy.sh` → returns preview URL
+7. **Review & Modify** - User reviews preview, requests changes by slide number
+8. **Polish (optional)** - After content is approved, add animations selectively
+9. **Export** (optional) - `bash scripts/export.sh pdf|pptx`
+
+## Overflow Detection (CRITICAL)
+
+**Before deploying, ALWAYS check for content overflow.** Slidev does not auto-fit content like PowerPoint - text/tables/code that exceed the slide boundary will be clipped.
+
+### Install Checker (first time only)
+
+```bash
+npm install -g slidev-overflow-checker
+npx playwright install
+```
+
+### Run Overflow Check
+
+```bash
+# Start dev server in background
+pnpm run dev --port 3030 &
+
+# Wait for server to start
+sleep 10
+
+# Run overflow checker
+slidev-overflow-checker --url http://localhost:3030 --project ./
+```
+
+### Fix Overflow Issues
+
+When overflow is detected, apply these fixes:
+
+| Issue Type | Fix Strategy |
+|------------|--------------|
+| Too many bullet points (>5) | Split into multiple slides |
+| Long table (>5 rows) | Wrap with `<Transform :scale="0.8">` |
+| Long code block (>12 lines) | Split or wrap with `<Transform :scale="0.85">` |
+| Wide table/content | Wrap with `<Transform :scale="0.75">` |
+| Dense text | Reduce content or use smaller layout |
+
+**Transform wrapper example:**
+```markdown
+<Transform :scale="0.8">
+
+| Column 1 | Column 2 | Column 3 |
+|----------|----------|----------|
+| Row 1 | Data | Data |
+| Row 2 | Data | Data |
+| ... more rows ... |
+
+</Transform>
+```
+
+### Re-check After Fixing
+
+After fixing, re-run the checker to verify:
+```bash
+slidev-overflow-checker --url http://localhost:3030 --project ./
+```
+
+Only proceed to deploy when **no overflow issues** are reported.
 
 ## Theme Selection
 

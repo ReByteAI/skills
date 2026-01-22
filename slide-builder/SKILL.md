@@ -308,9 +308,46 @@ Every presentation needs:
 4. **Show, don't tell** - Prefer diagrams, code, images over prose
 5. **Use animations sparingly** - Add during polishing phase only, max 5-6 clicks per slide
 
-### Icons (IMPORTANT)
+### Icons vs Emoji - When to Use What
 
-**Always use Slidev icons instead of Unicode emoji.** The project includes `@iconify-json/mdi` and `@iconify-json/logos`.
+This project includes `@iconify-json/mdi` (Material Design Icons) and `@iconify-json/logos` (brand logos).
+
+**Use MDI icons `<mdi-* />` for:**
+- Functional indicators: checkmarks, X marks, arrows, status icons
+- UI elements: settings, search, menu, navigation
+- List markers that indicate state (done/pending/error)
+- Professional/technical presentations
+
+**Use Logos icons `<logos-* />` for:**
+- Technology brands: `<logos-vue />`, `<logos-react />`, `<logos-docker-icon />`
+- Company logos in tech context
+
+**Emoji is OK for:**
+- Emotional/decorative use in casual presentations
+- Section titles for visual interest (e.g., "🎉 Celebration")
+- When the tone is informal/playful
+
+**Example - Status List (use icons, not emoji):**
+```markdown
+<!-- ❌ Avoid for functional indicators -->
+- ✅ Task completed
+- ❌ Task failed
+- ⏳ In progress
+
+<!-- ✅ Preferred - cleaner, consistent rendering -->
+- <mdi-check class="text-green-500" /> Task completed
+- <mdi-close class="text-red-500" /> Task failed
+- <mdi-clock class="text-yellow-500" /> In progress
+```
+
+**Example - Tech Stack (use logos, not emoji):**
+```markdown
+<!-- ❌ Avoid -->
+🟢 Node.js | 🔵 TypeScript | 🐳 Docker
+
+<!-- ✅ Preferred - actual brand logos -->
+<logos-nodejs-icon /> Node.js | <logos-typescript-icon /> TypeScript | <logos-docker-icon /> Docker
+```
 
 | Need | ❌ Don't use | ✅ Use instead |
 |------|-------------|----------------|
@@ -373,6 +410,7 @@ Every presentation needs:
 3. **Get feedback** - Show progress before continuing
 4. **No premature polish** - Complete content before any animations
 5. **No invented frontmatter** - Only use options from `references/config.md`
+6. **Prefer MDI icons over emoji** for functional indicators (✅→`<mdi-check />`, tech logos→`<logos-* />`)
 
 ### Frontmatter Rules (CRITICAL)
 

@@ -140,58 +140,88 @@ Create backend API endpoints with Netlify Functions.
 
 ### Directory Structure
 
+**IMPORTANT:** The ZIP must have `index.html` at the root, with `functions/` alongside it.
+
 ```
-project/
-├── dist/                    # Frontend build output
-├── netlify/
-│   └── functions/
-│       └── api.js           # Serverless function
-└── netlify.toml             # Configuration
+your-site.zip (contents)
+├── index.html              # At root (required)
+├── assets/                 # Static assets
+├── functions/              # Serverless functions
+│   └── hello.js            # Each .js file = one function
+└── netlify.toml            # Optional configuration
 ```
 
 ### Example Function
 
-**netlify/functions/api.js:**
+**IMPORTANT:** Use CommonJS `exports.handler` format (most reliable with the API).
+
+**functions/hello.js:**
 ```javascript
-export default async (request, context) => {
-  const url = new URL(request.url);
-  const path = url.pathname.replace('/.netlify/functions/api', '');
-
-  if (request.method === 'GET' && path === '/hello') {
-    return Response.json({ message: 'Hello World!' });
-  }
-
-  return new Response('Not Found', { status: 404 });
-};
-
-export const config = {
-  path: "/api/*"
+exports.handler = async function(event, context) {
+  return {
+    statusCode: 200,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: 'Hello from Netlify Function!',
+      timestamp: new Date().toISOString()
+    }),
+  };
 };
 ```
 
-### Configuration
+### Multiple Functions Example
 
-**netlify.toml:**
+**functions/users.js:**
+```javascript
+exports.handler = async function(event, context) {
+  if (event.httpMethod === 'GET') {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ users: ['Alice', 'Bob'] }),
+    };
+  }
+  return { statusCode: 405, body: 'Method Not Allowed' };
+};
+```
+
+### Optional Configuration
+
+**netlify.toml** (only needed for custom paths or redirects):
 ```toml
-[build]
-  publish = "dist"
-  functions = "netlify/functions"
+[functions]
+  directory = "functions"
 
+# Optional: Pretty URLs for functions
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
+  from = "/api/hello"
+  to = "/.netlify/functions/hello"
   status = 200
 ```
 
 ### Deploy with Functions
 
-Include `netlify/` folder and config in your ZIP:
+**Step 1: Build your frontend** (e.g., `npm run build` → outputs to `dist/`)
 
+**Step 2: Create ZIP from INSIDE the build output:**
 ```bash
-zip -r site.zip dist/ netlify/ netlify.toml
+# Copy functions into the build output
+cp -r functions dist/
+
+# Copy netlify.toml if you have one
+cp netlify.toml dist/ 2>/dev/null || true
+
+# Create ZIP from inside dist/
+cd dist && zip -r ../site.zip . && cd ..
+
+# Verify: index.html and functions/ should be at root
+unzip -l site.zip
 ```
 
-Access at: `https://your-site.rebyte.pro/api/hello`
+**Step 3: Upload and deploy as usual**
+
+Functions are accessible at: `https://your-site.rebyte.pro/.netlify/functions/hello`
+
+Or with redirects: `https://your-site.rebyte.pro/api/hello`
 
 ---
 
@@ -237,7 +267,8 @@ Body: {"deployId": "..."}
 | "Page Not Found" | Ensure `index.html` is at ZIP root, not in subdirectory |
 | 404 on route refresh (SPA) | Add `_redirects` file: `/*    /index.html   200` |
 | Assets not loading | Use relative paths (`./assets/` not `/assets/`) |
-| Functions not working | Include `netlify.toml` in ZIP, functions in `netlify/functions/` |
+| Functions not working | Use `exports.handler` format, put in `functions/` or `netlify/functions/` directory |
+| Function returns HTML 404 | Function file may have syntax error; use CommonJS format |
 
 ---
 

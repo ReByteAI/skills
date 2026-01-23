@@ -42,7 +42,7 @@ Response:
 Use Turso's HTTP API with pure `fetch` - no npm packages needed:
 
 ```javascript
-// netlify/functions/api.js
+// functions/api.js (CommonJS format for Netlify Functions)
 
 // Get these from the provision response (convert libsql:// to https://)
 const TURSO_URL = 'https://ws-abc123-rebyte.turso.io';
@@ -93,32 +93,36 @@ async function query(sql, args = []) {
   };
 }
 
-// Create table
-await query(`
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    email TEXT UNIQUE,
-    name TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )
-`);
+// IMPORTANT: Use CommonJS format (exports.handler) for Netlify Functions
+exports.handler = async function(event) {
+  // Create table (runs on first request)
+  await query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      email TEXT UNIQUE,
+      name TEXT,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
 
-// Insert with parameters
-await query('INSERT INTO users (email, name) VALUES (?, ?)', ['user@example.com', 'John']);
+  if (event.httpMethod === 'POST') {
+    const body = JSON.parse(event.body);
+    await query('INSERT INTO users (email, name) VALUES (?, ?)', [body.email, body.name]);
+    return {
+      statusCode: 201,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ success: true })
+    };
+  }
 
-// Query data
-const { columns, rows } = await query('SELECT * FROM users');
-console.log(columns); // ['id', 'email', 'name', 'created_at']
-console.log(rows);    // [[1, 'user@example.com', 'John', '2024-01-01 12:00:00']]
-
-export async function handler(event) {
-  const result = await query('SELECT * FROM users');
+  // GET - return all users
+  const { columns, rows } = await query('SELECT * FROM users');
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(result.rows)
+    body: JSON.stringify(rows)
   };
-}
+};
 ```
 
 ### URL Format
@@ -128,6 +132,7 @@ The provision response returns `libsql://` URL. Convert it to `https://` for the
 
 ## Important Notes
 
+- **Use CommonJS format** - Netlify Functions require `exports.handler`, NOT `export default`
 - **One database per workspace** - calling provision again returns the same database
 - **Read the instructions** - the provision response includes detailed usage instructions
 - **Use https:// URL** - convert the libsql:// URL to https:// for the HTTP API

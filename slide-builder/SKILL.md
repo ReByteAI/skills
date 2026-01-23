@@ -489,6 +489,7 @@ mdc: true
 | Feature | When to Use | Frequency |
 |---------|-------------|-----------|
 | `v-clicks` | Bullet points, step-by-step reveals | 30-50% of slides |
+| `v-mark` | Highlight key terms, metrics, conclusions | 3-5 per presentation |
 | `two-cols` | Comparisons, before/after, pros/cons | 2-3 per presentation |
 | `fact` layout | Key metrics, impressive numbers | 1-2 per presentation |
 | Mermaid diagrams | Architecture, flows, processes | 1-3 per presentation |
@@ -931,6 +932,27 @@ const e = 5  // highlighted second
 
 </v-clicks>
 ```
+
+### Text Highlighting with v-mark
+
+Use `v-mark` to draw attention to key terms with hand-drawn style markers:
+
+```markdown
+The <span v-mark.underline.red>most important</span> concept is this.
+
+We achieved <span v-mark.circle.orange>95% accuracy</span> in testing.
+
+<span v-mark.highlight.yellow>Remember this key point!</span>
+```
+
+**Available styles:** `underline` (default), `circle`, `highlight`, `box`, `strike-through`
+
+**Colors:** `red`, `orange`, `yellow`, `green`, `blue`, or custom `v-mark="{ color: '#f59e0b' }"`
+
+**When to use v-mark:**
+- Highlighting key metrics or numbers
+- Emphasizing important terms on first mention
+- Drawing attention to conclusions or takeaways
 
 ### Mermaid Diagrams
 

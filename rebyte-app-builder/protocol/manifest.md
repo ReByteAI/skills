@@ -1,0 +1,340 @@
+# Deployment Protocol (rebyte.json)
+
+This document describes the protocol between the CLI (running in VM) and the Relay server. The protocol is **framework-agnostic** - the Relay doesn't know about Next.js or Vite, only about static files and Lambda functions.
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                           VM (rebyte-cli)                        │
+│                                                                  │
+│   1. Detect framework                                            │
+│   2. Build project                                               │
+│   3. Create ZIP with rebyte.json manifest                        │
+│   4. Upload to GCS                                               │
+│   5. Trigger deployment                                          │
+│                                                                  │
+└─────────────────────────────────┬────────────────────────────────┘
+                                  │
+                                  │  ZIP with rebyte.json
+                                  │
+                                  ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                           Relay Server                           │
+│                                                                  │
+│   1. Download ZIP from GCS                                       │
+│   2. Parse rebyte.json manifest                                  │
+│   3. Deploy based on mode:                                       │
+│      - static → S3 + CloudFront                                  │
+│      - ssr → S3 + Lambda + API Gateway + CloudFront              │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## ZIP Structure
+
+```
+deploy.zip
+├── rebyte.json              # Manifest (required)
+├── static/                  # Static assets (required)
+│   ├── index.html
+│   ├── _next/static/        # Framework-specific assets
+│   └── assets/
+├── functions/               # Serverless functions (SSR only)
+│   └── default/
+│       ├── index.mjs
+│       └── node_modules/
+└── .env.production          # Environment variables (optional)
+```
+
+## Manifest Schema (rebyte.json)
+
+```typescript
+interface RebyteManifest {
+  // Protocol version
+  version: 1;
+
+  // Framework name (informational only)
+  framework: string;  // "nextjs" | "vite" | "nuxt" | "astro" | etc.
+
+  // Deployment mode
+  mode: "static" | "ssr";
+
+  // Static assets configuration
+  static: {
+    directory: string;  // e.g., "static"
+  };
+
+  // Serverless functions (required for SSR)
+  functions?: {
+    [name: string]: {
+      directory: string;      // e.g., "functions/default"
+      handler: string;        // e.g., "index.handler"
+      runtime: string;        // e.g., "nodejs20.x"
+      memory?: number;        // MB, default 1024
+      timeout?: number;       // seconds, default 30
+    };
+  };
+
+  // Routing rules
+  routes: Route[];
+
+  // Custom headers by path pattern
+  headers?: {
+    [pattern: string]: {
+      [header: string]: string;
+    };
+  };
+}
+
+interface Route {
+  src: string;           // Regex pattern
+  dest: string;          // Destination path or function name
+  type: "static" | "function";
+  fallback?: boolean;    // Only match when no static file exists
+}
+```
+
+## Example: Static Site
+
+For Vite, Astro, Gatsby, or any static framework:
+
+```json
+{
+  "version": 1,
+  "framework": "vite",
+  "mode": "static",
+  "static": {
+    "directory": "static"
+  },
+  "routes": [
+    {
+      "src": "^/(.*)$",
+      "dest": "/static/$1",
+      "type": "static"
+    }
+  ],
+  "headers": {
+    "/*": {
+      "X-Content-Type-Options": "nosniff",
+      "X-Frame-Options": "DENY"
+    }
+  }
+}
+```
+
+## Example: SSR Site
+
+For Next.js with OpenNext:
+
+```json
+{
+  "version": 1,
+  "framework": "nextjs",
+  "mode": "ssr",
+  "static": {
+    "directory": "static"
+  },
+  "functions": {
+    "default": {
+      "directory": "functions/default",
+      "handler": "index.handler",
+      "runtime": "nodejs20.x",
+      "memory": 1024,
+      "timeout": 30
+    }
+  },
+  "routes": [
+    {
+      "src": "^/_next/static/(.*)$",
+      "dest": "/static/_next/static/$1",
+      "type": "static"
+    },
+    {
+      "src": "^/(.*)$",
+      "dest": "default",
+      "type": "function",
+      "fallback": true
+    }
+  ],
+  "headers": {
+    "/_next/static/*": {
+      "Cache-Control": "public, max-age=31536000, immutable"
+    }
+  }
+}
+```
+
+## API Endpoints
+
+All endpoints are under `/api/data/deployments/` and require VM authentication.
+
+### 1. Create Deployment (Get Upload URL)
+
+```
+POST /api/data/deployments/create
+{
+  "prefix": "optional-prefix"
+}
+
+Response:
+{
+  "deployId": "<generated-deploy-id>",
+  "uploadUrl": "https://storage.googleapis.com/...",
+  "expiresIn": 3600,
+  "isNew": true,
+  "environment": {}
+}
+```
+
+Note: The `deployId` is automatically generated by the system.
+
+### 2. Upload ZIP
+
+```
+PUT {uploadUrl}
+Content-Type: application/zip
+
+[ZIP binary data]
+```
+
+### 3. Deploy (Update)
+
+```
+POST /api/data/deployments/update
+{
+  "deployId": "<deploy-id-from-create>"
+}
+
+Response:
+{
+  "deployId": "<deploy-id>",
+  "url": "https://<deploy-id>.rebyte.pro",   ← This is your live URL
+  "status": "deployed",
+  "framework": "nextjs",
+  "mode": "ssr",
+  "lambdaFunction": "rebyte-<deploy-id>",
+  "apiGatewayUrl": "https://xxx.execute-api.us-east-1.amazonaws.com"
+}
+```
+
+**IMPORTANT:** The `url` field contains your actual deployed URL. Use this URL to share with the user.
+
+### 4. Get Deployment Status
+
+```
+POST /api/data/deployments/status
+{
+  "deployId": "<deploy-id>"
+}
+
+Response:
+{
+  "exists": true,
+  "deployId": "<deploy-id>",
+  "url": "https://<deploy-id>.rebyte.pro",
+  "status": "deployed",
+  "mode": "ssr",
+  "environment": {},
+  "environmentCount": 0
+}
+```
+
+### 5. Update Environment Variables
+
+```
+POST /api/data/deployments/update-env
+{
+  "deployId": "<deploy-id>",
+  "environment": {
+    "DATABASE_URL": "postgres://...",
+    "API_KEY": "sk-..."
+  },
+  "merge": true
+}
+
+Response:
+{
+  "deployId": "<deploy-id>",
+  "environment": { "DATABASE_URL": "...", "API_KEY": "..." },
+  "environmentCount": 2,
+  "lambdaSynced": true
+}
+```
+
+### 6. List Deployments
+
+```
+POST /api/data/deployments/list
+{}
+
+Response:
+{
+  "workspaceId": "<workspace-id>",
+  "count": 2,
+  "deployments": [
+    { "deployId": "<deploy-id>", "url": "https://<deploy-id>.rebyte.pro", "status": "deployed" },
+    { "deployId": "api-<suffix>", "prefix": "api", "url": "https://api-<suffix>.rebyte.pro", "status": "deployed" }
+  ]
+}
+```
+
+### 7. Delete Deployment
+
+```
+POST /api/data/deployments/delete
+{
+  "deployId": "<deploy-id>"
+}
+
+Response:
+{
+  "success": true,
+  "deletedResources": [
+    "S3: 42 files",
+    "Lambda: rebyte-<deploy-id>",
+    "API Gateway: rebyte-<deploy-id>",
+    "GCS upload",
+    "Database record"
+  ]
+}
+```
+
+## Deployment Modes
+
+### Static Mode
+
+```
+rebyte.json.mode === "static"
+    │
+    └── Deploy static/ directory to S3 + CloudFront
+        └── URL: https://{deployId}.rebyte.pro
+```
+
+### SSR Mode
+
+```
+rebyte.json.mode === "ssr"
+    │
+    ├── Deploy static/ to S3 + CloudFront
+    │
+    ├── Deploy functions/ to AWS Lambda
+    │   └── Function: rebyte-{deployId}
+    │
+    ├── Create API Gateway
+    │   └── Routes dynamic requests to Lambda
+    │
+    └── Configure Lambda@Edge routing
+        └── Static → S3, Dynamic → API Gateway
+```
+
+## AWS Infrastructure
+
+| Component | Purpose |
+|-----------|---------|
+| **S3** | Static asset storage (`rebyte-pro-static` bucket) |
+| **CloudFront** | CDN with `*.rebyte.pro` wildcard certificate |
+| **Lambda@Edge** | Routes requests (static → S3, dynamic → API Gateway) |
+| **API Gateway** | HTTP API v2, routes to Lambda functions |
+| **Lambda** | Executes SSR functions (Node.js 20.x) |
+| **ACM** | Auto-renewing wildcard SSL certificate |

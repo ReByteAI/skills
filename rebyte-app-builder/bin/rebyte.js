@@ -25518,11 +25518,11 @@ var {
   Help
 } = import__.default;
 
-// src/detect.ts
+// dist/detect.js
 import * as fs from "fs";
 import * as path from "path";
 
-// src/frameworks.ts
+// dist/frameworks.js
 var frameworks = [
   {
     name: "Next.js",
@@ -25708,7 +25708,7 @@ var staticHtmlConfig = {
   }
 };
 
-// src/detect.ts
+// dist/detect.js
 async function detectFramework(projectDir) {
   const packageJsonPath = path.join(projectDir, "package.json");
   if (!fs.existsSync(packageJsonPath)) {
@@ -25803,7 +25803,7 @@ function getSSRBuildCommand(detection) {
   return null;
 }
 
-// src/build.ts
+// dist/build.js
 import * as fs2 from "fs";
 import * as path2 from "path";
 import { spawn } from "child_process";
@@ -25891,8 +25891,47 @@ async function runSSRBuild(projectDir, detection, verbose) {
   const [cmd, ...args] = parts.slice(cmdStart);
   await runCommand(cmd, args, projectDir, verbose, envVars);
 }
+function isBuildStale(projectDir, outputDir) {
+  if (!fs2.existsSync(outputDir)) {
+    return true;
+  }
+  const outputStat = fs2.statSync(outputDir);
+  const outputMtime = outputStat.mtime.getTime();
+  const sourceFiles = [
+    "package.json",
+    "src",
+    "app",
+    "pages",
+    "components",
+    "next.config.js",
+    "next.config.ts",
+    "next.config.mjs",
+    "vite.config.ts",
+    "vite.config.js",
+    "nuxt.config.ts",
+    "astro.config.mjs"
+  ];
+  for (const file of sourceFiles) {
+    const filePath = path2.join(projectDir, file);
+    if (fs2.existsSync(filePath)) {
+      const stat = fs2.statSync(filePath);
+      if (stat.mtime.getTime() > outputMtime) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 async function build(detection, options) {
-  const { projectDir, skipInstall, skipBuild, verbose = false } = options;
+  const { projectDir, skipInstall, verbose = false } = options;
+  let { skipBuild } = options;
+  const outputDir = path2.join(projectDir, getOutputDirectory(detection));
+  if (skipBuild && fs2.existsSync(outputDir)) {
+    if (isBuildStale(projectDir, outputDir)) {
+      console.log("⚠️  Build output is stale (source files changed). Rebuilding...");
+      skipBuild = false;
+    }
+  }
   if (!skipInstall) {
     await installDependencies(projectDir, detection, verbose);
   }
@@ -25902,7 +25941,6 @@ async function build(detection, options) {
   if (detection.isSSR) {
     await runSSRBuild(projectDir, detection, verbose);
   }
-  const outputDir = path2.join(projectDir, getOutputDirectory(detection));
   const hasOpenNext = detection.isSSR && detection.framework.slug === "nextjs";
   if (!fs2.existsSync(outputDir)) {
     throw new Error(`Build output not found at "${outputDir}". ` + `Make sure the build command completed successfully.`);
@@ -25914,12 +25952,12 @@ async function build(detection, options) {
   };
 }
 
-// src/package.ts
+// dist/package.js
 var import_archiver = __toESM(require_archiver(), 1);
 import * as fs3 from "fs";
 import * as path3 from "path";
 
-// src/manifest.ts
+// dist/manifest.js
 function createStaticManifest(framework) {
   return {
     version: 1,
@@ -26076,7 +26114,7 @@ function createNuxtSSRManifest() {
   };
 }
 
-// src/package.ts
+// dist/package.js
 async function createPackage(buildResult, detection) {
   const manifest = createManifest(detection);
   const zipBuffer = await createZip(buildResult, detection, manifest);
@@ -26213,13 +26251,13 @@ function addStaticToZip(archive, outputDir) {
   archive.directory(outputDir, "static");
 }
 
-// src/deploy.ts
+// dist/deploy.js
 async function getUploadUrl(apiUrl, apiToken, prefix) {
   const body = {};
   if (prefix) {
     body.id = prefix;
   }
-  const response = await fetch(`${apiUrl}/api/data/netlify/get-upload-url`, {
+  const response = await fetch(`${apiUrl}/api/data/aws/get-upload-url`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -26251,7 +26289,7 @@ async function uploadZip(uploadUrl, zipBuffer) {
   }
 }
 async function triggerDeploy(apiUrl, apiToken, deployId) {
-  const response = await fetch(`${apiUrl}/api/data/netlify/deploy`, {
+  const response = await fetch(`${apiUrl}/api/data/aws/deploy`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -26291,8 +26329,46 @@ async function deploy(buildResult, detection, options) {
   const result = await triggerDeploy(apiUrl, apiToken, deployId);
   return result;
 }
+async function getDeploymentInfo(apiUrl, apiToken, prefix) {
+  const body = {};
+  if (prefix) {
+    body.id = prefix;
+  }
+  const response = await fetch(`${apiUrl}/api/data/aws/get-deployment`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiToken}`
+    },
+    body: JSON.stringify(body)
+  });
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Failed to get deployment info: ${response.status} ${text}`);
+  }
+  return await response.json();
+}
+async function deleteDeployment(apiUrl, apiToken, prefix) {
+  const body = {};
+  if (prefix) {
+    body.id = prefix;
+  }
+  const response = await fetch(`${apiUrl}/api/data/aws/delete-site`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiToken}`
+    },
+    body: JSON.stringify(body)
+  });
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Failed to delete deployment: ${response.status} ${text}`);
+  }
+  return await response.json();
+}
 
-// src/cli.ts
+// dist/cli.js
 import * as path4 from "path";
 import * as fs4 from "fs";
 import * as os from "os";
@@ -26435,6 +26511,135 @@ program.command("deploy").description("Build and deploy the project").option("-d
   } catch (err) {
     console.error(`
 ❌ Deployment failed: ${err.message}
+`);
+    process.exit(1);
+  }
+});
+program.command("info").description("Get deployment info for current workspace").option("-p, --prefix <name>", "Deployment prefix").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (options) => {
+  try {
+    const auth = getAuthCredentials();
+    const apiUrl = options.apiUrl || auth.apiUrl;
+    const apiToken = options.apiToken || auth.apiToken;
+    if (!apiToken) {
+      console.error(`
+❌ Error: No API token found.
+`);
+      process.exit(1);
+    }
+    const info = await getDeploymentInfo(apiUrl, apiToken, options.prefix);
+    if (!info.exists) {
+      console.log(`
+\uD83D\uDCED No deployment found for this workspace.
+`);
+      console.log("   Run `rebyte deploy` to create one.\n");
+      process.exit(0);
+    }
+    console.log(`
+\uD83D\uDCE6 Deployment Info
+`);
+    console.log(`   URL:        ${info.url}`);
+    console.log(`   Deploy ID:  ${info.deployId}`);
+    console.log(`   Status:     ${info.status}`);
+    console.log(`   Framework:  ${info.framework || "unknown"}`);
+    console.log(`   Mode:       ${info.mode || "unknown"}`);
+    if (info.deployedAt) {
+      console.log(`   Deployed:   ${info.deployedAt}`);
+    }
+    console.log("");
+  } catch (err) {
+    console.error(`
+❌ Error: ${err.message}
+`);
+    process.exit(1);
+  }
+});
+program.command("delete").description("Delete deployment and all associated resources").option("-p, --prefix <name>", "Deployment prefix").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (options) => {
+  try {
+    const auth = getAuthCredentials();
+    const apiUrl = options.apiUrl || auth.apiUrl;
+    const apiToken = options.apiToken || auth.apiToken;
+    if (!apiToken) {
+      console.error(`
+❌ Error: No API token found.
+`);
+      process.exit(1);
+    }
+    console.log(`
+\uD83D\uDDD1️  Deleting deployment...
+`);
+    const result = await deleteDeployment(apiUrl, apiToken, options.prefix);
+    if (result.success) {
+      console.log(`✅ ${result.message}`);
+      if (result.deletedResources && result.deletedResources.length > 0) {
+        console.log(`
+   Deleted resources:`);
+        for (const resource of result.deletedResources) {
+          console.log(`   - ${resource}`);
+        }
+      }
+    } else {
+      console.log(`⚠️  ${result.message}`);
+    }
+    console.log("");
+  } catch (err) {
+    console.error(`
+❌ Error: ${err.message}
+`);
+    process.exit(1);
+  }
+});
+program.command("env").description("Manage environment variables for deployment").argument("[action]", "Action: list, set, delete").argument("[key]", "Environment variable key").argument("[value]", "Environment variable value (for set)").option("-p, --prefix <name>", "Deployment prefix").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (action, key, value, options) => {
+  try {
+    const auth = getAuthCredentials();
+    const apiUrl = options.apiUrl || auth.apiUrl;
+    const apiToken = options.apiToken || auth.apiToken;
+    if (!apiToken) {
+      console.error(`
+❌ Error: No API token found.
+`);
+      process.exit(1);
+    }
+    if (!action || action === "list") {
+      console.log(`
+\uD83D\uDCCB Environment Variables
+`);
+      console.log(`   (Not yet implemented - use .env.production file for now)
+`);
+    } else if (action === "set") {
+      if (!key || !value) {
+        console.error(`
+❌ Usage: rebyte env set KEY VALUE
+`);
+        process.exit(1);
+      }
+      console.log(`
+⚠️  Runtime env vars not yet implemented.`);
+      console.log(`   Add to .env.production and redeploy:
+`);
+      console.log(`   echo "${key}=${value}" >> .env.production`);
+      console.log(`   rebyte deploy
+`);
+    } else if (action === "delete") {
+      if (!key) {
+        console.error(`
+❌ Usage: rebyte env delete KEY
+`);
+        process.exit(1);
+      }
+      console.log(`
+⚠️  Runtime env vars not yet implemented.`);
+      console.log(`   Remove from .env.production and redeploy.
+`);
+    } else {
+      console.error(`
+❌ Unknown action: ${action}`);
+      console.error(`   Available: list, set, delete
+`);
+      process.exit(1);
+    }
+  } catch (err) {
+    console.error(`
+❌ Error: ${err.message}
 `);
     process.exit(1);
   }

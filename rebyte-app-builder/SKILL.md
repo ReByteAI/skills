@@ -10,11 +10,15 @@ triggers:
   - deploy nuxt
   - deploy sveltekit
   - deploy remix
+  - deploy astro
+  - deploy gatsby
+  - deploy static site
+  - deploy html
 ---
 
 # Rebyte App Builder
 
-## Supported Frameworks
+## SSR Frameworks (Lambda + S3)
 
 | Framework | Adapter | Guide |
 |-----------|---------|-------|
@@ -23,15 +27,25 @@ triggers:
 | SvelteKit | svelte-kit-sst | [sveltekit.md](frameworks/sveltekit.md) |
 | Remix | @remix-run/architect | [remix.md](frameworks/remix.md) |
 
+## Static Frameworks (S3 only)
+
+| Framework | Guide |
+|-----------|-------|
+| Astro | [astro.md](frameworks/astro.md) |
+| Gatsby | [gatsby.md](frameworks/gatsby.md) |
+| Static HTML | [static-html.md](frameworks/static-html.md) |
+
 ## Workflow
 
 ### 1. Build
 
-Follow the framework guide to configure Lambda adapter, then:
+Follow the framework guide, then:
 
 ```bash
 npm run build
 ```
+
+(Skip for static HTML - no build needed)
 
 ### 2. Deploy
 
@@ -41,7 +55,7 @@ node bin/rebyte.js deploy
 
 Output includes the live URL.
 
-### 3. Logs
+### 3. Logs (SSR only)
 
 ```bash
 node bin/rebyte.js logs
@@ -54,9 +68,6 @@ Use Chrome DevTools MCP:
 ```javascript
 mcp__chrome-devtools__navigate_page({ url: "https://your-app.rebyte.pro" })
 mcp__chrome-devtools__take_snapshot()
-
-mcp__chrome-devtools__navigate_page({ url: "https://your-app.rebyte.pro/api/data" })
-mcp__chrome-devtools__take_snapshot()
 ```
 
 ## CLI Reference
@@ -65,7 +76,7 @@ mcp__chrome-devtools__take_snapshot()
 |---------|-------------|
 | `node bin/rebyte.js deploy` | Deploy to production |
 | `node bin/rebyte.js info` | Get deployment URL |
-| `node bin/rebyte.js logs` | View Lambda logs |
+| `node bin/rebyte.js logs` | View Lambda logs (SSR only) |
 | `node bin/rebyte.js delete` | Remove deployment |
 | `node bin/rebyte.js env set KEY=value` | Set env var |
 | `node bin/rebyte.js env list` | List env vars |

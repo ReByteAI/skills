@@ -1,27 +1,26 @@
-# SvelteKit
+# Remix
 
-**Adapter:** svelte-kit-sst + esbuild
+**Adapter:** @remix-run/architect + esbuild
 
 ## Install
 
 ```bash
-npm install -D svelte-kit-sst esbuild
+npm install @remix-run/architect
+npm install -D esbuild
 ```
 
 ## Configure
 
-Update `svelte.config.js`:
+Update `vite.config.ts`:
 
-```javascript
-import adapter from 'svelte-kit-sst';
+```typescript
+import { vitePlugin as remix } from "@remix-run/dev";
+import { defineConfig } from "vite";
 
-const config = {
-  kit: {
-    adapter: adapter()
-  }
-};
-
-export default config;
+export default defineConfig({
+  plugins: [remix({ serverBuildFile: "index.js" })],
+  build: { target: "node20" },
+});
 ```
 
 Create `scripts/bundle-lambda.js`:
@@ -29,28 +28,37 @@ Create `scripts/bundle-lambda.js`:
 ```javascript
 #!/usr/bin/env node
 import { build } from 'esbuild';
-import { cpSync, mkdirSync, rmSync, existsSync } from 'fs';
+import { cpSync, mkdirSync, rmSync, existsSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
-const sstOutput = join(projectRoot, '.svelte-kit', 'svelte-kit-sst');
+const serverDir = join(projectRoot, 'build', 'server');
+const clientDir = join(projectRoot, 'build', 'client');
 const deployDir = join(projectRoot, 'deploy');
 
 if (existsSync(deployDir)) rmSync(deployDir, { recursive: true });
 mkdirSync(join(deployDir, 'static'), { recursive: true });
 mkdirSync(join(deployDir, 'function'), { recursive: true });
 
-cpSync(join(sstOutput, 'client'), join(deployDir, 'static'), { recursive: true });
+cpSync(clientDir, join(deployDir, 'static'), { recursive: true });
+
+const entry = join(deployDir, 'function', '_entry.js');
+writeFileSync(entry, `
+import { createRequestHandler } from '@remix-run/architect';
+import * as build from '${join(serverDir, 'index.js').replace(/\\/g, '/')}';
+export const handler = createRequestHandler({ build, mode: 'production' });
+`);
 
 await build({
-  entryPoints: [join(sstOutput, 'server', 'lambda-handler', 'index.js')],
+  entryPoints: [entry],
   bundle: true,
   platform: 'node',
   target: 'node20',
   format: 'esm',
   outfile: join(deployDir, 'function', 'index.mjs'),
+  external: ['@aws-sdk/*'],
   banner: {
     js: `import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
@@ -60,6 +68,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);`
   }
 });
+
+rmSync(entry);
 ```
 
 Update `package.json`:
@@ -67,7 +77,7 @@ Update `package.json`:
 ```json
 {
   "scripts": {
-    "build": "vite build && node scripts/bundle-lambda.js"
+    "build": "remix vite:build && node scripts/bundle-lambda.js"
   }
 }
 ```

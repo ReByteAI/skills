@@ -1,45 +1,71 @@
 ---
 name: rebyte-app-builder
-description: Build and deploy web applications on Rebyte. Use when user wants to deploy a web app.
+description: Deploy full-stack web apps to Rebyte (Lambda + S3/CloudFront)
+triggers:
+  - deploy to rebyte
+  - rebyte deploy
+  - deploy to lambda
+  - serverless deploy
+  - deploy next.js
+  - deploy nuxt
+  - deploy sveltekit
+  - deploy remix
 ---
 
 # Rebyte App Builder
 
-Deploy web applications to Rebyte infrastructure (like Vercel).
+## Supported Frameworks
 
-## The Flow
+| Framework | Adapter | Guide |
+|-----------|---------|-------|
+| Next.js | OpenNext | [nextjs.md](frameworks/nextjs.md) |
+| Nuxt | Nitro aws-lambda | [nuxt.md](frameworks/nuxt.md) |
+| SvelteKit | svelte-kit-sst | [sveltekit.md](frameworks/sveltekit.md) |
+| Remix | @remix-run/architect | [remix.md](frameworks/remix.md) |
 
-1. **You have code** - An existing project or new one
-2. **Make it compatible** - Follow the framework guide if needed
-3. **Deploy** - Run `node bin/rebyte.js deploy`
-4. **Get the URL** - The CLI prints the live URL
+## Workflow
 
-## CLI Commands
+### 1. Build
 
-Run `node bin/rebyte.js --help` for full usage.
+Follow the framework guide to configure Lambda adapter, then:
 
-| Command | What it does |
-|---------|--------------|
-| `deploy` | Build and deploy |
-| `info` | Get deployment status and URL |
-| `delete` | Remove deployment |
-| `env` | Manage environment variables |
+```bash
+npm run build
+```
 
-## Framework Guides
+### 2. Deploy
 
-Each framework may need specific configuration. Read the guide before deploying:
+```bash
+node bin/rebyte.js deploy
+```
 
-| Framework | Guide |
-|-----------|-------|
-| Next.js | [frameworks/nextjs.md](frameworks/nextjs.md) |
-| Vite | [frameworks/vite.md](frameworks/vite.md) |
-| Nuxt | [frameworks/nuxt.md](frameworks/nuxt.md) |
-| Astro | [frameworks/astro.md](frameworks/astro.md) |
-| SvelteKit | [frameworks/sveltekit.md](frameworks/sveltekit.md) |
-| Gatsby | [frameworks/gatsby.md](frameworks/gatsby.md) |
+Output includes the live URL.
 
-## Critical Rules
+### 3. Logs
 
-- **RUN the command** - Don't just show `rebyte deploy`, actually execute it
-- **Use real URLs only** - The URL comes from CLI output, never make one up
-- **No dev servers** - User can't access localhost
+```bash
+node bin/rebyte.js logs
+```
+
+### 4. Test
+
+Use Chrome DevTools MCP:
+
+```javascript
+mcp__chrome-devtools__navigate_page({ url: "https://your-app.rebyte.pro" })
+mcp__chrome-devtools__take_snapshot()
+
+mcp__chrome-devtools__navigate_page({ url: "https://your-app.rebyte.pro/api/data" })
+mcp__chrome-devtools__take_snapshot()
+```
+
+## CLI Reference
+
+| Command | Description |
+|---------|-------------|
+| `node bin/rebyte.js deploy` | Deploy to production |
+| `node bin/rebyte.js info` | Get deployment URL |
+| `node bin/rebyte.js logs` | View Lambda logs |
+| `node bin/rebyte.js delete` | Remove deployment |
+| `node bin/rebyte.js env set KEY=value` | Set env var |
+| `node bin/rebyte.js env list` | List env vars |

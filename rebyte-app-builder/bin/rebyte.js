@@ -25891,47 +25891,8 @@ async function runSSRBuild(projectDir, detection, verbose) {
   const [cmd, ...args] = parts.slice(cmdStart);
   await runCommand(cmd, args, projectDir, verbose, envVars);
 }
-function isBuildStale(projectDir, outputDir) {
-  if (!fs2.existsSync(outputDir)) {
-    return true;
-  }
-  const outputStat = fs2.statSync(outputDir);
-  const outputMtime = outputStat.mtime.getTime();
-  const sourceFiles = [
-    "package.json",
-    "src",
-    "app",
-    "pages",
-    "components",
-    "next.config.js",
-    "next.config.ts",
-    "next.config.mjs",
-    "vite.config.ts",
-    "vite.config.js",
-    "nuxt.config.ts",
-    "astro.config.mjs"
-  ];
-  for (const file of sourceFiles) {
-    const filePath = path2.join(projectDir, file);
-    if (fs2.existsSync(filePath)) {
-      const stat = fs2.statSync(filePath);
-      if (stat.mtime.getTime() > outputMtime) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
 async function build(detection, options) {
-  const { projectDir, skipInstall, verbose = false } = options;
-  let { skipBuild } = options;
-  const outputDir = path2.join(projectDir, getOutputDirectory(detection));
-  if (skipBuild && fs2.existsSync(outputDir)) {
-    if (isBuildStale(projectDir, outputDir)) {
-      console.log("⚠️  Build output is stale (source files changed). Rebuilding...");
-      skipBuild = false;
-    }
-  }
+  const { projectDir, skipInstall, skipBuild, verbose = false } = options;
   if (!skipInstall) {
     await installDependencies(projectDir, detection, verbose);
   }
@@ -25941,6 +25902,7 @@ async function build(detection, options) {
   if (detection.isSSR) {
     await runSSRBuild(projectDir, detection, verbose);
   }
+  const outputDir = path2.join(projectDir, getOutputDirectory(detection));
   const hasOpenNext = detection.isSSR && detection.framework.slug === "nextjs";
   if (!fs2.existsSync(outputDir)) {
     throw new Error(`Build output not found at "${outputDir}". ` + `Make sure the build command completed successfully.`);
@@ -25958,217 +25920,36 @@ import * as fs3 from "fs";
 import * as path3 from "path";
 
 // dist/manifest.js
-function createStaticManifest(framework) {
+function createFunctionConfig(handler = "index.handler") {
   return {
-    version: 1,
-    framework,
-    mode: "static",
-    static: {
-      directory: "static"
-    },
-    routes: [
-      {
-        src: "^/(.*)$",
-        dest: "/static/$1",
-        type: "static"
-      }
-    ],
-    headers: {
-      "/*": {
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "DENY",
-        "X-XSS-Protection": "1; mode=block"
-      }
-    }
-  };
-}
-function createNextJsSSRManifest() {
-  return {
-    version: 1,
-    framework: "nextjs",
-    mode: "ssr",
-    static: {
-      directory: "static"
-    },
-    functions: {
-      default: {
-        directory: "functions/default",
-        handler: "index.handler",
-        runtime: "nodejs20.x",
-        memory: 1024,
-        timeout: 30
-      }
-    },
-    routes: [
-      {
-        src: "^/_next/static/(.*)$",
-        dest: "/static/_next/static/$1",
-        type: "static"
-      },
-      {
-        src: "^/(favicon\\.ico|robots\\.txt|sitemap\\.xml)$",
-        dest: "/static/$1",
-        type: "static"
-      },
-      {
-        src: "^/(.*)$",
-        dest: "default",
-        type: "function",
-        fallback: true
-      }
-    ],
-    headers: {
-      "/_next/static/*": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "/*": {
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "DENY",
-        "X-XSS-Protection": "1; mode=block"
-      }
-    }
-  };
-}
-function createReactRouterSSRManifest() {
-  return {
-    version: 1,
-    framework: "react-router",
-    mode: "ssr",
-    static: {
-      directory: "static"
-    },
-    functions: {
-      default: {
-        directory: "functions/default",
-        handler: "handler.handler",
-        runtime: "nodejs20.x",
-        memory: 512,
-        timeout: 30
-      }
-    },
-    routes: [
-      {
-        src: "^/assets/(.*)$",
-        dest: "/static/assets/$1",
-        type: "static"
-      },
-      {
-        src: "^/(favicon\\.ico|robots\\.txt|sitemap\\.xml)$",
-        dest: "/static/$1",
-        type: "static"
-      },
-      {
-        src: "^/(.*)$",
-        dest: "default",
-        type: "function",
-        fallback: true
-      }
-    ],
-    headers: {
-      "/assets/*": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "/*": {
-        "X-Content-Type-Options": "nosniff",
-        "X-Frame-Options": "DENY",
-        "X-XSS-Protection": "1; mode=block"
-      }
-    }
-  };
-}
-function createNuxtSSRManifest() {
-  return {
-    version: 1,
-    framework: "nuxt",
-    mode: "ssr",
-    static: {
-      directory: "static"
-    },
-    functions: {
-      default: {
-        directory: "functions/default",
-        handler: "index.handler",
-        runtime: "nodejs20.x",
-        memory: 512,
-        timeout: 30
-      }
-    },
-    routes: [
-      {
-        src: "^/_nuxt/(.*)$",
-        dest: "/static/_nuxt/$1",
-        type: "static"
-      },
-      {
-        src: "^/(.*)$",
-        dest: "default",
-        type: "function",
-        fallback: true
-      }
-    ],
-    headers: {
-      "/_nuxt/*": {
-        "Cache-Control": "public, max-age=31536000, immutable"
-      }
-    }
+    handler,
+    runtime: "nodejs20.x",
+    memory: 1024,
+    timeout: 30
   };
 }
 
 // dist/package.js
 async function createPackage(buildResult, detection) {
-  const manifest = createManifest(detection);
-  const zipBuffer = await createZip(buildResult, detection, manifest);
-  return { zipBuffer, manifest };
-}
-function createManifest(detection) {
-  const { framework, isSSR } = detection;
-  if (!isSSR) {
-    return createStaticManifest(framework.slug);
-  }
-  switch (framework.slug) {
-    case "nextjs":
-      return createNextJsSSRManifest();
-    case "nuxt":
-      return createNuxtSSRManifest();
-    case "react-router":
-      return createReactRouterSSRManifest();
-    default:
-      return createGenericSSRManifest(framework.slug);
-  }
-}
-function createGenericSSRManifest(framework) {
+  const { isSSR } = detection;
+  const functionConfig = isSSR ? getFunctionConfig(detection) : undefined;
+  const zipBuffer = await createZip(buildResult, detection, functionConfig);
   return {
-    version: 1,
-    framework,
-    mode: "ssr",
-    static: {
-      directory: "static"
-    },
-    functions: {
-      default: {
-        directory: "functions/default",
-        handler: "index.handler",
-        runtime: "nodejs20.x",
-        memory: 512,
-        timeout: 30
-      }
-    },
-    routes: [
-      {
-        src: "^/assets/(.*)$",
-        dest: "/static/assets/$1",
-        type: "static"
-      },
-      {
-        src: "^/(.*)$",
-        dest: "default",
-        type: "function",
-        fallback: true
-      }
-    ]
+    zipBuffer,
+    hasFunction: isSSR,
+    functionConfig
   };
 }
-async function createZip(buildResult, detection, manifest) {
+function getFunctionConfig(detection) {
+  const { framework } = detection;
+  switch (framework.slug) {
+    case "react-router":
+      return createFunctionConfig("handler.handler");
+    default:
+      return createFunctionConfig("index.handler");
+  }
+}
+async function createZip(buildResult, detection, functionConfig) {
   const chunks = [];
   const archive = import_archiver.default("zip", {
     zlib: { level: 9 }
@@ -26178,14 +25959,13 @@ async function createZip(buildResult, detection, manifest) {
     archive.on("end", () => resolve(Buffer.concat(chunks)));
     archive.on("error", reject);
   });
-  archive.append(JSON.stringify(manifest, null, 2), { name: "rebyte.json" });
   const { framework, isSSR } = detection;
   if (!isSSR) {
     addStaticToZip(archive, buildResult.outputDir);
   } else if (buildResult.hasOpenNext) {
-    addOpenNextToZip(archive, buildResult.outputDir);
+    addOpenNextToZip(archive, buildResult.outputDir, functionConfig);
   } else {
-    addSSRToZip(archive, buildResult.outputDir, framework.slug);
+    addSSRToZip(archive, buildResult.outputDir, framework.slug, functionConfig);
   }
   const projectRoot = path3.dirname(buildResult.outputDir);
   const envFile = path3.join(projectRoot, ".env.production");
@@ -26195,7 +25975,7 @@ async function createZip(buildResult, detection, manifest) {
   archive.finalize();
   return archivePromise;
 }
-function addOpenNextToZip(archive, openNextDir) {
+function addOpenNextToZip(archive, openNextDir, functionConfig) {
   const assetsDir = path3.join(openNextDir, "assets");
   const cacheDir = path3.join(openNextDir, "cache");
   const serverDir = path3.join(openNextDir, "server-functions", "default");
@@ -26206,10 +25986,11 @@ function addOpenNextToZip(archive, openNextDir) {
     archive.directory(cacheDir, "static/_cache");
   }
   if (fs3.existsSync(serverDir)) {
-    archive.directory(serverDir, "functions/default");
+    archive.directory(serverDir, "function");
+    archive.append(JSON.stringify(functionConfig, null, 2), { name: "function/config.json" });
   }
 }
-function addSSRToZip(archive, outputDir, framework) {
+function addSSRToZip(archive, outputDir, framework, functionConfig) {
   const projectRoot = path3.dirname(outputDir);
   let clientDir;
   let serverDir;
@@ -26241,7 +26022,8 @@ function addSSRToZip(archive, outputDir, framework) {
     console.warn(`Warning: Client directory not found: ${clientDir}`);
   }
   if (fs3.existsSync(serverDir)) {
-    archive.directory(serverDir, "functions/default");
+    archive.directory(serverDir, "function");
+    archive.append(JSON.stringify(functionConfig, null, 2), { name: "function/config.json" });
   } else {
     console.warn(`Warning: Server directory not found: ${serverDir}`);
     console.warn(`Make sure your framework is configured to target Lambda.`);
@@ -26313,11 +26095,11 @@ async function triggerDeploy(apiUrl, apiToken, deployId) {
 async function deploy(buildResult, detection, options) {
   const { apiUrl, apiToken, prefix } = options;
   console.log("\uD83D\uDCE6 Creating deployment package...");
-  const { zipBuffer, manifest } = await createPackage(buildResult, detection);
+  const { zipBuffer, hasFunction, functionConfig } = await createPackage(buildResult, detection);
   console.log(`   Package size: ${(zipBuffer.length / 1024 / 1024).toFixed(2)} MB`);
-  console.log(`   Mode: ${manifest.mode}`);
-  if (manifest.functions) {
-    console.log(`   Functions: ${Object.keys(manifest.functions).join(", ")}`);
+  console.log(`   Type: ${hasFunction ? "server" : "static"}`);
+  if (hasFunction && functionConfig) {
+    console.log(`   Handler: ${functionConfig.handler}`);
   }
   console.log("\uD83D\uDD17 Getting upload URL...");
   const { deployId, uploadUrl } = await getUploadUrl(apiUrl, apiToken, prefix);

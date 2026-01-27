@@ -2,14 +2,13 @@
 
 **Adapter:** @remix-run/architect + esbuild
 
-## Install
+## Initialize New Project
 
 ```bash
+npx create-remix@latest . --template remix-run/remix/templates/remix
 npm install @remix-run/architect
 npm install -D esbuild
 ```
-
-## Configure
 
 Update `vite.config.ts`:
 
@@ -36,15 +35,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
 const serverDir = join(projectRoot, 'build', 'server');
 const clientDir = join(projectRoot, 'build', 'client');
-const deployDir = join(projectRoot, 'deploy');
+const rebyteDir = join(projectRoot, '.rebyte');
 
-if (existsSync(deployDir)) rmSync(deployDir, { recursive: true });
-mkdirSync(join(deployDir, 'static'), { recursive: true });
-mkdirSync(join(deployDir, 'function'), { recursive: true });
+if (existsSync(rebyteDir)) rmSync(rebyteDir, { recursive: true });
+mkdirSync(join(rebyteDir, 'static'), { recursive: true });
+mkdirSync(join(rebyteDir, 'function'), { recursive: true });
 
-cpSync(clientDir, join(deployDir, 'static'), { recursive: true });
+cpSync(clientDir, join(rebyteDir, 'static'), { recursive: true });
 
-const entry = join(deployDir, 'function', '_entry.js');
+const entry = join(rebyteDir, 'function', '_entry.js');
 writeFileSync(entry, `
 import { createRequestHandler } from '@remix-run/architect';
 import * as build from '${join(serverDir, 'index.js').replace(/\\/g, '/')}';
@@ -57,7 +56,7 @@ await build({
   platform: 'node',
   target: 'node20',
   format: 'esm',
-  outfile: join(deployDir, 'function', 'index.mjs'),
+  outfile: join(rebyteDir, 'function', 'index.mjs'),
   external: ['@aws-sdk/*'],
   banner: {
     js: `import { createRequire } from 'module';
@@ -70,6 +69,8 @@ const __dirname = dirname(__filename);`
 });
 
 rmSync(entry);
+
+console.log("Build output ready at .rebyte/");
 ```
 
 Update `package.json`:
@@ -88,10 +89,49 @@ Update `package.json`:
 npm run build
 ```
 
-## Output
+## Verify Build
 
+```bash
+ls .rebyte/static/
+ls .rebyte/function/index.mjs
 ```
-deploy/
-├── static/   # Static files → S3
-└── function/ # Lambda handler (index.mjs)
+
+## Key Code Patterns
+
+### SSR Page
+
+```tsx
+// app/routes/ssr.tsx
+import { useLoaderData } from "@remix-run/react";
+
+export function loader() {
+  return { serverTime: Date.now() };
+}
+
+export default function SSRPage() {
+  const data = useLoaderData<typeof loader>();
+  return <p data-testid="ssr-servertime">{data.serverTime}</p>;
+}
 ```
+
+### API Route
+
+```tsx
+// app/routes/api.data.tsx
+import { json } from "@remix-run/node";
+
+export function loader() {
+  return json({
+    timestamp: new Date().toISOString(),
+    serverTime: Date.now()
+  });
+}
+```
+
+## Troubleshooting
+
+| Error | Fix |
+|-------|-----|
+| `@remix-run/architect not found` | `npm install @remix-run/architect` |
+| `build/server not found` | Run `remix vite:build` first |
+| API returns 404 | Check route naming: `api.data.tsx` → `/api/data` |

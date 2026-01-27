@@ -1,17 +1,58 @@
 # Nuxt
 
-**Adapter:** Nitro `aws-lambda` preset (built-in)
+**Adapter:** Nitro with `aws-lambda` preset (built-in)
 
-## Configure
+## Initialize New Project
 
-Add to `nuxt.config.ts`:
+```bash
+npx nuxi init . --packageManager npm
+npm install
+```
+
+Update `nuxt.config.ts`:
 
 ```typescript
 export default defineNuxtConfig({
+  compatibilityDate: '2024-10-24',
   nitro: {
     preset: 'aws-lambda'
   }
 });
+```
+
+Create `scripts/package-deploy.js`:
+
+```javascript
+#!/usr/bin/env node
+import { cpSync, mkdirSync, rmSync, existsSync, writeFileSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const projectRoot = join(__dirname, "..");
+const outputDir = join(projectRoot, ".output");
+const rebyteDir = join(projectRoot, ".rebyte");
+
+if (existsSync(rebyteDir)) rmSync(rebyteDir, { recursive: true });
+mkdirSync(join(rebyteDir, "static"), { recursive: true });
+mkdirSync(join(rebyteDir, "function"), { recursive: true });
+
+cpSync(join(outputDir, "public"), join(rebyteDir, "static"), { recursive: true });
+cpSync(join(outputDir, "server"), join(rebyteDir, "function"), { recursive: true });
+
+writeFileSync(join(rebyteDir, "function", "index.js"), `export { handler } from './index.mjs';`);
+
+console.log("Build output ready at .rebyte/");
+```
+
+Update `package.json`:
+
+```json
+{
+  "scripts": {
+    "build": "nuxt build && node scripts/package-deploy.js"
+  }
+}
 ```
 
 ## Build
@@ -20,10 +61,43 @@ export default defineNuxtConfig({
 npm run build
 ```
 
-## Output
+## Verify Build
 
+```bash
+ls .rebyte/static/
+ls .rebyte/function/
 ```
-.output/
-├── public/  # Static files → S3
-└── server/  # Lambda handler (index.mjs)
+
+## Key Code Patterns
+
+### SSR Page
+
+```vue
+<!-- pages/ssr.vue -->
+<template>
+  <p data-testid="ssr-servertime">{{ serverTime }}</p>
+</template>
+
+<script setup>
+const serverTime = useState('serverTime', () => Date.now());
+</script>
 ```
+
+### API Route
+
+```typescript
+// server/api/data.ts
+export default defineEventHandler(() => {
+  return {
+    timestamp: new Date().toISOString(),
+    serverTime: Date.now()
+  };
+});
+```
+
+## Troubleshooting
+
+| Error | Fix |
+|-------|-----|
+| Missing Lambda output | Add `nitro.preset: 'aws-lambda'` |
+| API returns HTML | File must be in `server/api/` |

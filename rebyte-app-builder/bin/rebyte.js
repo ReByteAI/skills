@@ -25518,7 +25518,7 @@ var {
   Help
 } = import__.default;
 
-// dist/deploy.js
+// src/deploy.ts
 async function getUploadUrl(apiUrl, apiToken, prefix) {
   const body = {};
   if (prefix) {
@@ -25627,8 +25627,30 @@ async function deleteDeployment(apiUrl, apiToken, prefix) {
   }
   return await response.json();
 }
+async function getDeploymentLogs(apiUrl, apiToken, prefix, minutes) {
+  const body = {};
+  if (prefix) {
+    body.id = prefix;
+  }
+  if (minutes) {
+    body.minutes = minutes;
+  }
+  const response = await fetch(`${apiUrl}/api/data/aws/get-logs`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${apiToken}`
+    },
+    body: JSON.stringify(body)
+  });
+  if (!response.ok) {
+    const text = await response.text();
+    throw new Error(`Failed to get logs: ${response.status} ${text}`);
+  }
+  return await response.json();
+}
 
-// dist/package.js
+// src/package.ts
 var import_archiver = __toESM(require_archiver(), 1);
 import * as fs from "fs";
 import * as path from "path";
@@ -25756,7 +25778,7 @@ async function scanAndPackage(outputDir) {
   };
 }
 
-// dist/detect.js
+// src/detect.ts
 import * as fs2 from "fs";
 import * as path2 from "path";
 function detectFramework(projectDir) {
@@ -25895,11 +25917,11 @@ function getFrameworkDescription(framework) {
   return parts.join(" ");
 }
 
-// dist/transform.js
+// src/transform.ts
 import * as fs3 from "fs";
 import * as path3 from "path";
 async function transformBuildOutput(projectDir, framework) {
-  const outputDir = path3.join(projectDir, ".rebyte", "output");
+  const outputDir = path3.join(projectDir, ".rebyte");
   if (fs3.existsSync(outputDir)) {
     fs3.rmSync(outputDir, { recursive: true });
   }
@@ -26321,7 +26343,7 @@ function countFiles(dir) {
   return count;
 }
 
-// dist/cli.js
+// src/cli.ts
 import { execSync } from "child_process";
 import * as path4 from "path";
 import * as fs4 from "fs";
@@ -26400,7 +26422,7 @@ Package:
 `);
 }
 program.name("rebyte").description("Deploy web applications to Rebyte infrastructure").version(VERSION);
-program.command("build").description("Detect framework, run build, and transform to .rebyte/output/").option("-d, --dir <path>", "Project directory", ".").option("--skip-build", "Skip running the build command (use existing build output)").action(async (options) => {
+program.command("build").description("Detect framework, run build, and transform to .rebyte/").option("-d, --dir <path>", "Project directory", ".").option("--skip-build", "Skip running the build command (use existing build output)").action(async (options) => {
   try {
     const projectDir = path4.resolve(options.dir);
     console.log("Detecting framework...");
@@ -26425,7 +26447,7 @@ program.command("build").description("Detect framework, run build, and transform
     console.log(`
 Build Complete
 --------------
-Output directory: .rebyte/output/
+Output directory: .rebyte/
 Static files:     ${result.staticFileCount}
 Functions:        ${result.functionCount}
 Routes:           ${result.config.routes.length}
@@ -26437,18 +26459,18 @@ Next step: Run 'rebyte deploy' to deploy your site.
     process.exit(1);
   }
 });
-program.command("deploy").description("Deploy the .rebyte/output/ directory").option("-d, --dir <path>", "Project directory", ".").option("-p, --prefix <name>", "Deployment prefix (for multiple sites per workspace)").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (options) => {
+program.command("deploy").description("Deploy the .rebyte/ directory").option("-d, --dir <path>", "Project directory", ".").option("-p, --prefix <name>", "Deployment prefix (for multiple sites per workspace)").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (options) => {
   try {
     const projectDir = path4.resolve(options.dir);
-    const outputDir = path4.join(projectDir, ".rebyte", "output");
+    const outputDir = path4.join(projectDir, ".rebyte");
     const configPath = path4.join(outputDir, "config.json");
     if (!fs4.existsSync(configPath)) {
-      console.error("Error: No .rebyte/output/config.json found");
+      console.error("Error: No .rebyte/config.json found");
       console.error("");
       console.error('Run "rebyte build" first to generate the build output.');
       console.error("");
       console.error("Expected structure:");
-      console.error("  .rebyte/output/");
+      console.error("  .rebyte/");
       console.error("  ├── config.json        # Routes and framework config (required)");
       console.error("  ├── static/            # Static files");
       console.error("  └── functions/         # Lambda functions (optional)");
@@ -26466,7 +26488,7 @@ program.command("deploy").description("Deploy the .rebyte/output/ directory").op
       console.error("   For testing: Set REBYTE_API_TOKEN environment variable");
       process.exit(1);
     }
-    console.log("Scanning .rebyte/output/ directory...");
+    console.log("Scanning .rebyte/ directory...");
     const pkg = await scanAndPackage(outputDir);
     console.log(`   Static files: ${pkg.static.count}`);
     console.log(`   Functions: ${pkg.function.exists ? "yes" : "no"}`);
@@ -26538,6 +26560,54 @@ program.command("delete").description("Delete deployment and all associated reso
       }
     } else {
       console.log(result.message);
+    }
+    console.log("");
+  } catch (err) {
+    console.error(`Error: ${err.message}`);
+    process.exit(1);
+  }
+});
+program.command("logs").description("Get Lambda function logs for SSR/API deployments").option("-p, --prefix <name>", "Deployment prefix").option("-m, --minutes <number>", "Time range in minutes (default: 5, max: 480)", "5").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (options) => {
+  try {
+    const auth = getAuthCredentials();
+    const apiUrl = options.apiUrl || auth.apiUrl;
+    const apiToken = options.apiToken || auth.apiToken;
+    if (!apiToken) {
+      console.error("Error: No API token found.");
+      process.exit(1);
+    }
+    const minutes = Math.min(Math.max(parseInt(options.minutes, 10) || 5, 1), 480);
+    console.log(`Fetching logs (last ${minutes} minutes)...`);
+    const result = await getDeploymentLogs(apiUrl, apiToken, options.prefix, minutes);
+    if (result.message) {
+      console.log(result.message);
+      process.exit(0);
+    }
+    console.log("");
+    console.log("Deployment Logs");
+    console.log("───────────────");
+    console.log(`Deploy ID:  ${result.deployId}`);
+    console.log(`Mode:       ${result.mode}`);
+    if (result.functionName) {
+      console.log(`Function:   ${result.functionName}`);
+    }
+    if (result.timeRange) {
+      console.log(`Time range: ${result.timeRange.start} to ${result.timeRange.end}`);
+    }
+    console.log("");
+    if (result.entries.length === 0) {
+      console.log("No log entries found in this time range.");
+    } else {
+      console.log(`Log entries (${result.entryCount}${result.hasMore ? "+" : ""}):`);
+      console.log("");
+      for (const entry of result.entries) {
+        const timestamp = entry.timestamp ? `[${entry.timestamp}] ` : "";
+        console.log(`${timestamp}${entry.message}`);
+      }
+    }
+    if (result.hasMore) {
+      console.log("");
+      console.log("(More entries available - increase --minutes to see more)");
     }
     console.log("");
   } catch (err) {

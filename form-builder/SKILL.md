@@ -12,7 +12,7 @@ Build production-ready, Typeform-style forms using the Composer API.
 **A form task is NOT complete until:**
 1. ✅ Form backend created (POST /api/forms/create)
 2. ✅ HTML file saved as `index.html`
-3. ✅ **Invoke the `web-app-deploy` skill** to deploy the form
+3. ✅ **Invoke the `rebyte-app-builder` skill** to deploy the form
 4. ✅ BOTH URLs shared with user: **Form URL** (from deployment) AND **Admin URL** (from form creation API)
 
 **NEVER tell the user the form is "done" without completing ALL steps.**
@@ -341,7 +341,7 @@ To collect responses, you need to:
 1. Create a form backend (stores submissions)
 2. Add `postUrl` to your HTML form
 3. Save HTML as `index.html`
-4. **Invoke the `web-app-deploy` skill** to deploy
+4. **Invoke the `rebyte-app-builder` skill** to deploy
 
 ### Complete Workflow
 
@@ -390,13 +390,13 @@ const composer = new Composer({
 #### Step 3: Save and Deploy
 
 1. Save the form HTML as `index.html`
-2. **Invoke the `web-app-deploy` skill** to deploy it
+2. **Invoke the `rebyte-app-builder` skill** to deploy it
 3. The skill will handle ZIP creation, upload, and deployment
 
 ### Final URLs to Share
 
 After deployment, you'll have:
-- **Form URL**: From the `web-app-deploy` skill output - Share with respondents
+- **Form URL**: From the `rebyte-app-builder` skill output - Share with respondents
 - **Admin URL**: From the form creation API response (Step 1) - View responses in spreadsheet
 
 ### Viewing Results
@@ -411,7 +411,7 @@ After deployment, you'll have:
 
 When you finish building and deploying a form, you **MUST** tell the user both URLs:
 
-1. **Form URL** (for respondents): From the `web-app-deploy` skill output
+1. **Form URL** (for respondents): From the `rebyte-app-builder` skill output
 2. **Admin URL** (for viewing results): From the form creation API response (Step 1)
 
 **Never forget the Admin URL** - without it, the user cannot see their form submissions!

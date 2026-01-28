@@ -1,49 +1,78 @@
 ---
 name: rebyte-app-builder
-description: Full development lifecycle for web apps on Rebyte. Handles build, deploy, logs, and testing for SSR frameworks (Next.js, Nuxt, SvelteKit, Remix) and static sites (Astro, Gatsby, HTML).
+description: Use when user says "rebyte deploy" or asks to deploy to Rebyte. Full Vercel-compatible hosting platform on AWS. Supports static sites (Vite, Astro, Gatsby), SSR frameworks (Next.js, Nuxt, SvelteKit, Remix), and API functions (serverless endpoints). Uses Vercel Build Output API format.
 ---
 
 # Rebyte App Builder
 
-Complete development lifecycle for deploying and testing web applications on Rebyte.
+Complete development lifecycle for deploying and testing full-stack applications on Rebyte.
 
 ## About Rebyte Hosting
 
-Rebyte is a serverless hosting platform similar to Vercel or Netlify. It supports:
+Rebyte is a **Vercel-compatible hosting platform** built on AWS infrastructure. It implements the Vercel Build Output API, so any framework that works with Vercel works with Rebyte.
 
-- **Static sites** → Deployed to S3 + CloudFront CDN
-- **SSR apps** → Static assets on CDN + Lambda for server rendering
+### Infrastructure
 
-Unlike Vercel (which auto-detects frameworks), Rebyte uses a **fixed directory structure** similar to Netlify's approach. You build your app, place output in `.rebyte/`, and deploy.
+| Component | AWS Service | Purpose |
+|-----------|-------------|---------|
+| Static Assets | S3 + CloudFront | Global CDN with edge caching |
+| Server Functions | Lambda | SSR, API routes, serverless functions |
+| Routing | Lambda@Edge | Dynamic routing via config.json |
+| SSL | ACM | Automatic HTTPS for *.rebyte.pro |
+
+### Deployment Types
+
+| Type | Use Case | Example |
+|------|----------|---------|
+| **Static** | Pure frontend, no server | Vite, Astro, Gatsby, plain HTML |
+| **API** | Static + serverless functions | Landing page + Stripe webhooks |
+| **SSR** | Full server-side rendering | Next.js, Nuxt, SvelteKit, Remix |
 
 ### How It Works
 
 ```
-Your App → npm run build → .rebyte/ → rebyte deploy → Live URL
+Your App → npm run build → .rebyte/ → rebyte deploy → https://myapp-xyz.rebyte.pro
                               │
-                              ├── static/     → CDN (S3 + CloudFront)
-                              └── function/   → AWS Lambda (SSR only)
+                              ├── config.json   → Lambda@Edge (routing)
+                              ├── static/       → S3 + CloudFront (CDN)
+                              └── functions/    → AWS Lambda (API/SSR)
 ```
 
 ## Supported Frameworks
 
-### SSR Frameworks (Static + Lambda)
+### SSR Frameworks (Full Server Rendering)
 
-| Framework | Adapter | Guide |
-|-----------|---------|-------|
-| Next.js | OpenNext | [frameworks/nextjs.md](frameworks/nextjs.md) |
-| Nuxt | Nitro aws-lambda | [frameworks/nuxt.md](frameworks/nuxt.md) |
-| SvelteKit | svelte-kit-sst | [frameworks/sveltekit.md](frameworks/sveltekit.md) |
-| Remix | @remix-run/architect | [frameworks/remix.md](frameworks/remix.md) |
+| Framework | Adapter | Output |
+|-----------|---------|--------|
+| **Next.js** | OpenNext | `.open-next/` |
+| **Nuxt** | Nitro aws-lambda preset | `.output/` |
+| **SvelteKit** | svelte-kit-sst | `.svelte-kit/svelte-kit-sst/` |
+| **Remix** | @remix-run/architect | `build/` |
 
-### Static Frameworks (CDN only)
+### Static Frameworks (CDN Only)
 
-| Framework | Output Dir | Guide |
-|-----------|------------|-------|
-| Astro | `dist/` | [frameworks/astro.md](frameworks/astro.md) |
-| Gatsby | `public/` | [frameworks/static.md](frameworks/static.md) |
-| Vite/React | `dist/` | [frameworks/static.md](frameworks/static.md) |
-| Plain HTML | `.` | [frameworks/static.md](frameworks/static.md) |
+| Framework | Build Command | Output |
+|-----------|---------------|--------|
+| **Vite** (React, Vue, Svelte) | `npm run build` | `dist/` |
+| **Astro** | `npm run build` | `dist/` |
+| **Gatsby** | `npm run build` | `public/` |
+| **Create React App** | `npm run build` | `build/` |
+| **Plain HTML** | (none) | `.` |
+
+### API Functions (Serverless)
+
+Any static site can add API functions:
+
+```
+.rebyte/
+├── config.json          # Routes /api/* to Lambda
+├── static/              # Your static site
+└── functions/
+    └── api.func/        # Serverless function
+        └── index.js     # exports { handler }
+```
+
+Use cases: Stripe webhooks, form handlers, database APIs, authentication endpoints.
 
 ## Build Output Format
 
@@ -51,15 +80,34 @@ All frameworks must produce `.rebyte/` directory:
 
 ```
 .rebyte/
+├── config.json       # REQUIRED → Routes configuration
 ├── static/           # REQUIRED → S3/CloudFront
 │   ├── index.html
 │   ├── assets/
 │   └── ...
-├── function/         # OPTIONAL → AWS Lambda (SSR only)
-│   ├── config.json   # { "handler": "index.handler" }
-│   └── index.mjs     # exports { handler }
+├── functions/        # OPTIONAL → Lambda functions (SSR/API)
+│   └── default.func/
+│       ├── .vc-config.json  # { "runtime": "nodejs20.x", "handler": "index.handler" }
+│       └── index.js
 └── .env.production   # OPTIONAL → environment variables
 ```
+
+### config.json (Required)
+
+```json
+{
+  "version": 1,
+  "routes": [
+    { "src": "^/api/(.*)$", "dest": "/functions/default" },
+    { "handle": "filesystem" },
+    { "src": "^/(.*)$", "dest": "/functions/default" }
+  ]
+}
+```
+
+Route types:
+- `{ "handle": "filesystem" }` - Serve from static/ if file exists
+- `{ "src": "^/pattern$", "dest": "/functions/name" }` - Route to Lambda
 
 ### Static Sites
 
@@ -120,12 +168,12 @@ node bin/rebyte.js deploy
 
 🚀 Deploying...
 
-Deployed to https://myapp-abc123.rebyte.pro
+Deployed to https://*.rebyte.pro
 
 Deployment Report:
 ──────────────────
 Mode:      ssr
-URL:       https://myapp-abc123.rebyte.pro
+URL:       https://*.rebyte.pro
 Deploy ID: myapp-abc123
 Status:    deployed
 
@@ -160,6 +208,8 @@ Environment:
 |---------|-------------|
 | `node bin/rebyte.js deploy` | Package and deploy `.rebyte/` |
 | `node bin/rebyte.js info` | Get deployment status and URL |
+| `node bin/rebyte.js logs` | Get Lambda function logs (SSR/API only) |
+| `node bin/rebyte.js logs -m 60` | Get logs from last 60 minutes (max: 480) |
 | `node bin/rebyte.js delete` | Remove deployment |
 
 ## Browser Testing
@@ -196,5 +246,29 @@ node bin/rebyte.js deploy
 | No `.rebyte/` | Build script | Add package step to build |
 | 0 static files | Copy command | Verify source directory |
 | Deploy fails | CLI output | Check error message |
-| 500 errors | Browser console | Check server code |
+| 500 errors | `node bin/rebyte.js logs` | Check Lambda logs for stack trace |
 | 404 errors | Routes | Check file naming |
+| API not working | `node bin/rebyte.js logs -m 30` | Check request/response logs |
+
+### Debugging with Logs
+
+For SSR and API deployments, use `rebyte logs` to inspect Lambda function errors:
+
+```bash
+# Check recent errors (last 5 minutes)
+node bin/rebyte.js logs
+
+# Check longer time range (last hour)
+node bin/rebyte.js logs -m 60
+
+# Check specific deployment
+node bin/rebyte.js logs -p mysite -m 30
+```
+
+**What logs show:**
+- Lambda function invocations
+- Request/response details
+- Stack traces for uncaught exceptions
+- Console.log output from your server code
+
+**Note:** Logs are only available for SSR/API deployments (not static sites).

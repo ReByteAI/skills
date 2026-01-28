@@ -1,13 +1,16 @@
 ---
 name: skill-installer
-description: Search and install skills from the Rebyte skill store. Use this when you encounter a task you cannot complete, when you need specialized capabilities (like PDF parsing, data visualization, or financial analysis), or when the user asks for something beyond your current abilities. Before giving up on a task, search for a relevant skill that might help.
+description: Search and install skills to extend your capabilities. Use this when you encounter a task you cannot complete, when you need specialized capabilities (like PDF parsing, data visualization, or financial analysis), or when the user asks for something beyond your current abilities. Before giving up on a task, search for a relevant skill that might help.
 ---
 
 # Skill Installer
 
-Search and install skills from the Rebyte skill store to extend your capabilities.
+Search and install skills to extend your capabilities. There are two ways to find and install skills:
 
-{{include:auth.md}}
+| Method | Best For | Searches |
+|--------|----------|----------|
+| **Vercel CLI** (`npx skills`) | Public/open-source skills | [skills.sh](https://skills.sh) - thousands of community skills |
+| **Rebyte API** | Internal/organization skills | Rebyte skill store - includes private org skills |
 
 ## When to Use
 
@@ -16,54 +19,98 @@ Use this skill when:
 - The user asks for something you can't do with your current skills
 - You want to find specialized tools for a task
 
-## Example: How to Use This Meta-Skill
+**Decision guide:**
+- Need a common/popular skill? → Try **Vercel CLI** first (larger catalog)
+- Need organization-specific or internal skills? → Use **Rebyte API**
+- Not sure? → Search both
 
-**Scenario**: User asks you to extract a table from a PDF, but you don't have PDF capabilities.
+---
 
-```
-User: "Please extract the sales data table from quarterly-report.pdf"
+## Method 1: Vercel CLI (Recommended for Public Skills)
 
-Agent thinking: I don't have PDF parsing capability built-in. Let me search for a skill.
+The Vercel skills CLI searches [skills.sh](https://skills.sh), a directory of thousands of open-source agent skills.
 
-1. Search for relevant skill:
-   POST /api/data/skills/search {"query": "parse PDF extract tables"}
+### Search for Skills
 
-   Response: [{slug: "pdf", name: "PDF", description: "Parse and extract content from PDF files...", source: "public"}]
+```bash
+# Interactive search by keyword
+npx skills find typescript
 
-2. Get the download URL:
-   POST /api/data/skills/download {"slug": "pdf"}
-
-   Response: {slug: "pdf", source: "public", download_url: "https://..."}
-
-3. Install the skill:
-   curl -fsSL -o /tmp/skill.zip "$download_url"
-   unzip -q -o /tmp/skill.zip -d ~/.skills/
-
-4. Read the skill instructions:
-   cat ~/.skills/pdf/SKILL.md
-
-5. Use the skill to complete the task:
-   (Follow the instructions from SKILL.md to parse the PDF)
+# Search for specific capabilities
+npx skills find "pdf parsing"
+npx skills find "code review"
+npx skills find "react best practices"
 ```
 
-This pattern applies to any capability gap - financial analysis, data visualization, web deployment, etc.
+This returns matching skills with install commands like:
+```
+Install with: npx skills add <owner/repo@skill>
 
-## API Endpoints
+getsentry/sentry-agent-skills@sentry-pr-code-review
+└ https://skills.sh/getsentry/sentry-agent-skills/sentry-pr-code-review
 
-All endpoints use the data proxy at `$API_URL/api/data/skills/{operation}`.
+vercel-labs/agent-skills@web-design-guidelines
+└ https://skills.sh/vercel-labs/agent-skills/web-design-guidelines
+```
+
+### Install a Skill
+
+```bash
+# Install specific skill globally for all agents
+npx skills add getsentry/sentry-agent-skills --skill sentry-pr-code-review -g -y
+
+# Install for specific agent only
+npx skills add vercel-labs/agent-skills --skill web-design-guidelines -g -a claude-code -y
+
+# Install all skills from a repo
+npx skills add vercel-labs/agent-skills --all -g -y
+```
+
+**Flags:**
+- `-g, --global` - Install to user directory (recommended)
+- `-a, --agent <agent>` - Target specific agent (claude-code, codex, opencode, gemini-cli)
+- `-s, --skill <name>` - Install specific skill by name
+- `-y, --yes` - Skip confirmation prompts
+- `--all` - Install all skills from repo
+
+### List Installed Skills
+
+```bash
+npx skills list
+npx skills ls -g  # List global skills only
+```
+
+### Complete Vercel CLI Workflow
+
+```bash
+# 1. Search for what you need
+npx skills find "pr review"
+
+# 2. Install the skill you want
+npx skills add getsentry/sentry-agent-skills --skill sentry-pr-code-review -g -y
+
+# 3. Verify installation
+npx skills list
+
+# 4. Read the skill instructions
+cat ~/.claude/skills/sentry-pr-code-review/SKILL.md
+```
+
+---
+
+## Method 2: Rebyte API (For Internal/Organization Skills)
+
+Use this method to access skills from the Rebyte skill store, including private organization skills not available on skills.sh.
+
+{{include:auth.md}}
 
 ### Search Skills
-
-Find skills matching a natural language query:
 
 ```bash
 curl -X POST "$API_URL/api/data/skills/search" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{
-    "query": "create presentations with markdown",
-    "limit": 5
-  }'
+  -d '{"query": "create presentations with markdown", "limit": 5}'
 ```
 
 **Response:**
@@ -84,8 +131,6 @@ curl -X POST "$API_URL/api/data/skills/search" \
 
 ### List All Skills
 
-List available skills with optional tag filter:
-
 ```bash
 # List all skills
 curl -X POST "$API_URL/api/data/skills/list" \
@@ -100,20 +145,9 @@ curl -X POST "$API_URL/api/data/skills/list" \
   -d '{"tag": "Research", "limit": 10}'
 ```
 
-### Get Specific Skill
+### Download and Install
 
-Get details for a specific skill by slug:
-
-```bash
-curl -X POST "$API_URL/api/data/skills/get" \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"slug": "deep-research"}'
-```
-
-### Download Skill (Get Download URL)
-
-**IMPORTANT:** After finding a skill via search/list/get, you must call this endpoint to get the download URL. Download URLs are temporary and expire after about 1 hour.
+**Step 1:** Get the download URL (URLs expire after ~1 hour):
 
 ```bash
 curl -X POST "$API_URL/api/data/skills/download" \
@@ -131,7 +165,7 @@ curl -X POST "$API_URL/api/data/skills/download" \
 }
 ```
 
-For organization skills, specify the source:
+For organization skills:
 ```bash
 curl -X POST "$API_URL/api/data/skills/download" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
@@ -139,27 +173,15 @@ curl -X POST "$API_URL/api/data/skills/download" \
   -d '{"slug": "my-org-skill", "source": "organization"}'
 ```
 
-## Installing a Skill
-
-After getting the download URL, install the skill:
+**Step 2:** Install the skill:
 
 ```bash
-# 1. Download the skill package
 curl -fsSL -o /tmp/skill.zip "$DOWNLOAD_URL"
-
-# 2. Install to ~/.skills/
 unzip -q -o /tmp/skill.zip -d ~/.skills/
-
-# 3. Clean up
 rm /tmp/skill.zip
-
-# 4. Verify installation
-ls ~/.skills/slide-builder/
 ```
 
-## Complete Workflow
-
-Here's a complete example of searching for and installing a skill:
+### Complete Rebyte API Workflow
 
 ```bash
 # Get auth credentials
@@ -200,59 +222,72 @@ if [ "$SKILL_SLUG" != "null" ]; then
 fi
 ```
 
-## Skill Installation Path
+---
 
-Skills are installed to: `~/.skills/{slug}/`
+## Skill Installation Paths
 
-Each skill contains:
-- `SKILL.md` - The skill definition and instructions
-- Additional files (scripts, prompts, references, etc.)
+Skills are installed to different locations depending on the method:
 
-## Example Use Cases
+| Method | Installation Path | Visible To |
+|--------|-------------------|------------|
+| Vercel CLI | `~/.agents/skills/` (canonical) + symlinks | All agents via symlinks |
+| Rebyte API | `~/.skills/` | All agents (symlinked) |
 
-### Need to create a presentation
+Both methods work because agent skill directories are symlinked:
+- `~/.claude/skills/` → `~/.skills/`
+- `~/.codex/skills/` → `~/.skills/`
+- `~/.gemini/skills/` → `~/.skills/`
+- `~/.opencode/skills/` (searched directly by OpenCode)
+
+---
+
+## Example Scenarios
+
+### Scenario 1: Need PDF parsing (use Vercel CLI)
+
 ```bash
-# Search for presentation skills
-curl -X POST "$API_URL/api/data/skills/search" \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"query": "create slides presentation"}'
+# Search
+npx skills find "pdf extract tables"
 
-# Get download URL for the skill
-curl -X POST "$API_URL/api/data/skills/download" \
-  -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"slug": "slide-builder"}'
+# Install
+npx skills add anthropics/skills --skill pdf -g -y
 
-# Install using the returned download_url
+# Use
+cat ~/.claude/skills/pdf/SKILL.md
 ```
 
-### Need to analyze financial data
+### Scenario 2: Need internal company skill (use Rebyte API)
+
 ```bash
-# Search for financial skills
-curl -X POST "$API_URL/api/data/skills/search" \
+# Search organization skills
+curl -s -X POST "$API_URL/api/data/skills/search" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"query": "SEC filings financial analysis stock data"}'
+  -d '{"query": "company deployment process"}'
 
-# Get download URLs and install sec-edgar-skill and market-data skills
+# Install (with source: organization)
+# ... follow Rebyte API workflow above
 ```
 
-### Need to build and deploy a web form
+### Scenario 3: Not sure where to find skill
+
 ```bash
-# Search for form building skills
-curl -X POST "$API_URL/api/data/skills/search" \
+# Try Vercel CLI first (larger public catalog)
+npx skills find "financial analysis SEC filings"
+
+# If not found, try Rebyte API
+curl -s -X POST "$API_URL/api/data/skills/search" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{"query": "build forms surveys typeform"}'
-
-# Get download URL and install form-builder skill
+  -d '{"query": "financial analysis SEC filings"}'
 ```
+
+---
 
 ## Notes
 
-- The search uses semantic matching, so natural language queries work well
-- Always check if a skill is already installed before downloading
-- **Download URLs are temporary** - they expire after about 1 hour, so get a fresh URL each time you need to install
-- Installed skills are immediately available for use
-- Skills can come from the public store (`source: "public"`) or your organization (`source: "organization"`)
+- **Vercel CLI** requires Node.js (pre-installed in VMs)
+- **Rebyte API** requires authentication (`rebyte-auth`)
+- Skills installed via either method are immediately available
+- Always read the skill's `SKILL.md` after installation to understand how to use it
+- Check if a skill is already installed before downloading (`npx skills list` or `ls ~/.skills/`)

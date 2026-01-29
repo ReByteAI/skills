@@ -1,95 +1,52 @@
 ---
 name: rebyte-app-builder
-description: Use when user says "rebyte deploy" or asks to deploy to Rebyte. Full Vercel-compatible hosting platform on AWS. Supports static sites (Vite, Astro, Gatsby), SSR frameworks (Next.js, Nuxt, SvelteKit, Remix), and API functions (serverless endpoints). Uses Vercel Build Output API format.
+description: Deploy web apps to Rebyte hosting. You (the agent) create the .rebyte/ directory with proper structure, the CLI validates and deploys. Supports static sites, SSR (Next.js with OpenNext), and API functions.
 ---
 
 # Rebyte App Builder
 
-Complete development lifecycle for deploying and testing full-stack applications on Rebyte.
+Deploy web applications to Rebyte's AWS-based hosting platform.
 
-## About Rebyte Hosting
+## Architecture: Agent Creates, CLI Deploys
 
-Rebyte is a **Vercel-compatible hosting platform** built on AWS infrastructure. It implements the Vercel Build Output API, so any framework that works with Vercel works with Rebyte.
+**You (the coding agent)** are responsible for:
+- Building the application using framework-specific tools
+- Creating the `.rebyte/` directory with correct structure
+- Using proper adapters (e.g., OpenNext for Next.js SSR)
 
-### Infrastructure
+**The CLI** is responsible for:
+- Validating your `.rebyte/` structure
+- Running smoke tests on Lambda handlers
+- Providing clear error messages when something is wrong
+- Packaging and uploading to Rebyte
 
-| Component | AWS Service | Purpose |
-|-----------|-------------|---------|
-| Static Assets | S3 + CloudFront | Global CDN with edge caching |
-| Server Functions | Lambda | SSR, API routes, serverless functions |
-| Routing | Lambda@Edge | Dynamic routing via config.json |
-| SSL | ACM | Automatic HTTPS for *.rebyte.pro |
+## Rebyte CLI (Pre-bundled)
 
-### Deployment Types
+```bash
+# Validate without deploying
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js validate
 
-| Type | Use Case | Example |
-|------|----------|---------|
-| **Static** | Pure frontend, no server | Vite, Astro, Gatsby, plain HTML |
-| **API** | Static + serverless functions | Landing page + Stripe webhooks |
-| **SSR** | Full server-side rendering | Next.js, Nuxt, SvelteKit, Remix |
+# Deploy (validates first, then uploads)
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js deploy
 
-### How It Works
-
-```
-Your App → npm run build → .rebyte/ → rebyte deploy → https://myapp-xyz.rebyte.pro
-                              │
-                              ├── config.json   → Lambda@Edge (routing)
-                              ├── static/       → S3 + CloudFront (CDN)
-                              └── functions/    → AWS Lambda (API/SSR)
+# Other commands
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js info
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js logs
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js delete
 ```
 
-## Supported Frameworks
-
-### SSR Frameworks (Full Server Rendering)
-
-| Framework | Adapter | Output |
-|-----------|---------|--------|
-| **Next.js** | OpenNext | `.open-next/` |
-| **Nuxt** | Nitro aws-lambda preset | `.output/` |
-| **SvelteKit** | svelte-kit-sst | `.svelte-kit/svelte-kit-sst/` |
-| **Remix** | @remix-run/architect | `build/` |
-
-### Static Frameworks (CDN Only)
-
-| Framework | Build Command | Output |
-|-----------|---------------|--------|
-| **Vite** (React, Vue, Svelte) | `npm run build` | `dist/` |
-| **Astro** | `npm run build` | `dist/` |
-| **Gatsby** | `npm run build` | `public/` |
-| **Create React App** | `npm run build` | `build/` |
-| **Plain HTML** | (none) | `.` |
-
-### API Functions (Serverless)
-
-Any static site can add API functions:
+## .rebyte/ Directory Structure
 
 ```
 .rebyte/
-├── config.json          # Routes /api/* to Lambda
-├── static/              # Your static site
-└── functions/
-    └── api.func/        # Serverless function
-        └── index.js     # exports { handler }
-```
-
-Use cases: Stripe webhooks, form handlers, database APIs, authentication endpoints.
-
-## Build Output Format
-
-All frameworks must produce `.rebyte/` directory:
-
-```
-.rebyte/
-├── config.json       # REQUIRED → Routes configuration
-├── static/           # REQUIRED → S3/CloudFront
+├── config.json           # REQUIRED: Routes configuration
+├── static/               # Static files → S3/CloudFront CDN
 │   ├── index.html
-│   ├── assets/
-│   └── ...
-├── functions/        # OPTIONAL → Lambda functions (SSR/API)
+│   └── assets/
+├── functions/            # OPTIONAL: Lambda functions for SSR/API
 │   └── default.func/
-│       ├── .vc-config.json  # { "runtime": "nodejs20.x", "handler": "index.handler" }
-│       └── index.js
-└── .env.production   # OPTIONAL → environment variables
+│       └── index.js      # Must export: exports.handler
+└── .env.production       # OPTIONAL: Environment variables
 ```
 
 ### config.json (Required)
@@ -98,177 +55,307 @@ All frameworks must produce `.rebyte/` directory:
 {
   "version": 1,
   "routes": [
-    { "src": "^/api/(.*)$", "dest": "/functions/default" },
     { "handle": "filesystem" },
     { "src": "^/(.*)$", "dest": "/functions/default" }
   ]
 }
 ```
 
-Route types:
+**Route types:**
 - `{ "handle": "filesystem" }` - Serve from static/ if file exists
 - `{ "src": "^/pattern$", "dest": "/functions/name" }` - Route to Lambda
 
-### Static Sites
+### Lambda Handler Format
 
-For static sites, only `.rebyte/static/` is needed:
+```javascript
+// functions/default.func/index.js
+exports.handler = async (event, context) => {
+  // event is API Gateway format, NOT Node.js HTTP request
+  const { httpMethod, path, headers, body, queryStringParameters } = event;
+
+  return {
+    statusCode: 200,
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: 'Hello!' })
+  };
+};
+```
+
+**CRITICAL:** Lambda handlers receive API Gateway events, NOT Node.js HTTP requests. If you see errors like `req.on is not a function`, your handler expects HTTP format but received Lambda format.
+
+---
+
+## Framework-Specific Instructions
+
+### Static Sites (Vite, Astro, Plain HTML)
 
 ```bash
+# 1. Build
+npm run build
+
+# 2. Create .rebyte/
 mkdir -p .rebyte/static
 cp -r dist/* .rebyte/static/   # or build/, public/, etc.
+
+# 3. Create config.json
+cat > .rebyte/config.json << 'EOF'
+{
+  "version": 1,
+  "routes": [
+    { "handle": "filesystem" }
+  ]
+}
+EOF
+
+# 4. Deploy
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js deploy
 ```
 
-### SSR Sites
+### Next.js SSR (MUST use OpenNext)
 
-For SSR, include both static assets and Lambda function:
+**DO NOT** manually copy `.next/standalone/`. It won't work because:
+1. The standalone server expects Node.js HTTP, not Lambda events
+2. Missing proper request/response transformation
+
+**USE OpenNext:**
 
 ```bash
-mkdir -p .rebyte/static .rebyte/function
-cp -r build/client/* .rebyte/static/
-cp -r build/server/* .rebyte/function/
+# 1. Install OpenNext
+npm install -D @opennextjs/aws
+
+# 2. Build with OpenNext
+npx @opennextjs/aws build
+
+# 3. Transform .open-next/ to .rebyte/
+mkdir -p .rebyte/static .rebyte/functions/default.func
+
+# Copy static assets
+cp -r .open-next/assets/* .rebyte/static/ 2>/dev/null || true
+cp -r .open-next/cache/* .rebyte/static/_next/cache/ 2>/dev/null || true
+
+# Copy server function
+cp -r .open-next/server-functions/default/* .rebyte/functions/default.func/
+
+# Create routes
+cat > .rebyte/config.json << 'EOF'
+{
+  "version": 1,
+  "routes": [
+    { "src": "^/_next/static/(.*)$", "headers": { "Cache-Control": "public, max-age=31536000, immutable" } },
+    { "handle": "filesystem" },
+    { "src": "^/(.*)$", "dest": "/functions/default" }
+  ]
+}
+EOF
+
+# 4. Deploy
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js deploy
 ```
 
-## Deploy Workflow
-
-### 1. Build
+### Static Site + API Function
 
 ```bash
+# 1. Build static site
 npm run build
+
+# 2. Create structure
+mkdir -p .rebyte/static .rebyte/functions/api.func
+cp -r dist/* .rebyte/static/
+
+# 3. Create API handler
+cat > .rebyte/functions/api.func/index.js << 'EOF'
+exports.handler = async (event, context) => {
+  const { httpMethod, path, body } = event;
+
+  if (httpMethod === 'POST' && path === '/api/submit') {
+    const data = JSON.parse(body || '{}');
+    // Process data...
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ success: true })
+    };
+  }
+
+  return { statusCode: 404, body: 'Not Found' };
+};
+EOF
+
+# 4. Create routes
+cat > .rebyte/config.json << 'EOF'
+{
+  "version": 1,
+  "routes": [
+    { "src": "^/api/(.*)$", "dest": "/functions/api" },
+    { "handle": "filesystem" }
+  ]
+}
+EOF
+
+# 5. Deploy
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js deploy
 ```
 
-### 2. Verify Build
+---
+
+## CLI Validation
+
+The CLI validates before deployment:
+
+```
+Validating .rebyte/...
+
+✓ config.json exists: Found
+✓ config.json valid JSON: Valid
+✓ Routes defined: 2 routes
+✓ Function default: entry file: index.js
+✓ Function default: handler export: exports.handler
+✓ Function default: smoke test: Passed
+✓ Static directory: 47 files
+
+Package Summary
+═══════════════
+
+Routes (from config.json):
+  [filesystem]
+  ^/(.*)$                        → Lambda: default
+
+Functions (Lambda):
+  default.func
+    Entry:   index.js
+    Handler: index.handler
+    Runtime: nodejs20.x
+    Size:    1.2 MB
+
+Static (CDN):
+  47 files, 2.3 MB
+    _next/ - 45 files (.js, .css)
+    index.html
+    favicon.ico
+```
+
+### Validation Errors
+
+If validation fails, the CLI tells you exactly what's wrong:
+
+**Missing handler export:**
+```
+✗ Function default: handler export: "handler" not exported
+
+    index.js does not export "handler"
+
+    Found exports: main, processRequest
+    Did you mean one of these?
+
+    The handler must be exported as:
+      exports.handler = async (event, context) => { ... }
+```
+
+**Wrong handler format (common with Next.js):**
+```
+✗ Function default: smoke test: Failed
+
+    Handler Error: event.on is not a function
+
+    This handler expects Node.js HTTP IncomingMessage (with .on() method)
+    but Lambda provides API Gateway event objects.
+
+    This usually happens when:
+    1. Using Next.js standalone output directly (doesn't work)
+    2. Missing a proper Lambda adapter
+
+    For Next.js SSR, use OpenNext which creates proper Lambda handlers:
+      npx @opennextjs/aws build
+```
+
+---
+
+## Common Mistakes
+
+### ❌ DON'T: Copy Next.js standalone directly
 
 ```bash
-ls -la .rebyte/
-ls -la .rebyte/static/
-ls -la .rebyte/function/  # SSR only
+# WRONG - This creates a broken handler
+cp -r .next/standalone/* .rebyte/functions/default.func/
 ```
 
-### 3. Deploy
+The standalone server.js expects HTTP streams (`req.on('data')`) which don't exist in Lambda.
+
+### ✅ DO: Use OpenNext for Next.js
 
 ```bash
-node bin/rebyte.js deploy
+# CORRECT - OpenNext creates proper Lambda handlers
+npx @opennextjs/aws build
+# Then copy .open-next/ contents to .rebyte/
 ```
 
-**CRITICAL:** Actually run this command. The deployment URL is ONLY available from the output.
+### ❌ DON'T: Guess the handler format
 
-### Expected Output
-
-```
-📦 Scanning .rebyte/ directory...
-   Static files: 47
-   Function: yes
-   Package size: 2.3 MB
-
-🔗 Getting upload URL...
-   Deploy ID: myapp-abc123
-
-⬆️  Uploading package...
-   Upload complete
-
-🚀 Deploying...
-
-Deployed to https://*.rebyte.pro
-
-Deployment Report:
-──────────────────
-Mode:      ssr
-URL:       https://*.rebyte.pro
-Deploy ID: myapp-abc123
-Status:    deployed
-
-Static Assets:
-  Files:      47
-  Total size: 2.3 MB
-  Types:      .js (12), .html (3), .css (5), .png (27)
-
-Function:
-  Handler:    index.handler
-  Runtime:    nodejs20.x
-  Memory:     1024 MB
-  Timeout:    30s
-  Size:       1.2 MB
-  Config:     from config.json
-
-Environment:
-  Variables:  0
+```javascript
+// WRONG - Lambda doesn't provide req.on()
+exports.handler = async (req, res) => {
+  req.on('data', chunk => { ... });
+};
 ```
 
-### 4. Verify Deployment Report
+### ✅ DO: Use Lambda event format
 
-| Check | What to look for |
-|-------|------------------|
-| Mode | `ssr` for SSR frameworks, `static` for static sites |
-| Static files | Should have reasonable count (not 0) |
-| Function | Should exist for SSR frameworks |
-
-## CLI Commands
-
-| Command | Description |
-|---------|-------------|
-| `node bin/rebyte.js deploy` | Package and deploy `.rebyte/` |
-| `node bin/rebyte.js info` | Get deployment status and URL |
-| `node bin/rebyte.js logs` | Get Lambda function logs (SSR/API only) |
-| `node bin/rebyte.js logs -m 60` | Get logs from last 60 minutes (max: 480) |
-| `node bin/rebyte.js delete` | Remove deployment |
-
-## Browser Testing
-
-After deployment, use Chrome DevTools MCP to verify:
-
-| Check | How | Expected |
-|-------|-----|----------|
-| Homepage | Navigate to `/` | HTTP 200, HTML content |
-| Static assets | Check network | CSS/JS loaded |
-| API route | Navigate to `/api/data` | JSON response |
-| SSR page | Navigate to `/ssr` | Server-rendered content |
-| SSR dynamic | Reload `/ssr` | Content changes |
-
-## Environment Variables
-
-Set via `.rebyte/.env.production`:
-
-```bash
-echo "DATABASE_URL=postgres://..." >> .rebyte/.env.production
-echo "API_KEY=secret123" >> .rebyte/.env.production
+```javascript
+// CORRECT - Lambda event is an object, not a stream
+exports.handler = async (event, context) => {
+  const body = event.body ? JSON.parse(event.body) : {};
+  return { statusCode: 200, body: JSON.stringify(result) };
+};
 ```
 
-Redeploy after changes:
-
-```bash
-node bin/rebyte.js deploy
-```
+---
 
 ## Troubleshooting
 
-| Issue | Check | Fix |
+| Issue | Cause | Fix |
 |-------|-------|-----|
-| No `.rebyte/` | Build script | Add package step to build |
-| 0 static files | Copy command | Verify source directory |
-| Deploy fails | CLI output | Check error message |
-| 500 errors | `node bin/rebyte.js logs` | Check Lambda logs for stack trace |
-| 404 errors | Routes | Check file naming |
-| API not working | `node bin/rebyte.js logs -m 30` | Check request/response logs |
+| `req.on is not a function` | Handler expects HTTP, got Lambda | Use OpenNext for Next.js, or fix handler to use Lambda format |
+| `Cannot find module` | Dependencies not bundled | Include node_modules in function directory |
+| 500 errors | Check Lambda logs | `rebyte.js logs -m 30` |
+| 404 errors | Wrong routes | Check config.json routes match your paths |
+| Static not loading | Files not in static/ | Verify `cp` copied to `.rebyte/static/` |
 
-### Debugging with Logs
-
-For SSR and API deployments, use `rebyte logs` to inspect Lambda function errors:
+### Checking Logs
 
 ```bash
-# Check recent errors (last 5 minutes)
-node bin/rebyte.js logs
+# Recent logs (5 min)
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js logs
 
-# Check longer time range (last hour)
-node bin/rebyte.js logs -m 60
-
-# Check specific deployment
-node bin/rebyte.js logs -p mysite -m 30
+# Longer range (30 min)
+node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js logs -m 30
 ```
 
-**What logs show:**
-- Lambda function invocations
-- Request/response details
-- Stack traces for uncaught exceptions
-- Console.log output from your server code
+---
 
-**Note:** Logs are only available for SSR/API deployments (not static sites).
+## Quick Reference
+
+| Deployment Type | Build Tool | Key Requirement |
+|-----------------|------------|-----------------|
+| Static (Vite, Astro) | `npm run build` | Copy to `.rebyte/static/` |
+| Next.js SSR | OpenNext | `npx @opennextjs/aws build` |
+| API Function | Manual | Lambda handler format |
+| Nuxt SSR | Nitro | `NITRO_PRESET=aws-lambda npm run build` |
+| Remix | Architect | `@remix-run/architect` adapter |
+
+**Remember:** You create `.rebyte/`, the CLI validates and deploys. If validation fails, fix the issues based on the error messages.
+
+---
+
+## Database Options
+
+If your app needs persistent data storage, ask the user which database type they prefer:
+
+| Type | Skill | Best For |
+|------|-------|----------|
+| **SQL Database** | `sqlite-database` | Relational data, complex queries, joins |
+| **Key-Value Database** | `dynamodb-database` | Simple lookups, high-performance NoSQL, flexible schema |
+
+**When to ask:** If the user's requirements include data persistence but don't specify a database type, ask:
+- "Do you need a SQL database (for relational data with joins) or a key-value store (for simple, fast lookups)?"
+
+Both options are fully managed and automatically cleaned up when the site is deleted.

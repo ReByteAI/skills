@@ -1,11 +1,11 @@
 ---
-name: turso-database
-description: Provision SQLite databases via Turso for web apps. Use when an app needs a database, persistent storage, or backend data. Triggers include "add a database", "need storage", "store data", "save to database", "SQLite", "Turso".
+name: sqlite-database
+description: Provision cloud SQLite databases for web apps. Use when an app needs a database, persistent storage, or backend data. Triggers include "add a database", "need storage", "store data", "save to database", "SQLite", "database".
 ---
 
-# Turso Database
+# SQLite Database
 
-Provision SQLite databases for your web apps via Turso.
+Provision cloud SQLite databases for your web apps.
 
 {{include:auth.md}}
 
@@ -39,26 +39,26 @@ Response:
 
 ## Using the Database
 
-Use Turso's HTTP API with pure `fetch` - no npm packages needed:
+Use the HTTP API with pure `fetch` - no npm packages needed:
 
 ```javascript
 // functions/api.js (CommonJS format for Netlify Functions)
 
 // Get these from the provision response (convert libsql:// to https://)
-const TURSO_URL = 'https://ws-abc123-rebyte.turso.io';
-const TURSO_TOKEN = 'eyJ...';
+const DB_URL = 'https://ws-abc123-rebyte.turso.io';
+const DB_TOKEN = 'eyJ...';
 
 /**
- * Execute SQL query via Turso HTTP API
+ * Execute SQL query via HTTP API
  * @param {string} sql - SQL statement
  * @param {any[]} args - Query arguments (optional)
  * @returns {Promise<{columns: string[], rows: any[][]}>}
  */
 async function query(sql, args = []) {
-  const response = await fetch(`${TURSO_URL}/v2/pipeline`, {
+  const response = await fetch(`${DB_URL}/v2/pipeline`, {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${TURSO_TOKEN}`,
+      'Authorization': `Bearer ${DB_TOKEN}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
@@ -77,7 +77,7 @@ async function query(sql, args = []) {
 
   if (!response.ok) {
     const error = await response.text();
-    throw new Error(`Turso query failed: ${error}`);
+    throw new Error(`Query failed: ${error}`);
   }
 
   const result = await response.json();

@@ -157,7 +157,79 @@ Auto-expire items by setting the `ttl` attribute (Unix timestamp in seconds):
 - **Use CommonJS format** - `exports.handler`, NOT `export default`
 - **Data cleanup** - DynamoDB data is automatically deleted when the site is deleted
 
+## Debugging & Inspection
+
+You can inspect and manage your DynamoDB data directly via the API. All operations enforce prefix isolation - you can only access your own data.
+
+### Get a Single Item
+
+```bash
+curl -X POST "$API_URL/api/data/dynamodb/get" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pk": "deploy#abc123#user#123",
+    "sk": "profile"
+  }'
+```
+
+### Put/Update an Item
+
+```bash
+curl -X POST "$API_URL/api/data/dynamodb/put" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "item": "{\"pk\":\"deploy#abc123#user#123\",\"sk\":\"profile\",\"name\":\"John\"}"
+  }'
+```
+
+### Delete an Item
+
+```bash
+curl -X POST "$API_URL/api/data/dynamodb/delete" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pk": "deploy#abc123#user#123",
+    "sk": "profile"
+  }'
+```
+
+### Query Items by Partition Key
+
+```bash
+curl -X POST "$API_URL/api/data/dynamodb/query" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "pk": "deploy#abc123#user#123",
+    "limit": 50
+  }'
+```
+
+### List All Items (Scan)
+
+```bash
+curl -X POST "$API_URL/api/data/dynamodb/scan" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "limit": 100
+  }'
+```
+
 ## API Reference
+
+| Operation | Description |
+|-----------|-------------|
+| `provision` | Enable DynamoDB, set Lambda env vars |
+| `info` | Get connection details without provisioning |
+| `get` | Get single item by pk/sk |
+| `put` | Create or update an item |
+| `delete` | Delete single item by pk/sk |
+| `query` | Query items by partition key |
+| `scan` | List all items for this deployment |
 
 ### Provision DynamoDB
 

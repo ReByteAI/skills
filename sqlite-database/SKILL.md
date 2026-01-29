@@ -130,6 +130,69 @@ exports.handler = async function(event) {
 The provision response returns `libsql://` URL. Convert it to `https://` for the HTTP API:
 - `libsql://ws-abc123-rebyte.turso.io` → `https://ws-abc123-rebyte.turso.io`
 
+## Debugging & Inspection
+
+Since you have the database URL and auth token, you can query the database directly to debug issues.
+
+### List All Tables
+
+```javascript
+const { rows } = await query("SELECT name FROM sqlite_master WHERE type='table'");
+console.log('Tables:', rows.map(r => r[0]));
+```
+
+### Inspect Table Schema
+
+```javascript
+const { rows } = await query("PRAGMA table_info(users)");
+console.log('Columns:', rows);
+// Returns: [[0, 'id', 'INTEGER', 0, null, 1], [1, 'email', 'TEXT', 0, null, 0], ...]
+```
+
+### Count Records
+
+```javascript
+const { rows } = await query("SELECT COUNT(*) FROM users");
+console.log('Total users:', rows[0][0]);
+```
+
+### Sample Data
+
+```javascript
+const { columns, rows } = await query("SELECT * FROM users LIMIT 10");
+console.log('Columns:', columns);
+console.log('Sample data:', rows);
+```
+
+### Debug a Specific Query
+
+```javascript
+// Wrap queries in try/catch for debugging
+try {
+  const result = await query("SELECT * FROM users WHERE id = ?", [userId]);
+  console.log('Query result:', result);
+} catch (error) {
+  console.error('Query failed:', error.message);
+}
+```
+
+### Using Turso CLI (Optional)
+
+If you need more advanced debugging, you can use the Turso CLI directly:
+
+```bash
+# Install Turso CLI (if not already installed)
+curl -sSfL https://get.tur.so/install.sh | bash
+
+# Connect to your database
+turso db shell <db-url> --auth-token <auth-token>
+
+# Then run SQL interactively
+.tables
+.schema users
+SELECT * FROM users LIMIT 5;
+```
+
 ## Important Notes
 
 - **Use CommonJS format** - Netlify Functions require `exports.handler`, NOT `export default`

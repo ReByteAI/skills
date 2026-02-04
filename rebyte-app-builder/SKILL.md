@@ -9,6 +9,8 @@ Deploy web applications to Rebyte's AWS-based hosting platform.
 
 {{include:non-technical-user.md}}
 
+{{include:skill-dir.md}}
+
 ## Architecture: Agent Creates, CLI Deploys
 
 **You (the coding agent)** are responsible for:
@@ -26,15 +28,15 @@ Deploy web applications to Rebyte's AWS-based hosting platform.
 
 ```bash
 # Validate without deploying
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js validate
+node $SKILL_DIR/bin/rebyte.js validate
 
 # Deploy (validates first, then uploads)
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js deploy
+node $SKILL_DIR/bin/rebyte.js deploy
 
 # Other commands
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js info
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js logs
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js delete
+node $SKILL_DIR/bin/rebyte.js info
+node $SKILL_DIR/bin/rebyte.js logs
+node $SKILL_DIR/bin/rebyte.js delete
 ```
 
 ## .rebyte/ Directory Structure
@@ -110,7 +112,7 @@ cat > .rebyte/config.json << 'EOF'
 EOF
 
 # 4. Deploy
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js deploy
+node $SKILL_DIR/bin/rebyte.js deploy
 ```
 
 ### Next.js SSR (MUST use OpenNext)
@@ -151,7 +153,7 @@ cat > .rebyte/config.json << 'EOF'
 EOF
 
 # 4. Deploy
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js deploy
+node $SKILL_DIR/bin/rebyte.js deploy
 ```
 
 ### Static Site + API Function
@@ -195,7 +197,7 @@ cat > .rebyte/config.json << 'EOF'
 EOF
 
 # 5. Deploy
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js deploy
+node $SKILL_DIR/bin/rebyte.js deploy
 ```
 
 ---
@@ -326,10 +328,10 @@ exports.handler = async (event, context) => {
 
 ```bash
 # Recent logs (5 min)
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js logs
+node $SKILL_DIR/bin/rebyte.js logs
 
 # Longer range (30 min)
-node /home/user/.skills/rebyteai-rebyte-app-builder/bin/rebyte.js logs -m 30
+node $SKILL_DIR/bin/rebyte.js logs -m 30
 ```
 
 ---

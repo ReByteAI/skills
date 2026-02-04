@@ -60,9 +60,28 @@ Edit `/code/<name>/slides.md`. Focus on content first:
 - Body (80%): Main content in logical sections
 - Closing (1-2 slides): Summary + call-to-action
 
-### 4. Build & Deploy
+### 4. Preview
 
-Build the presentation:
+Export slides as PNG thumbnails for user review:
+
+```bash
+cd /code/<name> && pnpm exec slidev export --format png --output ./preview
+```
+
+This creates `./preview/001.png`, `002.png`, etc. Show these images to the user.
+
+### 5. Iterate
+
+User reviews the preview thumbnails and provides feedback:
+- "Page 3: change the title"
+- "Add more detail to page 5"
+- "Remove page 7"
+
+Edit the specified slides (slides separated by `---`, Page N = after (N-1)th separator), then re-export previews. Repeat until user approves.
+
+### 6. Deploy
+
+Once user is happy with the preview:
 
 ```bash
 cd /code/<name> && pnpm build
@@ -70,30 +89,9 @@ cd /code/<name> && pnpm build
 
 Then **invoke the `rebyte-app-builder` skill** to deploy the `dist/` folder.
 
-After deployment, show the user a slide index:
+### 7. Polish (Optional)
 
-```
-Deployed: https://abc123.rebyte.pro
-
-Slide Index:
-  1. Cover - "Customer Success Story"
-  2. Agenda
-  3. The Challenge
-  ...
-
-To request changes: "Page 3: change title to '...'"
-```
-
-### 5. Iterate
-
-When user requests changes:
-1. Edit the specified slides (slides separated by `---`, Page N = after (N-1)th separator)
-2. Rebuild and redeploy
-3. Show updated index
-
-### 6. Polish (Optional)
-
-After content is approved, enhance selectively:
+After deployment, enhance selectively if requested:
 - Add click animations where they aid understanding
 - Sync presenter notes with `[click]` markers
 - Max 5-6 clicks per slide

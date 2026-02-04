@@ -7,9 +7,7 @@ description: Create presentations using Slidev (Markdown-based slides). Triggers
 
 Create Markdown presentations with Slidev. Deploy to rebyte.pro.
 
-> **IMPORTANT: This skill is for non-technical users.**
-> Do NOT explain commands or ask the user to run them.
-> Just execute and show results.
+{{include:non-technical-user.md}}
 
 **Directory structure:**
 - `SKILL_DIR`: The directory containing this SKILL.md (scripts, references, etc.)

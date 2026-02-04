@@ -48,15 +48,18 @@ The skill will return:
 - `apiKey`: starts with `aig_...`
 - `baseUrl`: `https://api.rebyte.ai/api/ai`
 
-This is an OpenAI-compatible API. One key gives access to all models: Claude, GPT-4o, Gemini.
-
-**Ask the user which model they prefer:**
+**Always ask the user which model provider they want:**
 
 > Which AI model do you want your bot to use?
 >
-> 1. **Claude** (Recommended) → `claude-sonnet-4.5`
-> 2. **GPT-4o** → `gpt-4o`
-> 3. **Gemini** → `gemini-2.0-flash`
+> 1. Claude
+> 2. MiniMax
+> 3. Gemini
+> 4. OpenAI
+> 5. Kimi
+> 6. GLM
+
+After the user responds, use the `ai-gateway` skill to provision the key. The response includes available models - match the user's preference to select the correct model ID.
 
 ---
 

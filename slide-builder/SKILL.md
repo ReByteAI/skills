@@ -9,6 +9,8 @@ Create Markdown presentations with Slidev. Deploy to rebyte.pro.
 
 {{include:non-technical-user.md}}
 
+{{include:auth.md}}
+
 **Directory structure:**
 - `SKILL_DIR`: The directory containing this SKILL.md (scripts, references, etc.)
 - Working directory: `/code/` (where presentation projects are created)

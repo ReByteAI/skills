@@ -12,16 +12,18 @@ Upload to artifacts whenever you generate:
 
 ### Upload Command
 
+Uses `$AUTH_TOKEN` and `$API_URL` from the authentication setup above.
+
 ```bash
 curl -X PUT "$API_URL/api/artifacts" \
-  -H "Authorization: Bearer $SANDBOX_TOKEN" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -F "files=@/path/to/file.pdf"
 ```
 
 **Multiple files:**
 ```bash
 curl -X PUT "$API_URL/api/artifacts" \
-  -H "Authorization: Bearer $SANDBOX_TOKEN" \
+  -H "Authorization: Bearer $AUTH_TOKEN" \
   -F "files=@slide-001.png" \
   -F "files=@slide-002.png" \
   -F "files=@slide-003.png"

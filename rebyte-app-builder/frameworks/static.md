@@ -30,6 +30,14 @@ Output: `public/`
 ```bash
 mkdir -p .rebyte/static
 cp -r public/* .rebyte/static/
+cat > .rebyte/config.json << 'EOF'
+{
+  "version": 1,
+  "routes": [
+    { "handle": "filesystem" }
+  ]
+}
+EOF
 ```
 
 ## Vite (React/Vue/etc.)
@@ -54,6 +62,14 @@ Output: `dist/`
 ```bash
 mkdir -p .rebyte/static
 cp -r dist/* .rebyte/static/
+cat > .rebyte/config.json << 'EOF'
+{
+  "version": 1,
+  "routes": [
+    { "handle": "filesystem" }
+  ]
+}
+EOF
 ```
 
 ## Plain HTML
@@ -64,6 +80,14 @@ For plain HTML sites, copy your files directly:
 mkdir -p .rebyte/static
 cp -r *.html *.css *.js .rebyte/static/
 cp -r assets/ .rebyte/static/ 2>/dev/null || true
+cat > .rebyte/config.json << 'EOF'
+{
+  "version": 1,
+  "routes": [
+    { "handle": "filesystem" }
+  ]
+}
+EOF
 ```
 
 ### Minimal Structure
@@ -83,7 +107,7 @@ Create `scripts/prepare-rebyte.js` for any static site:
 
 ```javascript
 #!/usr/bin/env node
-import { cpSync, mkdirSync, rmSync, existsSync } from 'fs';
+import { cpSync, mkdirSync, rmSync, existsSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -113,6 +137,15 @@ mkdirSync(join(rebyteDir, 'static'), { recursive: true });
 
 cpSync(sourceDir, join(rebyteDir, 'static'), { recursive: true });
 
+// Create config.json with static routes
+const config = {
+  version: 1,
+  routes: [
+    { handle: "filesystem" }
+  ]
+};
+writeFileSync(join(rebyteDir, 'config.json'), JSON.stringify(config, null, 2));
+
 console.log(`Build output from ${sourceDir} ready at .rebyte/`);
 ```
 
@@ -126,7 +159,8 @@ node bin/rebyte.js deploy
 
 ```bash
 ls .rebyte/static/
-# Must contain: index.html
+cat .rebyte/config.json
+# static/ must contain: index.html
 ```
 
 ## Expected Deployment Report

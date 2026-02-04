@@ -5,7 +5,17 @@ description: Browser automation using Chrome DevTools MCP. Use when the user nee
 
 # Browser Automation with Chrome DevTools MCP
 
-Chrome DevTools MCP is pre-installed and connected to a browser instance via CDP (port 9222). Use the `mcp__chrome-devtools__*` tools for all browser interactions.
+Chrome DevTools MCP is pre-installed and connects to the browser via CDP (port 9222). Use the `mcp__chrome-devtools__*` tools for all browser interactions.
+
+## Starting the Browser
+
+The browser starts on-demand (not automatically). Before using any Chrome DevTools MCP tools, ensure the browser is running:
+
+```bash
+curl -s http://localhost:9222/json/version > /dev/null 2>&1 || chromium --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --remote-debugging-port=9222 &
+```
+
+This command is idempotent - it checks if the browser is already running on port 9222, and only starts it if not.
 
 Two primary workflows:
 

@@ -21,8 +21,8 @@ if [ ! -f "$SKILL_FILE" ]; then
   exit 1
 fi
 
-# Get auth token
-AUTH_TOKEN=$(rebyte-auth)
+# Get auth token (absolute path to avoid PATH issues)
+AUTH_TOKEN=$(/home/user/.local/bin/rebyte-auth)
 
 # Base64 encode the package
 PACKAGE_BASE64=$(base64 -w0 "$SKILL_FILE" 2>/dev/null || base64 "$SKILL_FILE" | tr -d '\n')

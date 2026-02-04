@@ -19,7 +19,7 @@ var __toESM = (mod, isNodeMode, target) => {
 var __commonJS = (cb, mod) => () => (mod || cb((mod = { exports: {} }).exports, mod), mod.exports);
 var __require = /* @__PURE__ */ createRequire(import.meta.url);
 
-// ../../node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/error.js
+// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/error.js
 var require_error = __commonJS((exports) => {
   class CommanderError extends Error {
     constructor(exitCode, code, message) {
@@ -43,7 +43,7 @@ var require_error = __commonJS((exports) => {
   exports.InvalidArgumentError = InvalidArgumentError;
 });
 
-// ../../node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/argument.js
+// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/argument.js
 var require_argument = __commonJS((exports) => {
   var { InvalidArgumentError } = require_error();
 
@@ -122,7 +122,7 @@ var require_argument = __commonJS((exports) => {
   exports.humanReadableArgName = humanReadableArgName;
 });
 
-// ../../node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/help.js
+// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/help.js
 var require_help = __commonJS((exports) => {
   var { humanReadableArgName } = require_argument();
 
@@ -371,7 +371,7 @@ var require_help = __commonJS((exports) => {
   exports.Help = Help;
 });
 
-// ../../node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/option.js
+// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/option.js
 var require_option = __commonJS((exports) => {
   var { InvalidArgumentError } = require_error();
 
@@ -522,7 +522,7 @@ var require_option = __commonJS((exports) => {
   exports.DualOptions = DualOptions;
 });
 
-// ../../node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/suggestSimilar.js
+// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/suggestSimilar.js
 var require_suggestSimilar = __commonJS((exports) => {
   var maxDistance = 3;
   function editDistance(a, b) {
@@ -595,7 +595,7 @@ var require_suggestSimilar = __commonJS((exports) => {
   exports.suggestSimilar = suggestSimilar;
 });
 
-// ../../node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/command.js
+// node_modules/.pnpm/commander@12.1.0/node_modules/commander/lib/command.js
 var require_command = __commonJS((exports) => {
   var EventEmitter = __require("node:events").EventEmitter;
   var childProcess = __require("node:child_process");
@@ -1838,7 +1838,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
   exports.Command = Command;
 });
 
-// ../../node_modules/.pnpm/commander@12.1.0/node_modules/commander/index.js
+// node_modules/.pnpm/commander@12.1.0/node_modules/commander/index.js
 var require_commander = __commonJS((exports) => {
   var { Argument } = require_argument();
   var { Command } = require_command();
@@ -1858,13 +1858,13 @@ var require_commander = __commonJS((exports) => {
   exports.InvalidOptionArgumentError = InvalidArgumentError;
 });
 
-// ../../node_modules/.pnpm/minimatch@5.1.6/node_modules/minimatch/lib/path.js
+// node_modules/.pnpm/minimatch@5.1.6/node_modules/minimatch/lib/path.js
 var require_path = __commonJS((exports, module) => {
   var isWindows = typeof process === "object" && process && process.platform === "win32";
   module.exports = isWindows ? { sep: "\\" } : { sep: "/" };
 });
 
-// ../../node_modules/.pnpm/balanced-match@1.0.2/node_modules/balanced-match/index.js
+// node_modules/.pnpm/balanced-match@1.0.2/node_modules/balanced-match/index.js
 var require_balanced_match = __commonJS((exports, module) => {
   module.exports = balanced;
   function balanced(a, b, str) {
@@ -1921,7 +1921,7 @@ var require_balanced_match = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/brace-expansion@2.0.2/node_modules/brace-expansion/index.js
+// node_modules/.pnpm/brace-expansion@2.0.2/node_modules/brace-expansion/index.js
 var require_brace_expansion = __commonJS((exports, module) => {
   var balanced = require_balanced_match();
   module.exports = expandTop;
@@ -2070,7 +2070,7 @@ var require_brace_expansion = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/minimatch@5.1.6/node_modules/minimatch/minimatch.js
+// node_modules/.pnpm/minimatch@5.1.6/node_modules/minimatch/minimatch.js
 var require_minimatch = __commonJS((exports, module) => {
   var minimatch = module.exports = (p, pattern, options = {}) => {
     assertValidPattern(pattern);
@@ -2632,7 +2632,7 @@ globstar while`, file, fr, pattern, pr, swallowee);
   minimatch.Minimatch = Minimatch;
 });
 
-// ../../node_modules/.pnpm/readdir-glob@1.1.3/node_modules/readdir-glob/index.js
+// node_modules/.pnpm/readdir-glob@1.1.3/node_modules/readdir-glob/index.js
 var require_readdir_glob = __commonJS((exports, module) => {
   module.exports = readdirGlob;
   var fs = __require("fs");
@@ -2843,7 +2843,7 @@ var require_readdir_glob = __commonJS((exports, module) => {
   readdirGlob.ReaddirGlob = ReaddirGlob;
 });
 
-// ../../node_modules/.pnpm/async@3.2.6/node_modules/async/dist/async.js
+// node_modules/.pnpm/async@3.2.6/node_modules/async/dist/async.js
 var require_async = __commonJS((exports, module) => {
   (function(global2, factory) {
     typeof exports === "object" && typeof module !== "undefined" ? factory(exports) : typeof define === "function" && define.amd ? define(["exports"], factory) : (global2 = typeof globalThis !== "undefined" ? globalThis : global2 || self, factory(global2.async = {}));
@@ -4769,7 +4769,7 @@ Source:
   });
 });
 
-// ../../node_modules/.pnpm/graceful-fs@4.2.11/node_modules/graceful-fs/polyfills.js
+// node_modules/.pnpm/graceful-fs@4.2.11/node_modules/graceful-fs/polyfills.js
 var require_polyfills = __commonJS((exports, module) => {
   var constants = __require("constants");
   var origCwd = process.cwd;
@@ -5072,7 +5072,7 @@ var require_polyfills = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/graceful-fs@4.2.11/node_modules/graceful-fs/legacy-streams.js
+// node_modules/.pnpm/graceful-fs@4.2.11/node_modules/graceful-fs/legacy-streams.js
 var require_legacy_streams = __commonJS((exports, module) => {
   var Stream = __require("stream").Stream;
   module.exports = legacy;
@@ -5169,7 +5169,7 @@ var require_legacy_streams = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/graceful-fs@4.2.11/node_modules/graceful-fs/clone.js
+// node_modules/.pnpm/graceful-fs@4.2.11/node_modules/graceful-fs/clone.js
 var require_clone = __commonJS((exports, module) => {
   module.exports = clone;
   var getPrototypeOf = Object.getPrototypeOf || function(obj) {
@@ -5189,7 +5189,7 @@ var require_clone = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/graceful-fs@4.2.11/node_modules/graceful-fs/graceful-fs.js
+// node_modules/.pnpm/graceful-fs@4.2.11/node_modules/graceful-fs/graceful-fs.js
 var require_graceful_fs = __commonJS((exports, module) => {
   var fs = __require("fs");
   var polyfills = require_polyfills();
@@ -5547,7 +5547,7 @@ GFS4: `);
   }
 });
 
-// ../../node_modules/.pnpm/is-stream@2.0.1/node_modules/is-stream/index.js
+// node_modules/.pnpm/is-stream@2.0.1/node_modules/is-stream/index.js
 var require_is_stream = __commonJS((exports, module) => {
   var isStream = (stream) => stream !== null && typeof stream === "object" && typeof stream.pipe === "function";
   isStream.writable = (stream) => isStream(stream) && stream.writable !== false && typeof stream._write === "function" && typeof stream._writableState === "object";
@@ -5557,7 +5557,7 @@ var require_is_stream = __commonJS((exports, module) => {
   module.exports = isStream;
 });
 
-// ../../node_modules/.pnpm/process-nextick-args@2.0.1/node_modules/process-nextick-args/index.js
+// node_modules/.pnpm/process-nextick-args@2.0.1/node_modules/process-nextick-args/index.js
 var require_process_nextick_args = __commonJS((exports, module) => {
   if (typeof process === "undefined" || !process.version || process.version.indexOf("v0.") === 0 || process.version.indexOf("v1.") === 0 && process.version.indexOf("v1.8.") !== 0) {
     module.exports = { nextTick };
@@ -5599,7 +5599,7 @@ var require_process_nextick_args = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/isarray@1.0.0/node_modules/isarray/index.js
+// node_modules/.pnpm/isarray@1.0.0/node_modules/isarray/index.js
 var require_isarray = __commonJS((exports, module) => {
   var toString = {}.toString;
   module.exports = Array.isArray || function(arr) {
@@ -5607,7 +5607,7 @@ var require_isarray = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/safe-buffer@5.1.2/node_modules/safe-buffer/index.js
+// node_modules/.pnpm/safe-buffer@5.1.2/node_modules/safe-buffer/index.js
 var require_safe_buffer = __commonJS((exports, module) => {
   var buffer = __require("buffer");
   var Buffer2 = buffer.Buffer;
@@ -5662,7 +5662,7 @@ var require_safe_buffer = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/core-util-is@1.0.3/node_modules/core-util-is/lib/util.js
+// node_modules/.pnpm/core-util-is@1.0.3/node_modules/core-util-is/lib/util.js
 var require_util = __commonJS((exports) => {
   function isArray(arg) {
     if (Array.isArray) {
@@ -5729,7 +5729,7 @@ var require_util = __commonJS((exports) => {
   }
 });
 
-// ../../node_modules/.pnpm/inherits@2.0.4/node_modules/inherits/inherits_browser.js
+// node_modules/.pnpm/inherits@2.0.4/node_modules/inherits/inherits_browser.js
 var require_inherits_browser = __commonJS((exports, module) => {
   if (typeof Object.create === "function") {
     module.exports = function inherits(ctor, superCtor) {
@@ -5758,7 +5758,7 @@ var require_inherits_browser = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/inherits@2.0.4/node_modules/inherits/inherits.js
+// node_modules/.pnpm/inherits@2.0.4/node_modules/inherits/inherits.js
 var require_inherits = __commonJS((exports, module) => {
   try {
     util = __require("util");
@@ -5771,7 +5771,7 @@ var require_inherits = __commonJS((exports, module) => {
   var util;
 });
 
-// ../../node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/internal/streams/BufferList.js
+// node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/internal/streams/BufferList.js
 var require_BufferList = __commonJS((exports, module) => {
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -5854,7 +5854,7 @@ var require_BufferList = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/internal/streams/destroy.js
+// node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/internal/streams/destroy.js
 var require_destroy = __commonJS((exports, module) => {
   var pna = require_process_nextick_args();
   function destroy(err, cb) {
@@ -5920,12 +5920,12 @@ var require_destroy = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/util-deprecate@1.0.2/node_modules/util-deprecate/node.js
+// node_modules/.pnpm/util-deprecate@1.0.2/node_modules/util-deprecate/node.js
 var require_node = __commonJS((exports, module) => {
   module.exports = __require("util").deprecate;
 });
 
-// ../../node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_writable.js
+// node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_writable.js
 var require__stream_writable = __commonJS((exports, module) => {
   var pna = require_process_nextick_args();
   module.exports = Writable;
@@ -6384,7 +6384,7 @@ var require__stream_writable = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_duplex.js
+// node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_duplex.js
 var require__stream_duplex = __commonJS((exports, module) => {
   var pna = require_process_nextick_args();
   var objectKeys = Object.keys || function(obj) {
@@ -6461,7 +6461,7 @@ var require__stream_duplex = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/string_decoder@1.1.1/node_modules/string_decoder/lib/string_decoder.js
+// node_modules/.pnpm/string_decoder@1.1.1/node_modules/string_decoder/lib/string_decoder.js
 var require_string_decoder = __commonJS((exports) => {
   var Buffer2 = require_safe_buffer().Buffer;
   var isEncoding = Buffer2.isEncoding || function(encoding) {
@@ -6718,7 +6718,7 @@ var require_string_decoder = __commonJS((exports) => {
   }
 });
 
-// ../../node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_readable.js
+// node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_readable.js
 var require__stream_readable = __commonJS((exports, module) => {
   var pna = require_process_nextick_args();
   module.exports = Readable;
@@ -7467,7 +7467,7 @@ var require__stream_readable = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_transform.js
+// node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_transform.js
 var require__stream_transform = __commonJS((exports, module) => {
   module.exports = Transform;
   var Duplex = require__stream_duplex();
@@ -7571,7 +7571,7 @@ var require__stream_transform = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_passthrough.js
+// node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/lib/_stream_passthrough.js
 var require__stream_passthrough = __commonJS((exports, module) => {
   module.exports = PassThrough;
   var Transform = require__stream_transform();
@@ -7588,7 +7588,7 @@ var require__stream_passthrough = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/readable.js
+// node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/readable.js
 var require_readable = __commonJS((exports, module) => {
   var Stream = __require("stream");
   if (process.env.READABLE_STREAM === "disable" && Stream) {
@@ -7611,12 +7611,12 @@ var require_readable = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/passthrough.js
+// node_modules/.pnpm/readable-stream@2.3.8/node_modules/readable-stream/passthrough.js
 var require_passthrough = __commonJS((exports, module) => {
   module.exports = require_readable().PassThrough;
 });
 
-// ../../node_modules/.pnpm/lazystream@1.0.1/node_modules/lazystream/lib/lazystream.js
+// node_modules/.pnpm/lazystream@1.0.1/node_modules/lazystream/lib/lazystream.js
 var require_lazystream = __commonJS((exports, module) => {
   var util = __require("util");
   var PassThrough = require_passthrough();
@@ -7659,7 +7659,7 @@ var require_lazystream = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/normalize-path@3.0.0/node_modules/normalize-path/index.js
+// node_modules/.pnpm/normalize-path@3.0.0/node_modules/normalize-path/index.js
 var require_normalize_path = __commonJS((exports, module) => {
   /*!
    * normalize-path <https://github.com/jonschlinkert/normalize-path>
@@ -7692,7 +7692,7 @@ var require_normalize_path = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/identity.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/identity.js
 var require_identity = __commonJS((exports, module) => {
   function identity(value) {
     return value;
@@ -7700,7 +7700,7 @@ var require_identity = __commonJS((exports, module) => {
   module.exports = identity;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_apply.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_apply.js
 var require__apply = __commonJS((exports, module) => {
   function apply(func, thisArg, args) {
     switch (args.length) {
@@ -7718,7 +7718,7 @@ var require__apply = __commonJS((exports, module) => {
   module.exports = apply;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_overRest.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_overRest.js
 var require__overRest = __commonJS((exports, module) => {
   var apply = require__apply();
   var nativeMax = Math.max;
@@ -7741,7 +7741,7 @@ var require__overRest = __commonJS((exports, module) => {
   module.exports = overRest;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/constant.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/constant.js
 var require_constant = __commonJS((exports, module) => {
   function constant(value) {
     return function() {
@@ -7751,13 +7751,13 @@ var require_constant = __commonJS((exports, module) => {
   module.exports = constant;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_freeGlobal.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_freeGlobal.js
 var require__freeGlobal = __commonJS((exports, module) => {
   var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
   module.exports = freeGlobal;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_root.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_root.js
 var require__root = __commonJS((exports, module) => {
   var freeGlobal = require__freeGlobal();
   var freeSelf = typeof self == "object" && self && self.Object === Object && self;
@@ -7765,14 +7765,14 @@ var require__root = __commonJS((exports, module) => {
   module.exports = root;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Symbol.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Symbol.js
 var require__Symbol = __commonJS((exports, module) => {
   var root = require__root();
   var Symbol2 = root.Symbol;
   module.exports = Symbol2;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getRawTag.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getRawTag.js
 var require__getRawTag = __commonJS((exports, module) => {
   var Symbol2 = require__Symbol();
   var objectProto = Object.prototype;
@@ -7798,7 +7798,7 @@ var require__getRawTag = __commonJS((exports, module) => {
   module.exports = getRawTag;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_objectToString.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_objectToString.js
 var require__objectToString = __commonJS((exports, module) => {
   var objectProto = Object.prototype;
   var nativeObjectToString = objectProto.toString;
@@ -7808,7 +7808,7 @@ var require__objectToString = __commonJS((exports, module) => {
   module.exports = objectToString;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseGetTag.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseGetTag.js
 var require__baseGetTag = __commonJS((exports, module) => {
   var Symbol2 = require__Symbol();
   var getRawTag = require__getRawTag();
@@ -7825,7 +7825,7 @@ var require__baseGetTag = __commonJS((exports, module) => {
   module.exports = baseGetTag;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObject.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObject.js
 var require_isObject = __commonJS((exports, module) => {
   function isObject(value) {
     var type = typeof value;
@@ -7834,7 +7834,7 @@ var require_isObject = __commonJS((exports, module) => {
   module.exports = isObject;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isFunction.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isFunction.js
 var require_isFunction = __commonJS((exports, module) => {
   var baseGetTag = require__baseGetTag();
   var isObject = require_isObject();
@@ -7852,14 +7852,14 @@ var require_isFunction = __commonJS((exports, module) => {
   module.exports = isFunction;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_coreJsData.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_coreJsData.js
 var require__coreJsData = __commonJS((exports, module) => {
   var root = require__root();
   var coreJsData = root["__core-js_shared__"];
   module.exports = coreJsData;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isMasked.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isMasked.js
 var require__isMasked = __commonJS((exports, module) => {
   var coreJsData = require__coreJsData();
   var maskSrcKey = function() {
@@ -7872,7 +7872,7 @@ var require__isMasked = __commonJS((exports, module) => {
   module.exports = isMasked;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_toSource.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_toSource.js
 var require__toSource = __commonJS((exports, module) => {
   var funcProto = Function.prototype;
   var funcToString = funcProto.toString;
@@ -7890,7 +7890,7 @@ var require__toSource = __commonJS((exports, module) => {
   module.exports = toSource;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIsNative.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIsNative.js
 var require__baseIsNative = __commonJS((exports, module) => {
   var isFunction = require_isFunction();
   var isMasked = require__isMasked();
@@ -7913,7 +7913,7 @@ var require__baseIsNative = __commonJS((exports, module) => {
   module.exports = baseIsNative;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getValue.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getValue.js
 var require__getValue = __commonJS((exports, module) => {
   function getValue(object, key) {
     return object == null ? undefined : object[key];
@@ -7921,7 +7921,7 @@ var require__getValue = __commonJS((exports, module) => {
   module.exports = getValue;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getNative.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getNative.js
 var require__getNative = __commonJS((exports, module) => {
   var baseIsNative = require__baseIsNative();
   var getValue = require__getValue();
@@ -7932,7 +7932,7 @@ var require__getNative = __commonJS((exports, module) => {
   module.exports = getNative;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_defineProperty.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_defineProperty.js
 var require__defineProperty = __commonJS((exports, module) => {
   var getNative = require__getNative();
   var defineProperty = function() {
@@ -7945,7 +7945,7 @@ var require__defineProperty = __commonJS((exports, module) => {
   module.exports = defineProperty;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseSetToString.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseSetToString.js
 var require__baseSetToString = __commonJS((exports, module) => {
   var constant = require_constant();
   var defineProperty = require__defineProperty();
@@ -7961,7 +7961,7 @@ var require__baseSetToString = __commonJS((exports, module) => {
   module.exports = baseSetToString;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_shortOut.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_shortOut.js
 var require__shortOut = __commonJS((exports, module) => {
   var HOT_COUNT = 800;
   var HOT_SPAN = 16;
@@ -7984,7 +7984,7 @@ var require__shortOut = __commonJS((exports, module) => {
   module.exports = shortOut;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_setToString.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_setToString.js
 var require__setToString = __commonJS((exports, module) => {
   var baseSetToString = require__baseSetToString();
   var shortOut = require__shortOut();
@@ -7992,7 +7992,7 @@ var require__setToString = __commonJS((exports, module) => {
   module.exports = setToString;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseRest.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseRest.js
 var require__baseRest = __commonJS((exports, module) => {
   var identity = require_identity();
   var overRest = require__overRest();
@@ -8003,7 +8003,7 @@ var require__baseRest = __commonJS((exports, module) => {
   module.exports = baseRest;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/eq.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/eq.js
 var require_eq = __commonJS((exports, module) => {
   function eq(value, other) {
     return value === other || value !== value && other !== other;
@@ -8011,7 +8011,7 @@ var require_eq = __commonJS((exports, module) => {
   module.exports = eq;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isLength.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isLength.js
 var require_isLength = __commonJS((exports, module) => {
   var MAX_SAFE_INTEGER = 9007199254740991;
   function isLength(value) {
@@ -8020,7 +8020,7 @@ var require_isLength = __commonJS((exports, module) => {
   module.exports = isLength;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArrayLike.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArrayLike.js
 var require_isArrayLike = __commonJS((exports, module) => {
   var isFunction = require_isFunction();
   var isLength = require_isLength();
@@ -8030,7 +8030,7 @@ var require_isArrayLike = __commonJS((exports, module) => {
   module.exports = isArrayLike;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isIndex.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isIndex.js
 var require__isIndex = __commonJS((exports, module) => {
   var MAX_SAFE_INTEGER = 9007199254740991;
   var reIsUint = /^(?:0|[1-9]\d*)$/;
@@ -8042,7 +8042,7 @@ var require__isIndex = __commonJS((exports, module) => {
   module.exports = isIndex;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isIterateeCall.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isIterateeCall.js
 var require__isIterateeCall = __commonJS((exports, module) => {
   var eq = require_eq();
   var isArrayLike = require_isArrayLike();
@@ -8061,7 +8061,7 @@ var require__isIterateeCall = __commonJS((exports, module) => {
   module.exports = isIterateeCall;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseTimes.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseTimes.js
 var require__baseTimes = __commonJS((exports, module) => {
   function baseTimes(n, iteratee) {
     var index = -1, result = Array(n);
@@ -8073,7 +8073,7 @@ var require__baseTimes = __commonJS((exports, module) => {
   module.exports = baseTimes;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObjectLike.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObjectLike.js
 var require_isObjectLike = __commonJS((exports, module) => {
   function isObjectLike(value) {
     return value != null && typeof value == "object";
@@ -8081,7 +8081,7 @@ var require_isObjectLike = __commonJS((exports, module) => {
   module.exports = isObjectLike;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIsArguments.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIsArguments.js
 var require__baseIsArguments = __commonJS((exports, module) => {
   var baseGetTag = require__baseGetTag();
   var isObjectLike = require_isObjectLike();
@@ -8092,7 +8092,7 @@ var require__baseIsArguments = __commonJS((exports, module) => {
   module.exports = baseIsArguments;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArguments.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArguments.js
 var require_isArguments = __commonJS((exports, module) => {
   var baseIsArguments = require__baseIsArguments();
   var isObjectLike = require_isObjectLike();
@@ -8107,13 +8107,13 @@ var require_isArguments = __commonJS((exports, module) => {
   module.exports = isArguments;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArray.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArray.js
 var require_isArray = __commonJS((exports, module) => {
   var isArray = Array.isArray;
   module.exports = isArray;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/stubFalse.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/stubFalse.js
 var require_stubFalse = __commonJS((exports, module) => {
   function stubFalse() {
     return false;
@@ -8121,7 +8121,7 @@ var require_stubFalse = __commonJS((exports, module) => {
   module.exports = stubFalse;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isBuffer.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isBuffer.js
 var require_isBuffer = __commonJS((exports, module) => {
   var root = require__root();
   var stubFalse = require_stubFalse();
@@ -8134,7 +8134,7 @@ var require_isBuffer = __commonJS((exports, module) => {
   module.exports = isBuffer;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIsTypedArray.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIsTypedArray.js
 var require__baseIsTypedArray = __commonJS((exports, module) => {
   var baseGetTag = require__baseGetTag();
   var isLength = require_isLength();
@@ -8172,7 +8172,7 @@ var require__baseIsTypedArray = __commonJS((exports, module) => {
   module.exports = baseIsTypedArray;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseUnary.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseUnary.js
 var require__baseUnary = __commonJS((exports, module) => {
   function baseUnary(func) {
     return function(value) {
@@ -8182,7 +8182,7 @@ var require__baseUnary = __commonJS((exports, module) => {
   module.exports = baseUnary;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_nodeUtil.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_nodeUtil.js
 var require__nodeUtil = __commonJS((exports, module) => {
   var freeGlobal = require__freeGlobal();
   var freeExports = typeof exports == "object" && exports && !exports.nodeType && exports;
@@ -8201,7 +8201,7 @@ var require__nodeUtil = __commonJS((exports, module) => {
   module.exports = nodeUtil;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isTypedArray.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isTypedArray.js
 var require_isTypedArray = __commonJS((exports, module) => {
   var baseIsTypedArray = require__baseIsTypedArray();
   var baseUnary = require__baseUnary();
@@ -8211,7 +8211,7 @@ var require_isTypedArray = __commonJS((exports, module) => {
   module.exports = isTypedArray;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayLikeKeys.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayLikeKeys.js
 var require__arrayLikeKeys = __commonJS((exports, module) => {
   var baseTimes = require__baseTimes();
   var isArguments = require_isArguments();
@@ -8233,7 +8233,7 @@ var require__arrayLikeKeys = __commonJS((exports, module) => {
   module.exports = arrayLikeKeys;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isPrototype.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isPrototype.js
 var require__isPrototype = __commonJS((exports, module) => {
   var objectProto = Object.prototype;
   function isPrototype(value) {
@@ -8243,7 +8243,7 @@ var require__isPrototype = __commonJS((exports, module) => {
   module.exports = isPrototype;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_nativeKeysIn.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_nativeKeysIn.js
 var require__nativeKeysIn = __commonJS((exports, module) => {
   function nativeKeysIn(object) {
     var result = [];
@@ -8257,7 +8257,7 @@ var require__nativeKeysIn = __commonJS((exports, module) => {
   module.exports = nativeKeysIn;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseKeysIn.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseKeysIn.js
 var require__baseKeysIn = __commonJS((exports, module) => {
   var isObject = require_isObject();
   var isPrototype = require__isPrototype();
@@ -8279,7 +8279,7 @@ var require__baseKeysIn = __commonJS((exports, module) => {
   module.exports = baseKeysIn;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/keysIn.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/keysIn.js
 var require_keysIn = __commonJS((exports, module) => {
   var arrayLikeKeys = require__arrayLikeKeys();
   var baseKeysIn = require__baseKeysIn();
@@ -8290,7 +8290,7 @@ var require_keysIn = __commonJS((exports, module) => {
   module.exports = keysIn;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/defaults.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/defaults.js
 var require_defaults = __commonJS((exports, module) => {
   var baseRest = require__baseRest();
   var eq = require_eq();
@@ -8324,7 +8324,7 @@ var require_defaults = __commonJS((exports, module) => {
   module.exports = defaults;
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/primordials.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/primordials.js
 var require_primordials = __commonJS((exports, module) => {
   class AggregateError extends Error {
     constructor(errors) {
@@ -8442,7 +8442,7 @@ var require_primordials = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/util/inspect.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/util/inspect.js
 var require_inspect = __commonJS((exports, module) => {
   module.exports = {
     format(format, ...args) {
@@ -8490,7 +8490,7 @@ var require_inspect = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/errors.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/errors.js
 var require_errors = __commonJS((exports, module) => {
   var { format, inspect } = require_inspect();
   var { AggregateError: CustomAggregateError } = require_primordials();
@@ -8779,7 +8779,7 @@ var require_errors = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/event-target-shim@5.0.1/node_modules/event-target-shim/dist/event-target-shim.js
+// node_modules/.pnpm/event-target-shim@5.0.1/node_modules/event-target-shim/dist/event-target-shim.js
 var require_event_target_shim = __commonJS((exports, module) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   var privateData = new WeakMap;
@@ -9219,7 +9219,7 @@ var require_event_target_shim = __commonJS((exports, module) => {
   module.exports.defineEventAttribute = defineEventAttribute;
 });
 
-// ../../node_modules/.pnpm/abort-controller@3.0.0/node_modules/abort-controller/dist/abort-controller.js
+// node_modules/.pnpm/abort-controller@3.0.0/node_modules/abort-controller/dist/abort-controller.js
 var require_abort_controller = __commonJS((exports, module) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   var eventTargetShim = require_event_target_shim();
@@ -9299,7 +9299,7 @@ var require_abort_controller = __commonJS((exports, module) => {
   module.exports.AbortSignal = AbortSignal;
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/util.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/util.js
 var require_util2 = __commonJS((exports, module) => {
   var bufferModule = __require("buffer");
   var { format, inspect } = require_inspect();
@@ -9429,7 +9429,7 @@ var require_util2 = __commonJS((exports, module) => {
   module.exports.promisify.custom = Symbol.for("nodejs.util.promisify.custom");
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/validators.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/validators.js
 var require_validators = __commonJS((exports, module) => {
   var {
     ArrayIsArray,
@@ -9684,12 +9684,12 @@ var require_validators = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/process@0.11.10/node_modules/process/index.js
+// node_modules/.pnpm/process@0.11.10/node_modules/process/index.js
 var require_process = __commonJS((exports, module) => {
   module.exports = global.process;
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/utils.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/utils.js
 var require_utils = __commonJS((exports, module) => {
   var { SymbolAsyncIterator, SymbolIterator, SymbolFor } = require_primordials();
   var kIsDestroyed = SymbolFor("nodejs.stream.destroyed");
@@ -9920,7 +9920,7 @@ var require_utils = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/end-of-stream.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/end-of-stream.js
 var require_end_of_stream = __commonJS((exports, module) => {
   var process2 = require_process();
   var { AbortError, codes } = require_errors();
@@ -10165,7 +10165,7 @@ var require_end_of_stream = __commonJS((exports, module) => {
   module.exports.finished = finished;
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/destroy.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/destroy.js
 var require_destroy2 = __commonJS((exports, module) => {
   var process2 = require_process();
   var {
@@ -10427,7 +10427,7 @@ var require_destroy2 = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/legacy.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/legacy.js
 var require_legacy = __commonJS((exports, module) => {
   var { ArrayIsArray, ObjectSetPrototypeOf } = require_primordials();
   var { EventEmitter: EE } = __require("events");
@@ -10509,7 +10509,7 @@ var require_legacy = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/add-abort-signal.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/add-abort-signal.js
 var require_add_abort_signal = __commonJS((exports, module) => {
   var { SymbolDispose } = require_primordials();
   var { AbortError, codes } = require_errors();
@@ -10553,7 +10553,7 @@ var require_add_abort_signal = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/buffer_list.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/buffer_list.js
 var require_buffer_list = __commonJS((exports, module) => {
   var { StringPrototypeSlice, SymbolIterator, TypedArrayPrototypeSet, Uint8Array: Uint8Array2 } = require_primordials();
   var { Buffer: Buffer2 } = __require("buffer");
@@ -10712,7 +10712,7 @@ var require_buffer_list = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/state.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/state.js
 var require_state = __commonJS((exports, module) => {
   var { MathFloor, NumberIsInteger } = require_primordials();
   var { validateInteger } = require_validators();
@@ -10751,7 +10751,7 @@ var require_state = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/safe-buffer@5.2.1/node_modules/safe-buffer/index.js
+// node_modules/.pnpm/safe-buffer@5.2.1/node_modules/safe-buffer/index.js
 var require_safe_buffer2 = __commonJS((exports, module) => {
   /*! safe-buffer. MIT License. Feross Aboukhadijeh <https://feross.org/opensource> */
   var buffer = __require("buffer");
@@ -10808,7 +10808,7 @@ var require_safe_buffer2 = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/string_decoder@1.3.0/node_modules/string_decoder/lib/string_decoder.js
+// node_modules/.pnpm/string_decoder@1.3.0/node_modules/string_decoder/lib/string_decoder.js
 var require_string_decoder2 = __commonJS((exports) => {
   var Buffer2 = require_safe_buffer2().Buffer;
   var isEncoding = Buffer2.isEncoding || function(encoding) {
@@ -11065,7 +11065,7 @@ var require_string_decoder2 = __commonJS((exports) => {
   }
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/from.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/from.js
 var require_from = __commonJS((exports, module) => {
   var process2 = require_process();
   var { PromisePrototypeThen, SymbolAsyncIterator, SymbolIterator } = require_primordials();
@@ -11151,7 +11151,7 @@ var require_from = __commonJS((exports, module) => {
   module.exports = from;
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/readable.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/readable.js
 var require_readable2 = __commonJS((exports, module) => {
   var process2 = require_process();
   var {
@@ -12141,7 +12141,7 @@ var require_readable2 = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/writable.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/writable.js
 var require_writable = __commonJS((exports, module) => {
   var process2 = require_process();
   var {
@@ -12767,7 +12767,7 @@ var require_writable = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/duplexify.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/duplexify.js
 var require_duplexify = __commonJS((exports, module) => {
   var process2 = require_process();
   var bufferModule = __require("buffer");
@@ -13092,7 +13092,7 @@ var require_duplexify = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/duplex.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/duplex.js
 var require_duplex = __commonJS((exports, module) => {
   var {
     ObjectDefineProperties,
@@ -13209,7 +13209,7 @@ var require_duplex = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/transform.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/transform.js
 var require_transform = __commonJS((exports, module) => {
   var { ObjectSetPrototypeOf, Symbol: Symbol2 } = require_primordials();
   module.exports = Transform;
@@ -13305,7 +13305,7 @@ var require_transform = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/passthrough.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/passthrough.js
 var require_passthrough2 = __commonJS((exports, module) => {
   var { ObjectSetPrototypeOf } = require_primordials();
   module.exports = PassThrough;
@@ -13322,7 +13322,7 @@ var require_passthrough2 = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/pipeline.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/pipeline.js
 var require_pipeline = __commonJS((exports, module) => {
   var process2 = require_process();
   var { ArrayIsArray, Promise: Promise2, SymbolAsyncIterator, SymbolDispose } = require_primordials();
@@ -13719,7 +13719,7 @@ var require_pipeline = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/compose.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/compose.js
 var require_compose = __commonJS((exports, module) => {
   var { pipeline } = require_pipeline();
   var Duplex = require_duplex();
@@ -13906,7 +13906,7 @@ var require_compose = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/operators.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/internal/streams/operators.js
 var require_operators = __commonJS((exports, module) => {
   var AbortController = globalThis.AbortController || require_abort_controller().AbortController;
   var {
@@ -14303,7 +14303,7 @@ var require_operators = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/stream/promises.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/stream/promises.js
 var require_promises = __commonJS((exports, module) => {
   var { ArrayPrototypePop, Promise: Promise2 } = require_primordials();
   var { isIterable, isNodeStream, isWebStream } = require_utils();
@@ -14338,7 +14338,7 @@ var require_promises = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/stream.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/stream.js
 var require_stream = __commonJS((exports, module) => {
   var { Buffer: Buffer2 } = __require("buffer");
   var { ObjectDefineProperty, ObjectKeys, ReflectApply } = require_primordials();
@@ -14454,7 +14454,7 @@ var require_stream = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/index.js
+// node_modules/.pnpm/readable-stream@4.7.0/node_modules/readable-stream/lib/ours/index.js
 var require_ours = __commonJS((exports, module) => {
   var Stream = __require("stream");
   if (Stream && process.env.READABLE_STREAM === "disable") {
@@ -14515,7 +14515,7 @@ var require_ours = __commonJS((exports, module) => {
   module.exports.default = module.exports;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayPush.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayPush.js
 var require__arrayPush = __commonJS((exports, module) => {
   function arrayPush(array, values) {
     var index = -1, length = values.length, offset = array.length;
@@ -14527,7 +14527,7 @@ var require__arrayPush = __commonJS((exports, module) => {
   module.exports = arrayPush;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isFlattenable.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isFlattenable.js
 var require__isFlattenable = __commonJS((exports, module) => {
   var Symbol2 = require__Symbol();
   var isArguments = require_isArguments();
@@ -14539,7 +14539,7 @@ var require__isFlattenable = __commonJS((exports, module) => {
   module.exports = isFlattenable;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseFlatten.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseFlatten.js
 var require__baseFlatten = __commonJS((exports, module) => {
   var arrayPush = require__arrayPush();
   var isFlattenable = require__isFlattenable();
@@ -14564,7 +14564,7 @@ var require__baseFlatten = __commonJS((exports, module) => {
   module.exports = baseFlatten;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/flatten.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/flatten.js
 var require_flatten = __commonJS((exports, module) => {
   var baseFlatten = require__baseFlatten();
   function flatten(array) {
@@ -14574,14 +14574,14 @@ var require_flatten = __commonJS((exports, module) => {
   module.exports = flatten;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_nativeCreate.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_nativeCreate.js
 var require__nativeCreate = __commonJS((exports, module) => {
   var getNative = require__getNative();
   var nativeCreate = getNative(Object, "create");
   module.exports = nativeCreate;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashClear.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashClear.js
 var require__hashClear = __commonJS((exports, module) => {
   var nativeCreate = require__nativeCreate();
   function hashClear() {
@@ -14591,7 +14591,7 @@ var require__hashClear = __commonJS((exports, module) => {
   module.exports = hashClear;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashDelete.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashDelete.js
 var require__hashDelete = __commonJS((exports, module) => {
   function hashDelete(key) {
     var result = this.has(key) && delete this.__data__[key];
@@ -14601,7 +14601,7 @@ var require__hashDelete = __commonJS((exports, module) => {
   module.exports = hashDelete;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashGet.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashGet.js
 var require__hashGet = __commonJS((exports, module) => {
   var nativeCreate = require__nativeCreate();
   var HASH_UNDEFINED = "__lodash_hash_undefined__";
@@ -14618,7 +14618,7 @@ var require__hashGet = __commonJS((exports, module) => {
   module.exports = hashGet;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashHas.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashHas.js
 var require__hashHas = __commonJS((exports, module) => {
   var nativeCreate = require__nativeCreate();
   var objectProto = Object.prototype;
@@ -14630,7 +14630,7 @@ var require__hashHas = __commonJS((exports, module) => {
   module.exports = hashHas;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashSet.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_hashSet.js
 var require__hashSet = __commonJS((exports, module) => {
   var nativeCreate = require__nativeCreate();
   var HASH_UNDEFINED = "__lodash_hash_undefined__";
@@ -14643,7 +14643,7 @@ var require__hashSet = __commonJS((exports, module) => {
   module.exports = hashSet;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Hash.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Hash.js
 var require__Hash = __commonJS((exports, module) => {
   var hashClear = require__hashClear();
   var hashDelete = require__hashDelete();
@@ -14666,7 +14666,7 @@ var require__Hash = __commonJS((exports, module) => {
   module.exports = Hash;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheClear.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheClear.js
 var require__listCacheClear = __commonJS((exports, module) => {
   function listCacheClear() {
     this.__data__ = [];
@@ -14675,7 +14675,7 @@ var require__listCacheClear = __commonJS((exports, module) => {
   module.exports = listCacheClear;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_assocIndexOf.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_assocIndexOf.js
 var require__assocIndexOf = __commonJS((exports, module) => {
   var eq = require_eq();
   function assocIndexOf(array, key) {
@@ -14690,7 +14690,7 @@ var require__assocIndexOf = __commonJS((exports, module) => {
   module.exports = assocIndexOf;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheDelete.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheDelete.js
 var require__listCacheDelete = __commonJS((exports, module) => {
   var assocIndexOf = require__assocIndexOf();
   var arrayProto = Array.prototype;
@@ -14712,7 +14712,7 @@ var require__listCacheDelete = __commonJS((exports, module) => {
   module.exports = listCacheDelete;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheGet.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheGet.js
 var require__listCacheGet = __commonJS((exports, module) => {
   var assocIndexOf = require__assocIndexOf();
   function listCacheGet(key) {
@@ -14722,7 +14722,7 @@ var require__listCacheGet = __commonJS((exports, module) => {
   module.exports = listCacheGet;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheHas.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheHas.js
 var require__listCacheHas = __commonJS((exports, module) => {
   var assocIndexOf = require__assocIndexOf();
   function listCacheHas(key) {
@@ -14731,7 +14731,7 @@ var require__listCacheHas = __commonJS((exports, module) => {
   module.exports = listCacheHas;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheSet.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_listCacheSet.js
 var require__listCacheSet = __commonJS((exports, module) => {
   var assocIndexOf = require__assocIndexOf();
   function listCacheSet(key, value) {
@@ -14747,7 +14747,7 @@ var require__listCacheSet = __commonJS((exports, module) => {
   module.exports = listCacheSet;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_ListCache.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_ListCache.js
 var require__ListCache = __commonJS((exports, module) => {
   var listCacheClear = require__listCacheClear();
   var listCacheDelete = require__listCacheDelete();
@@ -14770,7 +14770,7 @@ var require__ListCache = __commonJS((exports, module) => {
   module.exports = ListCache;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Map.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Map.js
 var require__Map = __commonJS((exports, module) => {
   var getNative = require__getNative();
   var root = require__root();
@@ -14778,7 +14778,7 @@ var require__Map = __commonJS((exports, module) => {
   module.exports = Map2;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheClear.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheClear.js
 var require__mapCacheClear = __commonJS((exports, module) => {
   var Hash = require__Hash();
   var ListCache = require__ListCache();
@@ -14794,7 +14794,7 @@ var require__mapCacheClear = __commonJS((exports, module) => {
   module.exports = mapCacheClear;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isKeyable.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_isKeyable.js
 var require__isKeyable = __commonJS((exports, module) => {
   function isKeyable(value) {
     var type = typeof value;
@@ -14803,7 +14803,7 @@ var require__isKeyable = __commonJS((exports, module) => {
   module.exports = isKeyable;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getMapData.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getMapData.js
 var require__getMapData = __commonJS((exports, module) => {
   var isKeyable = require__isKeyable();
   function getMapData(map, key) {
@@ -14813,7 +14813,7 @@ var require__getMapData = __commonJS((exports, module) => {
   module.exports = getMapData;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheDelete.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheDelete.js
 var require__mapCacheDelete = __commonJS((exports, module) => {
   var getMapData = require__getMapData();
   function mapCacheDelete(key) {
@@ -14824,7 +14824,7 @@ var require__mapCacheDelete = __commonJS((exports, module) => {
   module.exports = mapCacheDelete;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheGet.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheGet.js
 var require__mapCacheGet = __commonJS((exports, module) => {
   var getMapData = require__getMapData();
   function mapCacheGet(key) {
@@ -14833,7 +14833,7 @@ var require__mapCacheGet = __commonJS((exports, module) => {
   module.exports = mapCacheGet;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheHas.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheHas.js
 var require__mapCacheHas = __commonJS((exports, module) => {
   var getMapData = require__getMapData();
   function mapCacheHas(key) {
@@ -14842,7 +14842,7 @@ var require__mapCacheHas = __commonJS((exports, module) => {
   module.exports = mapCacheHas;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheSet.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_mapCacheSet.js
 var require__mapCacheSet = __commonJS((exports, module) => {
   var getMapData = require__getMapData();
   function mapCacheSet(key, value) {
@@ -14854,7 +14854,7 @@ var require__mapCacheSet = __commonJS((exports, module) => {
   module.exports = mapCacheSet;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_MapCache.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_MapCache.js
 var require__MapCache = __commonJS((exports, module) => {
   var mapCacheClear = require__mapCacheClear();
   var mapCacheDelete = require__mapCacheDelete();
@@ -14877,7 +14877,7 @@ var require__MapCache = __commonJS((exports, module) => {
   module.exports = MapCache;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_setCacheAdd.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_setCacheAdd.js
 var require__setCacheAdd = __commonJS((exports, module) => {
   var HASH_UNDEFINED = "__lodash_hash_undefined__";
   function setCacheAdd(value) {
@@ -14887,7 +14887,7 @@ var require__setCacheAdd = __commonJS((exports, module) => {
   module.exports = setCacheAdd;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_setCacheHas.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_setCacheHas.js
 var require__setCacheHas = __commonJS((exports, module) => {
   function setCacheHas(value) {
     return this.__data__.has(value);
@@ -14895,7 +14895,7 @@ var require__setCacheHas = __commonJS((exports, module) => {
   module.exports = setCacheHas;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_SetCache.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_SetCache.js
 var require__SetCache = __commonJS((exports, module) => {
   var MapCache = require__MapCache();
   var setCacheAdd = require__setCacheAdd();
@@ -14912,7 +14912,7 @@ var require__SetCache = __commonJS((exports, module) => {
   module.exports = SetCache;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseFindIndex.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseFindIndex.js
 var require__baseFindIndex = __commonJS((exports, module) => {
   function baseFindIndex(array, predicate, fromIndex, fromRight) {
     var length = array.length, index = fromIndex + (fromRight ? 1 : -1);
@@ -14926,7 +14926,7 @@ var require__baseFindIndex = __commonJS((exports, module) => {
   module.exports = baseFindIndex;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIsNaN.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIsNaN.js
 var require__baseIsNaN = __commonJS((exports, module) => {
   function baseIsNaN(value) {
     return value !== value;
@@ -14934,7 +14934,7 @@ var require__baseIsNaN = __commonJS((exports, module) => {
   module.exports = baseIsNaN;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_strictIndexOf.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_strictIndexOf.js
 var require__strictIndexOf = __commonJS((exports, module) => {
   function strictIndexOf(array, value, fromIndex) {
     var index = fromIndex - 1, length = array.length;
@@ -14948,7 +14948,7 @@ var require__strictIndexOf = __commonJS((exports, module) => {
   module.exports = strictIndexOf;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIndexOf.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseIndexOf.js
 var require__baseIndexOf = __commonJS((exports, module) => {
   var baseFindIndex = require__baseFindIndex();
   var baseIsNaN = require__baseIsNaN();
@@ -14959,7 +14959,7 @@ var require__baseIndexOf = __commonJS((exports, module) => {
   module.exports = baseIndexOf;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayIncludes.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayIncludes.js
 var require__arrayIncludes = __commonJS((exports, module) => {
   var baseIndexOf = require__baseIndexOf();
   function arrayIncludes(array, value) {
@@ -14969,7 +14969,7 @@ var require__arrayIncludes = __commonJS((exports, module) => {
   module.exports = arrayIncludes;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayIncludesWith.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayIncludesWith.js
 var require__arrayIncludesWith = __commonJS((exports, module) => {
   function arrayIncludesWith(array, value, comparator) {
     var index = -1, length = array == null ? 0 : array.length;
@@ -14983,7 +14983,7 @@ var require__arrayIncludesWith = __commonJS((exports, module) => {
   module.exports = arrayIncludesWith;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayMap.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayMap.js
 var require__arrayMap = __commonJS((exports, module) => {
   function arrayMap(array, iteratee) {
     var index = -1, length = array == null ? 0 : array.length, result = Array(length);
@@ -14995,7 +14995,7 @@ var require__arrayMap = __commonJS((exports, module) => {
   module.exports = arrayMap;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_cacheHas.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_cacheHas.js
 var require__cacheHas = __commonJS((exports, module) => {
   function cacheHas(cache, key) {
     return cache.has(key);
@@ -15003,7 +15003,7 @@ var require__cacheHas = __commonJS((exports, module) => {
   module.exports = cacheHas;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseDifference.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseDifference.js
 var require__baseDifference = __commonJS((exports, module) => {
   var SetCache = require__SetCache();
   var arrayIncludes = require__arrayIncludes();
@@ -15049,7 +15049,7 @@ var require__baseDifference = __commonJS((exports, module) => {
   module.exports = baseDifference;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArrayLikeObject.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArrayLikeObject.js
 var require_isArrayLikeObject = __commonJS((exports, module) => {
   var isArrayLike = require_isArrayLike();
   var isObjectLike = require_isObjectLike();
@@ -15059,7 +15059,7 @@ var require_isArrayLikeObject = __commonJS((exports, module) => {
   module.exports = isArrayLikeObject;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/difference.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/difference.js
 var require_difference = __commonJS((exports, module) => {
   var baseDifference = require__baseDifference();
   var baseFlatten = require__baseFlatten();
@@ -15071,7 +15071,7 @@ var require_difference = __commonJS((exports, module) => {
   module.exports = difference;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Set.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Set.js
 var require__Set = __commonJS((exports, module) => {
   var getNative = require__getNative();
   var root = require__root();
@@ -15079,13 +15079,13 @@ var require__Set = __commonJS((exports, module) => {
   module.exports = Set2;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/noop.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/noop.js
 var require_noop = __commonJS((exports, module) => {
   function noop() {}
   module.exports = noop;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_setToArray.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_setToArray.js
 var require__setToArray = __commonJS((exports, module) => {
   function setToArray(set) {
     var index = -1, result = Array(set.size);
@@ -15097,7 +15097,7 @@ var require__setToArray = __commonJS((exports, module) => {
   module.exports = setToArray;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_createSet.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_createSet.js
 var require__createSet = __commonJS((exports, module) => {
   var Set2 = require__Set();
   var noop = require_noop();
@@ -15109,7 +15109,7 @@ var require__createSet = __commonJS((exports, module) => {
   module.exports = createSet;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseUniq.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseUniq.js
 var require__baseUniq = __commonJS((exports, module) => {
   var SetCache = require__SetCache();
   var arrayIncludes = require__arrayIncludes();
@@ -15161,7 +15161,7 @@ var require__baseUniq = __commonJS((exports, module) => {
   module.exports = baseUniq;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/union.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/union.js
 var require_union = __commonJS((exports, module) => {
   var baseFlatten = require__baseFlatten();
   var baseRest = require__baseRest();
@@ -15173,7 +15173,7 @@ var require_union = __commonJS((exports, module) => {
   module.exports = union;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_overArg.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_overArg.js
 var require__overArg = __commonJS((exports, module) => {
   function overArg(func, transform) {
     return function(arg) {
@@ -15183,14 +15183,14 @@ var require__overArg = __commonJS((exports, module) => {
   module.exports = overArg;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getPrototype.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getPrototype.js
 var require__getPrototype = __commonJS((exports, module) => {
   var overArg = require__overArg();
   var getPrototype = overArg(Object.getPrototypeOf, Object);
   module.exports = getPrototype;
 });
 
-// ../../node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isPlainObject.js
+// node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isPlainObject.js
 var require_isPlainObject = __commonJS((exports, module) => {
   var baseGetTag = require__baseGetTag();
   var getPrototype = require__getPrototype();
@@ -15215,7 +15215,7 @@ var require_isPlainObject = __commonJS((exports, module) => {
   module.exports = isPlainObject;
 });
 
-// ../../node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/assert-valid-pattern.js
+// node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/assert-valid-pattern.js
 var require_assert_valid_pattern = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.assertValidPattern = undefined;
@@ -15231,7 +15231,7 @@ var require_assert_valid_pattern = __commonJS((exports) => {
   exports.assertValidPattern = assertValidPattern;
 });
 
-// ../../node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/brace-expressions.js
+// node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/brace-expressions.js
 var require_brace_expressions = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.parseClass = undefined;
@@ -15346,7 +15346,7 @@ var require_brace_expressions = __commonJS((exports) => {
   exports.parseClass = parseClass;
 });
 
-// ../../node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/unescape.js
+// node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/unescape.js
 var require_unescape = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.unescape = undefined;
@@ -15356,7 +15356,7 @@ var require_unescape = __commonJS((exports) => {
   exports.unescape = unescape;
 });
 
-// ../../node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/ast.js
+// node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/ast.js
 var require_ast = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.AST = undefined;
@@ -15761,7 +15761,7 @@ var require_ast = __commonJS((exports) => {
   exports.AST = AST;
 });
 
-// ../../node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/escape.js
+// node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/escape.js
 var require_escape = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.escape = undefined;
@@ -15771,7 +15771,7 @@ var require_escape = __commonJS((exports) => {
   exports.escape = escape;
 });
 
-// ../../node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/index.js
+// node_modules/.pnpm/minimatch@9.0.5/node_modules/minimatch/dist/commonjs/index.js
 var require_commonjs = __commonJS((exports) => {
   var __importDefault = exports && exports.__importDefault || function(mod) {
     return mod && mod.__esModule ? mod : { default: mod };
@@ -16483,7 +16483,7 @@ globstar while`, file, fr, pattern, pr, swallowee);
   exports.minimatch.unescape = unescape_js_1.unescape;
 });
 
-// ../../node_modules/.pnpm/lru-cache@10.4.3/node_modules/lru-cache/dist/commonjs/index.js
+// node_modules/.pnpm/lru-cache@10.4.3/node_modules/lru-cache/dist/commonjs/index.js
 var require_commonjs2 = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.LRUCache = undefined;
@@ -17598,7 +17598,7 @@ var require_commonjs2 = __commonJS((exports) => {
   exports.LRUCache = LRUCache;
 });
 
-// ../../node_modules/.pnpm/minipass@7.1.2/node_modules/minipass/dist/commonjs/index.js
+// node_modules/.pnpm/minipass@7.1.2/node_modules/minipass/dist/commonjs/index.js
 var require_commonjs3 = __commonJS((exports) => {
   var __importDefault = exports && exports.__importDefault || function(mod) {
     return mod && mod.__esModule ? mod : { default: mod };
@@ -18270,7 +18270,7 @@ var require_commonjs3 = __commonJS((exports) => {
   exports.Minipass = Minipass;
 });
 
-// ../../node_modules/.pnpm/path-scurry@1.11.1/node_modules/path-scurry/dist/commonjs/index.js
+// node_modules/.pnpm/path-scurry@1.11.1/node_modules/path-scurry/dist/commonjs/index.js
 var require_commonjs4 = __commonJS((exports) => {
   var __createBinding = exports && exports.__createBinding || (Object.create ? function(o, m, k, k2) {
     if (k2 === undefined)
@@ -19620,7 +19620,7 @@ var require_commonjs4 = __commonJS((exports) => {
   exports.PathScurry = process.platform === "win32" ? PathScurryWin32 : process.platform === "darwin" ? PathScurryDarwin : PathScurryPosix;
 });
 
-// ../../node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/pattern.js
+// node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/pattern.js
 var require_pattern = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.Pattern = undefined;
@@ -19744,7 +19744,7 @@ var require_pattern = __commonJS((exports) => {
   exports.Pattern = Pattern;
 });
 
-// ../../node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/ignore.js
+// node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/ignore.js
 var require_ignore = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.Ignore = undefined;
@@ -19839,7 +19839,7 @@ var require_ignore = __commonJS((exports) => {
   exports.Ignore = Ignore;
 });
 
-// ../../node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/processor.js
+// node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/processor.js
 var require_processor = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.Processor = exports.SubWalks = exports.MatchRecord = exports.HasWalkedCache = undefined;
@@ -20067,7 +20067,7 @@ var require_processor = __commonJS((exports) => {
   exports.Processor = Processor;
 });
 
-// ../../node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/walker.js
+// node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/walker.js
 var require_walker = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.GlobStream = exports.GlobWalker = exports.GlobUtil = undefined;
@@ -20404,7 +20404,7 @@ var require_walker = __commonJS((exports) => {
   exports.GlobStream = GlobStream;
 });
 
-// ../../node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/glob.js
+// node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/glob.js
 var require_glob = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.Glob = undefined;
@@ -20588,7 +20588,7 @@ var require_glob = __commonJS((exports) => {
   exports.Glob = Glob;
 });
 
-// ../../node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/has-magic.js
+// node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/has-magic.js
 var require_has_magic = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.hasMagic = undefined;
@@ -20606,7 +20606,7 @@ var require_has_magic = __commonJS((exports) => {
   exports.hasMagic = hasMagic;
 });
 
-// ../../node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/index.js
+// node_modules/.pnpm/glob@10.5.0/node_modules/glob/dist/commonjs/index.js
 var require_commonjs5 = __commonJS((exports) => {
   Object.defineProperty(exports, "__esModule", { value: true });
   exports.glob = exports.sync = exports.iterate = exports.iterateSync = exports.stream = exports.streamSync = exports.Ignore = exports.hasMagic = exports.Glob = exports.unescape = exports.escape = undefined;
@@ -20685,7 +20685,7 @@ var require_commonjs5 = __commonJS((exports) => {
   exports.glob.glob = exports.glob;
 });
 
-// ../../node_modules/.pnpm/archiver-utils@5.0.2/node_modules/archiver-utils/file.js
+// node_modules/.pnpm/archiver-utils@5.0.2/node_modules/archiver-utils/file.js
 var require_file = __commonJS((exports, module) => {
   var fs = require_graceful_fs();
   var path = __require("path");
@@ -20836,7 +20836,7 @@ var require_file = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/archiver-utils@5.0.2/node_modules/archiver-utils/index.js
+// node_modules/.pnpm/archiver-utils@5.0.2/node_modules/archiver-utils/index.js
 var require_archiver_utils = __commonJS((exports, module) => {
   var fs = require_graceful_fs();
   var path = __require("path");
@@ -20953,7 +20953,7 @@ var require_archiver_utils = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/error.js
+// node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/error.js
 var require_error2 = __commonJS((exports, module) => {
   var util = __require("util");
   var ERROR_CODES = {
@@ -20984,7 +20984,7 @@ var require_error2 = __commonJS((exports, module) => {
   exports = module.exports = ArchiverError;
 });
 
-// ../../node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/core.js
+// node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/core.js
 var require_core = __commonJS((exports, module) => {
   var fs = __require("fs");
   var glob = require_readdir_glob();
@@ -21517,7 +21517,7 @@ var require_core = __commonJS((exports, module) => {
   module.exports = Archiver;
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/archive-entry.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/archive-entry.js
 var require_archive_entry = __commonJS((exports, module) => {
   var ArchiveEntry = module.exports = function() {};
   ArchiveEntry.prototype.getName = function() {};
@@ -21526,7 +21526,7 @@ var require_archive_entry = __commonJS((exports, module) => {
   ArchiveEntry.prototype.isDirectory = function() {};
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/util.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/util.js
 var require_util3 = __commonJS((exports, module) => {
   var util = module.exports = {};
   util.dateToDos = function(d, forceLocalTime) {
@@ -21580,7 +21580,7 @@ var require_util3 = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/general-purpose-bit.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/general-purpose-bit.js
 var require_general_purpose_bit = __commonJS((exports, module) => {
   var zipUtil = require_util3();
   var DATA_DESCRIPTOR_FLAG = 1 << 3;
@@ -21653,7 +21653,7 @@ var require_general_purpose_bit = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/unix-stat.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/unix-stat.js
 var require_unix_stat = __commonJS((exports, module) => {
   module.exports = {
     PERM_MASK: 4095,
@@ -21667,7 +21667,7 @@ var require_unix_stat = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/constants.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/constants.js
 var require_constants = __commonJS((exports, module) => {
   module.exports = {
     WORD: 4,
@@ -21722,7 +21722,7 @@ var require_constants = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/zip-archive-entry.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/zip-archive-entry.js
 var require_zip_archive_entry = __commonJS((exports, module) => {
   var inherits = __require("util").inherits;
   var normalizePath = require_normalize_path();
@@ -21895,7 +21895,7 @@ var require_zip_archive_entry = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/util/index.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/util/index.js
 var require_util4 = __commonJS((exports, module) => {
   var Stream = __require("stream").Stream;
   var PassThrough = require_ours().PassThrough;
@@ -21915,7 +21915,7 @@ var require_util4 = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/archive-output-stream.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/archive-output-stream.js
 var require_archive_output_stream = __commonJS((exports, module) => {
   var inherits = __require("util").inherits;
   var isStream = require_is_stream();
@@ -21997,7 +21997,7 @@ var require_archive_output_stream = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/crc-32@1.2.2/node_modules/crc-32/crc32.js
+// node_modules/.pnpm/crc-32@1.2.2/node_modules/crc-32/crc32.js
 var require_crc32 = __commonJS((exports) => {
   /*! crc32.js (C) 2014-present SheetJS -- http://sheetjs.com */
   var CRC32;
@@ -22100,7 +22100,7 @@ var require_crc32 = __commonJS((exports) => {
   });
 });
 
-// ../../node_modules/.pnpm/crc32-stream@6.0.0/node_modules/crc32-stream/lib/crc32-stream.js
+// node_modules/.pnpm/crc32-stream@6.0.0/node_modules/crc32-stream/lib/crc32-stream.js
 var require_crc32_stream = __commonJS((exports, module) => {
   var { Transform } = require_ours();
   var crc32 = require_crc32();
@@ -22134,7 +22134,7 @@ var require_crc32_stream = __commonJS((exports, module) => {
   module.exports = CRC32Stream;
 });
 
-// ../../node_modules/.pnpm/crc32-stream@6.0.0/node_modules/crc32-stream/lib/deflate-crc32-stream.js
+// node_modules/.pnpm/crc32-stream@6.0.0/node_modules/crc32-stream/lib/deflate-crc32-stream.js
 var require_deflate_crc32_stream = __commonJS((exports, module) => {
   var { DeflateRaw } = __require("zlib");
   var crc32 = require_crc32();
@@ -22179,7 +22179,7 @@ var require_deflate_crc32_stream = __commonJS((exports, module) => {
   module.exports = DeflateCRC32Stream;
 });
 
-// ../../node_modules/.pnpm/crc32-stream@6.0.0/node_modules/crc32-stream/lib/index.js
+// node_modules/.pnpm/crc32-stream@6.0.0/node_modules/crc32-stream/lib/index.js
 var require_lib = __commonJS((exports, module) => {
   module.exports = {
     CRC32Stream: require_crc32_stream(),
@@ -22187,7 +22187,7 @@ var require_lib = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/zip-archive-output-stream.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/archivers/zip/zip-archive-output-stream.js
 var require_zip_archive_output_stream = __commonJS((exports, module) => {
   var inherits = __require("util").inherits;
   var crc32 = require_crc32();
@@ -22470,7 +22470,7 @@ var require_zip_archive_output_stream = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/compress-commons.js
+// node_modules/.pnpm/compress-commons@6.0.2/node_modules/compress-commons/lib/compress-commons.js
 var require_compress_commons = __commonJS((exports, module) => {
   module.exports = {
     ArchiveEntry: require_archive_entry(),
@@ -22480,7 +22480,7 @@ var require_compress_commons = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/zip-stream@6.0.1/node_modules/zip-stream/index.js
+// node_modules/.pnpm/zip-stream@6.0.1/node_modules/zip-stream/index.js
 var require_zip_stream = __commonJS((exports, module) => {
   var inherits = __require("util").inherits;
   var ZipArchiveOutputStream = require_compress_commons().ZipArchiveOutputStream;
@@ -22581,7 +22581,7 @@ var require_zip_stream = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/plugins/zip.js
+// node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/plugins/zip.js
 var require_zip = __commonJS((exports, module) => {
   var engine = require_zip_stream();
   var util = require_archiver_utils();
@@ -22619,7 +22619,7 @@ var require_zip = __commonJS((exports, module) => {
   module.exports = Zip;
 });
 
-// ../../node_modules/.pnpm/fast-fifo@1.3.2/node_modules/fast-fifo/fixed-size.js
+// node_modules/.pnpm/fast-fifo@1.3.2/node_modules/fast-fifo/fixed-size.js
 var require_fixed_size = __commonJS((exports, module) => {
   module.exports = class FixedFIFO {
     constructor(hwm) {
@@ -22660,7 +22660,7 @@ var require_fixed_size = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/fast-fifo@1.3.2/node_modules/fast-fifo/index.js
+// node_modules/.pnpm/fast-fifo@1.3.2/node_modules/fast-fifo/index.js
 var require_fast_fifo = __commonJS((exports, module) => {
   var FixedFIFO = require_fixed_size();
   module.exports = class FastFIFO {
@@ -22707,7 +22707,7 @@ var require_fast_fifo = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/b4a@1.7.3/node_modules/b4a/index.js
+// node_modules/.pnpm/b4a@1.7.3/node_modules/b4a/index.js
 var require_b4a = __commonJS((exports, module) => {
   function isBuffer(value) {
     return Buffer.isBuffer(value) || value instanceof Uint8Array;
@@ -22863,7 +22863,7 @@ var require_b4a = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/text-decoder@1.2.3/node_modules/text-decoder/lib/pass-through-decoder.js
+// node_modules/.pnpm/text-decoder@1.2.3/node_modules/text-decoder/lib/pass-through-decoder.js
 var require_pass_through_decoder = __commonJS((exports, module) => {
   var b4a = require_b4a();
   module.exports = class PassThroughDecoder {
@@ -22882,7 +22882,7 @@ var require_pass_through_decoder = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/text-decoder@1.2.3/node_modules/text-decoder/lib/utf8-decoder.js
+// node_modules/.pnpm/text-decoder@1.2.3/node_modules/text-decoder/lib/utf8-decoder.js
 var require_utf8_decoder = __commonJS((exports, module) => {
   var b4a = require_b4a();
   module.exports = class UTF8Decoder {
@@ -22970,7 +22970,7 @@ var require_utf8_decoder = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/text-decoder@1.2.3/node_modules/text-decoder/index.js
+// node_modules/.pnpm/text-decoder@1.2.3/node_modules/text-decoder/index.js
 var require_text_decoder = __commonJS((exports, module) => {
   var PassThroughDecoder = require_pass_through_decoder();
   var UTF8Decoder = require_utf8_decoder();
@@ -23031,7 +23031,7 @@ var require_text_decoder = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/streamx@2.23.0/node_modules/streamx/index.js
+// node_modules/.pnpm/streamx@2.23.0/node_modules/streamx/index.js
 var require_streamx = __commonJS((exports, module) => {
   var { EventEmitter } = __require("events");
   var STREAM_DESTROYED = new Error("Stream was destroyed");
@@ -24092,7 +24092,7 @@ var require_streamx = __commonJS((exports, module) => {
   };
 });
 
-// ../../node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/headers.js
+// node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/headers.js
 var require_headers = __commonJS((exports) => {
   var b4a = require_b4a();
   var ZEROS = "0000000000000000000";
@@ -24388,7 +24388,7 @@ var require_headers = __commonJS((exports) => {
   }
 });
 
-// ../../node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/extract.js
+// node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/extract.js
 var require_extract = __commonJS((exports, module) => {
   var { Writable, Readable, getStreamError } = require_streamx();
   var FIFO = require_fast_fifo();
@@ -24747,7 +24747,7 @@ var require_extract = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/constants.js
+// node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/constants.js
 var require_constants2 = __commonJS((exports, module) => {
   var constants = {
     S_IFMT: 61440,
@@ -24764,7 +24764,7 @@ var require_constants2 = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/pack.js
+// node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/pack.js
 var require_pack = __commonJS((exports, module) => {
   var { Readable, Writable, getStreamError } = require_streamx();
   var b4a = require_b4a();
@@ -25022,13 +25022,13 @@ var require_pack = __commonJS((exports, module) => {
   }
 });
 
-// ../../node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/index.js
+// node_modules/.pnpm/tar-stream@3.1.7/node_modules/tar-stream/index.js
 var require_tar_stream = __commonJS((exports) => {
   exports.extract = require_extract();
   exports.pack = require_pack();
 });
 
-// ../../node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/plugins/tar.js
+// node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/plugins/tar.js
 var require_tar = __commonJS((exports, module) => {
   var zlib = __require("zlib");
   var engine = require_tar_stream();
@@ -25104,7 +25104,7 @@ var require_tar = __commonJS((exports, module) => {
   module.exports = Tar;
 });
 
-// ../../node_modules/.pnpm/buffer-crc32@1.0.0/node_modules/buffer-crc32/dist/index.cjs
+// node_modules/.pnpm/buffer-crc32@1.0.0/node_modules/buffer-crc32/dist/index.cjs
 var require_dist = __commonJS((exports, module) => {
   function getDefaultExportFromCjs(x) {
     return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x["default"] : x;
@@ -25409,7 +25409,7 @@ var require_dist = __commonJS((exports, module) => {
   module.exports = index;
 });
 
-// ../../node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/plugins/json.js
+// node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/lib/plugins/json.js
 var require_json = __commonJS((exports, module) => {
   var inherits = __require("util").inherits;
   var Transform = require_ours().Transform;
@@ -25461,7 +25461,7 @@ var require_json = __commonJS((exports, module) => {
   module.exports = Json;
 });
 
-// ../../node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/index.js
+// node_modules/.pnpm/archiver@7.0.1/node_modules/archiver/index.js
 var require_archiver = __commonJS((exports, module) => {
   var Archiver = require_core();
   var formats = {};
@@ -25502,7 +25502,7 @@ var require_archiver = __commonJS((exports, module) => {
   module.exports = vending;
 });
 
-// ../../node_modules/.pnpm/commander@12.1.0/node_modules/commander/esm.mjs
+// node_modules/.pnpm/commander@12.1.0/node_modules/commander/esm.mjs
 var import__ = __toESM(require_commander(), 1);
 var {
   program,
@@ -25518,7 +25518,7 @@ var {
   Help
 } = import__.default;
 
-// src/deploy.ts
+// packages/rebyte-appbuilder-cli/dist/deploy.js
 async function getUploadUrl(apiUrl, apiToken, prefix) {
   const body = {};
   if (prefix) {
@@ -25650,39 +25650,14 @@ async function getDeploymentLogs(apiUrl, apiToken, prefix, minutes) {
   return await response.json();
 }
 
-// src/package.ts
+// packages/rebyte-appbuilder-cli/dist/package.js
 var import_archiver = __toESM(require_archiver(), 1);
 import * as fs from "fs";
 import * as path from "path";
-var DEFAULT_CONFIG = {
-  handler: "index.handler",
-  runtime: "nodejs20.x",
-  memory: 1024,
-  timeout: 30
-};
-function scanDirectory(dir) {
-  if (!fs.existsSync(dir)) {
-    return { count: 0, totalSize: 0, byExtension: {} };
-  }
-  let count = 0;
-  let totalSize = 0;
-  const byExtension = {};
-  function walk(d) {
-    for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
-      const fullPath = path.join(d, entry.name);
-      if (entry.isDirectory()) {
-        walk(fullPath);
-      } else {
-        count++;
-        totalSize += fs.statSync(fullPath).size;
-        const ext = path.extname(entry.name) || "(no ext)";
-        byExtension[ext] = (byExtension[ext] || 0) + 1;
-      }
-    }
-  }
-  walk(dir);
-  return { count, totalSize, byExtension };
-}
+var DEFAULT_HANDLER = "index.handler";
+var DEFAULT_RUNTIME = "nodejs20.x";
+var DEFAULT_MEMORY = 1024;
+var DEFAULT_TIMEOUT = 30;
 function getDirectorySize(dir) {
   if (!fs.existsSync(dir))
     return 0;
@@ -25700,61 +25675,130 @@ function getDirectorySize(dir) {
   walk(dir);
   return size;
 }
+function countFiles(dir) {
+  if (!fs.existsSync(dir))
+    return { count: 0, totalSize: 0, byExt: {} };
+  let count = 0;
+  let totalSize = 0;
+  const byExt = {};
+  function walk(d) {
+    for (const entry of fs.readdirSync(d, { withFileTypes: true })) {
+      const fullPath = path.join(d, entry.name);
+      if (entry.isDirectory()) {
+        walk(fullPath);
+      } else {
+        count++;
+        totalSize += fs.statSync(fullPath).size;
+        const ext = path.extname(entry.name) || "(no ext)";
+        byExt[ext] = (byExt[ext] || 0) + 1;
+      }
+    }
+  }
+  walk(dir);
+  return { count, totalSize, byExt };
+}
+function getStaticBreakdown(staticDir) {
+  if (!fs.existsSync(staticDir))
+    return [];
+  const breakdown = [];
+  for (const entry of fs.readdirSync(staticDir, { withFileTypes: true })) {
+    const fullPath = path.join(staticDir, entry.name);
+    if (entry.isDirectory()) {
+      const stats = countFiles(fullPath);
+      if (stats.count > 0) {
+        breakdown.push({
+          path: entry.name,
+          fileCount: stats.count,
+          totalSize: stats.totalSize,
+          extensions: Object.entries(stats.byExt).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([ext]) => ext)
+        });
+      }
+    } else {
+      breakdown.push({
+        path: entry.name,
+        fileCount: 1,
+        totalSize: fs.statSync(fullPath).size,
+        extensions: [path.extname(entry.name) || "(no ext)"]
+      });
+    }
+  }
+  return breakdown.sort((a, b) => b.fileCount - a.fileCount);
+}
+function getTopFiles(funcDir) {
+  if (!fs.existsSync(funcDir))
+    return [];
+  const result = [];
+  for (const entry of fs.readdirSync(funcDir, { withFileTypes: true })) {
+    if (entry.isDirectory()) {
+      const count = countFiles(path.join(funcDir, entry.name)).count;
+      result.push(`${entry.name}/ (${count} files)`);
+    } else {
+      result.push(entry.name);
+    }
+  }
+  return result.slice(0, 10);
+}
+function scanFunction(funcDir, funcName) {
+  const handler = DEFAULT_HANDLER;
+  const runtime = DEFAULT_RUNTIME;
+  const memory = DEFAULT_MEMORY;
+  const timeout = DEFAULT_TIMEOUT;
+  let entryFile = "index.js";
+  if (!fs.existsSync(path.join(funcDir, entryFile))) {
+    if (fs.existsSync(path.join(funcDir, "index.mjs"))) {
+      entryFile = "index.mjs";
+    }
+  }
+  return {
+    name: funcName,
+    entryFile,
+    handler,
+    runtime,
+    memory,
+    timeout,
+    size: getDirectorySize(funcDir),
+    topFiles: getTopFiles(funcDir)
+  };
+}
 async function createZip(configFile, staticDir, functionsDir, envFile) {
   const chunks = [];
-  const archive = import_archiver.default("zip", {
-    zlib: { level: 9 }
-  });
-  const archivePromise = new Promise((resolve, reject) => {
+  const archive = import_archiver.default("zip", { zlib: { level: 9 } });
+  const promise = new Promise((resolve, reject) => {
     archive.on("data", (chunk) => chunks.push(chunk));
     archive.on("end", () => resolve(Buffer.concat(chunks)));
     archive.on("error", reject);
   });
-  if (fs.existsSync(configFile)) {
+  if (fs.existsSync(configFile))
     archive.file(configFile, { name: "config.json" });
-  }
-  if (fs.existsSync(staticDir)) {
+  if (fs.existsSync(staticDir))
     archive.directory(staticDir, "static");
-  }
-  if (fs.existsSync(functionsDir)) {
+  if (fs.existsSync(functionsDir))
     archive.directory(functionsDir, "functions");
-  }
-  if (fs.existsSync(envFile)) {
+  if (fs.existsSync(envFile))
     archive.file(envFile, { name: ".env.production" });
-  }
   archive.finalize();
-  return archivePromise;
+  return promise;
 }
 async function scanAndPackage(outputDir) {
   const configFile = path.join(outputDir, "config.json");
   const staticDir = path.join(outputDir, "static");
   const functionsDir = path.join(outputDir, "functions");
   const envFile = path.join(outputDir, ".env.production");
-  const staticStats = scanDirectory(staticDir);
-  let functionExists = false;
-  let functionConfig = { ...DEFAULT_CONFIG };
-  let configSource = "defaults";
-  let functionSize = 0;
+  let routes = [];
+  if (fs.existsSync(configFile)) {
+    try {
+      const config = JSON.parse(fs.readFileSync(configFile, "utf-8"));
+      routes = config.routes || [];
+    } catch {}
+  }
+  const staticStats = countFiles(staticDir);
+  const staticBreakdown = getStaticBreakdown(staticDir);
+  const functions = [];
   if (fs.existsSync(functionsDir)) {
-    const funcDirs = fs.readdirSync(functionsDir).filter((f) => f.endsWith(".func") && fs.statSync(path.join(functionsDir, f)).isDirectory());
-    if (funcDirs.length > 0) {
-      functionExists = true;
-      const firstFuncDir = path.join(functionsDir, funcDirs[0]);
-      functionSize = getDirectorySize(functionsDir);
-      const vcConfigPath = path.join(firstFuncDir, ".vc-config.json");
-      if (fs.existsSync(vcConfigPath)) {
-        try {
-          const parsed = JSON.parse(fs.readFileSync(vcConfigPath, "utf-8"));
-          functionConfig = {
-            handler: parsed.handler || DEFAULT_CONFIG.handler,
-            runtime: parsed.runtime || DEFAULT_CONFIG.runtime,
-            memory: parsed.memory || DEFAULT_CONFIG.memory,
-            timeout: parsed.maxDuration || DEFAULT_CONFIG.timeout
-          };
-          configSource = "file";
-        } catch {
-          configSource = "defaults";
-        }
+    for (const name of fs.readdirSync(functionsDir)) {
+      const funcPath = path.join(functionsDir, name);
+      if (name.endsWith(".func") && fs.statSync(funcPath).isDirectory()) {
+        functions.push(scanFunction(funcPath, name));
       }
     }
   }
@@ -25767,601 +25811,446 @@ async function scanAndPackage(outputDir) {
   const zipBuffer = await createZip(configFile, staticDir, functionsDir, envFile);
   return {
     zipBuffer,
-    static: staticStats,
-    function: {
-      exists: functionExists,
-      config: functionConfig,
-      size: functionSize,
-      configSource
+    routes,
+    static: {
+      totalFiles: staticStats.count,
+      totalSize: staticStats.totalSize,
+      breakdown: staticBreakdown
     },
+    functions,
     envVars
   };
 }
 
-// src/detect.ts
+// packages/rebyte-appbuilder-cli/dist/validate.js
 import * as fs2 from "fs";
 import * as path2 from "path";
-function detectFramework(projectDir) {
-  const packageJsonPath = path2.join(projectDir, "package.json");
-  if (!fs2.existsSync(packageJsonPath)) {
-    return {
-      type: "static",
-      name: "Static Site",
-      version: null,
-      buildCommand: "",
-      outputDir: ".",
-      isSSR: false
-    };
+async function validatePackage(outputDir) {
+  const checks = [];
+  const errors = [];
+  const configPath = path2.join(outputDir, "config.json");
+  if (!fs2.existsSync(configPath)) {
+    checks.push({
+      name: "config.json exists",
+      passed: false,
+      message: "config.json not found",
+      details: `Expected: ${configPath}
+
+The .rebyte/ directory must contain a config.json file with routes.
+Create it manually or use a framework adapter like OpenNext.`
+    });
+    errors.push("config.json not found in .rebyte/");
+    return { valid: false, checks, errors };
   }
-  const pkg = JSON.parse(fs2.readFileSync(packageJsonPath, "utf-8"));
-  const deps = { ...pkg.dependencies, ...pkg.devDependencies };
-  if (deps["next"]) {
-    return {
-      type: "nextjs",
-      name: "Next.js",
-      version: deps["next"].replace(/^[\^~]/, ""),
-      buildCommand: "npm run build",
-      outputDir: ".next",
-      isSSR: true
-    };
+  checks.push({ name: "config.json exists", passed: true, message: "Found" });
+  let config;
+  try {
+    config = JSON.parse(fs2.readFileSync(configPath, "utf-8"));
+  } catch (err) {
+    const parseError = err;
+    checks.push({
+      name: "config.json valid JSON",
+      passed: false,
+      message: "Invalid JSON",
+      details: `Parse error: ${parseError.message}
+
+Fix the JSON syntax in config.json.`
+    });
+    errors.push(`config.json is not valid JSON: ${parseError.message}`);
+    return { valid: false, checks, errors };
   }
-  if (deps["astro"]) {
-    return {
-      type: "astro",
-      name: "Astro",
-      version: deps["astro"].replace(/^[\^~]/, ""),
-      buildCommand: "npm run build",
-      outputDir: "dist",
-      isSSR: hasAstroSSR(projectDir)
-    };
-  }
-  if (deps["nuxt"]) {
-    return {
-      type: "nuxt",
-      name: "Nuxt",
-      version: deps["nuxt"].replace(/^[\^~]/, ""),
-      buildCommand: "npm run build",
-      outputDir: ".output",
-      isSSR: true
-    };
-  }
-  if (deps["@sveltejs/kit"]) {
-    return {
-      type: "sveltekit",
-      name: "SvelteKit",
-      version: deps["@sveltejs/kit"].replace(/^[\^~]/, ""),
-      buildCommand: "npm run build",
-      outputDir: ".svelte-kit",
-      isSSR: hasSvelteKitSSR(projectDir)
-    };
-  }
-  if (deps["@remix-run/react"] || deps["remix"]) {
-    return {
-      type: "remix",
-      name: "Remix",
-      version: deps["@remix-run/react"]?.replace(/^[\^~]/, "") || deps["remix"]?.replace(/^[\^~]/, "") || null,
-      buildCommand: "npm run build",
-      outputDir: "build",
-      isSSR: true
-    };
-  }
-  if (deps["gatsby"]) {
-    return {
-      type: "gatsby",
-      name: "Gatsby",
-      version: deps["gatsby"].replace(/^[\^~]/, ""),
-      buildCommand: "npm run build",
-      outputDir: "public",
-      isSSR: false
-    };
-  }
-  if (deps["vite"]) {
-    return {
-      type: "vite",
-      name: "Vite",
-      version: deps["vite"].replace(/^[\^~]/, ""),
-      buildCommand: "npm run build",
-      outputDir: "dist",
-      isSSR: false
-    };
-  }
-  return {
-    type: "static",
-    name: "Static Site",
-    version: null,
-    buildCommand: "",
-    outputDir: ".",
-    isSSR: false
-  };
-}
-function hasAstroSSR(projectDir) {
-  const astroConfigPaths = [
-    path2.join(projectDir, "astro.config.mjs"),
-    path2.join(projectDir, "astro.config.js"),
-    path2.join(projectDir, "astro.config.ts")
-  ];
-  for (const configPath of astroConfigPaths) {
-    if (fs2.existsSync(configPath)) {
-      const content = fs2.readFileSync(configPath, "utf-8");
-      if (/output:\s*['"](?:server|hybrid)['"]/.test(content)) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-function hasSvelteKitSSR(projectDir) {
-  const packageJsonPath = path2.join(projectDir, "package.json");
-  if (fs2.existsSync(packageJsonPath)) {
-    const pkg = JSON.parse(fs2.readFileSync(packageJsonPath, "utf-8"));
-    const deps = { ...pkg.dependencies, ...pkg.devDependencies };
-    if (deps["@sveltejs/adapter-static"]) {
-      return false;
-    }
-    if (deps["@sveltejs/adapter-node"] || deps["@sveltejs/adapter-vercel"] || deps["@sveltejs/adapter-netlify"]) {
-      return true;
-    }
-  }
-  return true;
-}
-function getFrameworkDescription(framework) {
-  const parts = [framework.name];
-  if (framework.version) {
-    parts.push(`v${framework.version}`);
-  }
-  if (framework.isSSR) {
-    parts.push("(SSR)");
-  } else {
-    parts.push("(Static)");
-  }
-  return parts.join(" ");
+  checks.push({ name: "config.json valid JSON", passed: true, message: "Valid" });
+  if (!config.routes || !Array.isArray(config.routes) || config.routes.length === 0) {
+    checks.push({
+      name: "Routes defined",
+      passed: false,
+      message: "No routes",
+      details: `config.json must have a "routes" array.
+
+Example for static site:
+{
+  "version": 1,
+  "routes": [
+    { "handle": "filesystem" }
+  ]
 }
 
-// src/transform.ts
-import * as fs3 from "fs";
-import * as path3 from "path";
-async function transformBuildOutput(projectDir, framework) {
-  const outputDir = path3.join(projectDir, ".rebyte");
-  if (fs3.existsSync(outputDir)) {
-    fs3.rmSync(outputDir, { recursive: true });
+Example for SSR:
+{
+  "version": 1,
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "^/(.*)$", "dest": "/functions/default" }
+  ]
+}`
+    });
+    errors.push("config.json has no routes defined");
+    return { valid: false, checks, errors };
   }
-  fs3.mkdirSync(outputDir, { recursive: true });
-  const staticDir = path3.join(outputDir, "static");
-  const functionsDir = path3.join(outputDir, "functions");
-  fs3.mkdirSync(staticDir, { recursive: true });
-  const transformer = getTransformer(framework.type);
-  const result = await transformer(projectDir, framework, staticDir, functionsDir);
-  const configPath = path3.join(outputDir, "config.json");
-  fs3.writeFileSync(configPath, JSON.stringify(result.config, null, 2));
-  return result;
-}
-function getTransformer(type) {
-  switch (type) {
-    case "nextjs":
-      return transformNextjs;
-    case "astro":
-      return transformAstro;
-    case "nuxt":
-      return transformNuxt;
-    case "sveltekit":
-      return transformSvelteKit;
-    case "vite":
-      return transformVite;
-    case "gatsby":
-      return transformGatsby;
-    case "remix":
-      return transformRemix;
-    case "static":
-    default:
-      return transformStatic;
-  }
-}
-async function transformNextjs(projectDir, framework, staticDir, functionsDir) {
-  const nextDir = path3.join(projectDir, ".next");
-  if (!fs3.existsSync(nextDir)) {
-    throw new Error('Next.js build output not found. Run "npm run build" first.');
-  }
-  const standaloneDir = path3.join(nextDir, "standalone");
-  const hasStandalone = fs3.existsSync(standaloneDir);
-  const staticSrc = path3.join(nextDir, "static");
-  if (fs3.existsSync(staticSrc)) {
-    copyDir(staticSrc, path3.join(staticDir, "_next", "static"));
-  }
-  const publicSrc = path3.join(projectDir, "public");
-  if (fs3.existsSync(publicSrc)) {
-    copyDir(publicSrc, staticDir);
-  }
-  let functionCount = 0;
-  const routes = [];
-  if (hasStandalone) {
-    fs3.mkdirSync(functionsDir, { recursive: true });
-    const defaultFuncDir = path3.join(functionsDir, "default.func");
-    fs3.mkdirSync(defaultFuncDir, { recursive: true });
-    copyDir(standaloneDir, defaultFuncDir);
-    const funcNextStatic = path3.join(defaultFuncDir, ".next", "static");
-    if (fs3.existsSync(staticSrc)) {
-      fs3.mkdirSync(path3.dirname(funcNextStatic), { recursive: true });
-      copyDir(staticSrc, funcNextStatic);
+  checks.push({ name: "Routes defined", passed: true, message: `${config.routes.length} routes` });
+  const functionsDir = path2.join(outputDir, "functions");
+  const functionRoutes = config.routes.filter((r) => r.dest?.startsWith("/functions/"));
+  for (const route of functionRoutes) {
+    const funcName = route.dest.replace("/functions/", "");
+    const funcDir = path2.join(functionsDir, `${funcName}.func`);
+    if (!fs2.existsSync(funcDir)) {
+      checks.push({
+        name: `Function ${funcName}`,
+        passed: false,
+        message: "Directory not found",
+        details: `Route "${route.src}" points to /functions/${funcName}
+but ${funcDir} does not exist.
+
+Create the function directory with:
+  functions/${funcName}.func/
+    index.js
+
+The index.js must export a handler:
+  exports.handler = async (event, context) => { ... }`
+      });
+      errors.push(`Route "${route.src}" points to /functions/${funcName} but functions/${funcName}.func/ does not exist`);
+      continue;
     }
-    const funcConfig = {
-      runtime: "nodejs20.x",
-      handler: "server.handler",
-      memory: 1024,
-      maxDuration: 30
-    };
-    fs3.writeFileSync(path3.join(defaultFuncDir, ".vc-config.json"), JSON.stringify(funcConfig, null, 2));
-    const handlerCode = `
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('./node_modules/next');
+    const funcResult = await validateFunction(funcDir, funcName);
+    checks.push(...funcResult.checks);
+    errors.push(...funcResult.errors);
+  }
+  const staticDir = path2.join(outputDir, "static");
+  const hasFilesystemRoute = config.routes.some((r) => r.handle === "filesystem");
+  const hasStaticRoutes = config.routes.some((r) => r.dest?.startsWith("/static/"));
+  if ((hasFilesystemRoute || hasStaticRoutes) && !fs2.existsSync(staticDir)) {
+    checks.push({
+      name: "Static directory",
+      passed: false,
+      message: "Not found",
+      details: `Routes reference static files but static/ directory doesn't exist.
 
-const app = next({ dev: false, dir: __dirname });
-const handle = app.getRequestHandler();
+Create: ${staticDir}
 
-let prepared = false;
+Or remove the filesystem/static routes if this is a pure SSR app.`
+    });
+  } else if (fs2.existsSync(staticDir)) {
+    const staticCount = countFiles2(staticDir);
+    checks.push({ name: "Static directory", passed: true, message: `${staticCount} files` });
+  }
+  const valid = errors.length === 0;
+  return { valid, checks, errors };
+}
+async function validateFunction(funcDir, funcName) {
+  const checks = [];
+  const errors = [];
+  const entryFile = "index";
+  const exportName = "handler";
+  const possibleExtensions = [".js", ".mjs", ".cjs", ""];
+  let entryPath = null;
+  for (const ext of possibleExtensions) {
+    const candidate = path2.join(funcDir, entryFile + ext);
+    if (fs2.existsSync(candidate) && fs2.statSync(candidate).isFile()) {
+      entryPath = candidate;
+      break;
+    }
+  }
+  if (!entryPath) {
+    checks.push({
+      name: `Function ${funcName}: entry file`,
+      passed: false,
+      message: `index.js not found`,
+      details: `Function directory must contain index.js
+
+Create ${funcDir}/index.js with:
 
 exports.handler = async (event, context) => {
-  if (!prepared) {
-    await app.prepare();
-    prepared = true;
-  }
-
-  const { httpMethod, path, headers, body, queryStringParameters } = event;
-
-  // Create mock request/response
-  const req = {
-    method: httpMethod,
-    url: path + (queryStringParameters ? '?' + new URLSearchParams(queryStringParameters).toString() : ''),
-    headers: headers || {},
-  };
-
-  return new Promise((resolve) => {
-    const res = {
-      statusCode: 200,
-      headers: {},
-      body: '',
-      setHeader(key, value) { this.headers[key] = value; },
-      getHeader(key) { return this.headers[key]; },
-      end(chunk) {
-        if (chunk) this.body += chunk;
-        resolve({
-          statusCode: this.statusCode,
-          headers: this.headers,
-          body: this.body,
-        });
-      },
-      write(chunk) { this.body += chunk; },
-    };
-
-    handle(req, res, parse(req.url, true));
-  });
-};
-`;
-    fs3.writeFileSync(path3.join(defaultFuncDir, "server.js"), handlerCode);
-    functionCount = 1;
-    routes.push({ src: "^/_next/static/(.*)$", dest: "/static/_next/static/$1", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { src: "^/static/(.*)$", dest: "/static/$1" }, { handle: "filesystem" }, { src: "^/(.*)$", dest: "/functions/default" });
-  } else {
-    const outDir = path3.join(projectDir, "out");
-    if (fs3.existsSync(outDir)) {
-      copyDir(outDir, staticDir);
-    }
-    routes.push({ src: "^/_next/static/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { handle: "filesystem" });
-  }
-  const staticFileCount = countFiles(staticDir);
   return {
-    config: {
-      version: 1,
-      framework: { name: "nextjs", version: framework.version || undefined },
-      routes
-    },
-    staticDir,
-    functionsDir: functionCount > 0 ? functionsDir : null,
-    staticFileCount,
-    functionCount
+    statusCode: 200,
+    body: JSON.stringify({ message: 'Hello' })
   };
-}
-async function transformAstro(projectDir, framework, staticDir, functionsDir) {
-  const distDir = path3.join(projectDir, "dist");
-  if (!fs3.existsSync(distDir)) {
-    throw new Error('Astro build output not found. Run "npm run build" first.');
+};`
+    });
+    errors.push(`functions/${funcName}.func/index.js not found`);
+    return { checks, errors };
   }
-  let functionCount = 0;
-  const routes = [];
-  if (framework.isSSR) {
-    const serverDir = path3.join(distDir, "server");
-    const clientDir = path3.join(distDir, "client");
-    if (fs3.existsSync(clientDir)) {
-      copyDir(clientDir, staticDir);
-    }
-    if (fs3.existsSync(serverDir)) {
-      fs3.mkdirSync(functionsDir, { recursive: true });
-      const defaultFuncDir = path3.join(functionsDir, "default.func");
-      fs3.mkdirSync(defaultFuncDir, { recursive: true });
-      copyDir(serverDir, defaultFuncDir);
-      const funcConfig = {
-        runtime: "nodejs20.x",
-        handler: "entry.handler",
-        memory: 1024,
-        maxDuration: 30
-      };
-      fs3.writeFileSync(path3.join(defaultFuncDir, ".vc-config.json"), JSON.stringify(funcConfig, null, 2));
-      functionCount = 1;
-      routes.push({ src: "^/_astro/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { handle: "filesystem" }, { src: "^/(.*)$", dest: "/functions/default" });
-    }
+  checks.push({ name: `Function ${funcName}: entry file`, passed: true, message: path2.basename(entryPath) });
+  const entryCode = fs2.readFileSync(entryPath, "utf-8");
+  const exportResult = checkHandlerExport(entryCode, exportName, entryPath);
+  if (!exportResult.exists) {
+    checks.push({
+      name: `Function ${funcName}: handler export`,
+      passed: false,
+      message: `"${exportName}" not exported`,
+      details: `${path2.basename(entryPath)} does not export "${exportName}"
+
+${exportResult.hint}
+
+The handler must be exported as:
+  exports.${exportName} = async (event, context) => { ... }
+or:
+  module.exports.${exportName} = async (event, context) => { ... }`
+    });
+    errors.push(`functions/${funcName}.func/${path2.basename(entryPath)} does not export '${exportName}'`);
+    return { checks, errors };
+  }
+  checks.push({ name: `Function ${funcName}: handler export`, passed: true, message: `exports.${exportName}` });
+  const smokeResult = await smokeTestHandler(funcDir, entryPath, exportName);
+  if (!smokeResult.passed) {
+    checks.push({
+      name: `Function ${funcName}: smoke test`,
+      passed: false,
+      message: "Failed",
+      details: smokeResult.error
+    });
+    errors.push(`functions/${funcName}.func handler smoke test failed: ${smokeResult.shortError}`);
   } else {
-    copyDir(distDir, staticDir);
-    routes.push({ src: "^/_astro/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { handle: "filesystem" });
+    checks.push({ name: `Function ${funcName}: smoke test`, passed: true, message: "Passed" });
   }
-  const staticFileCount = countFiles(staticDir);
-  return {
-    config: {
-      version: 1,
-      framework: { name: "astro", version: framework.version || undefined },
-      routes
-    },
-    staticDir,
-    functionsDir: functionCount > 0 ? functionsDir : null,
-    staticFileCount,
-    functionCount
-  };
+  return { checks, errors };
 }
-async function transformNuxt(projectDir, framework, staticDir, functionsDir) {
-  const outputDir = path3.join(projectDir, ".output");
-  if (!fs3.existsSync(outputDir)) {
-    throw new Error('Nuxt build output not found. Run "npm run build" first.');
-  }
-  const publicDir = path3.join(outputDir, "public");
-  const serverDir = path3.join(outputDir, "server");
-  let functionCount = 0;
-  const routes = [];
-  if (fs3.existsSync(publicDir)) {
-    copyDir(publicDir, staticDir);
-  }
-  if (fs3.existsSync(serverDir)) {
-    fs3.mkdirSync(functionsDir, { recursive: true });
-    const defaultFuncDir = path3.join(functionsDir, "default.func");
-    fs3.mkdirSync(defaultFuncDir, { recursive: true });
-    copyDir(serverDir, defaultFuncDir);
-    const funcConfig = {
-      runtime: "nodejs20.x",
-      handler: "index.handler",
-      memory: 1024,
-      maxDuration: 30
-    };
-    fs3.writeFileSync(path3.join(defaultFuncDir, ".vc-config.json"), JSON.stringify(funcConfig, null, 2));
-    functionCount = 1;
-    routes.push({ src: "^/_nuxt/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { handle: "filesystem" }, { src: "^/(.*)$", dest: "/functions/default" });
-  } else {
-    routes.push({ src: "^/_nuxt/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { handle: "filesystem" });
-  }
-  const staticFileCount = countFiles(staticDir);
-  return {
-    config: {
-      version: 1,
-      framework: { name: "nuxt", version: framework.version || undefined },
-      routes
-    },
-    staticDir,
-    functionsDir: functionCount > 0 ? functionsDir : null,
-    staticFileCount,
-    functionCount
-  };
-}
-async function transformSvelteKit(projectDir, framework, staticDir, functionsDir) {
-  const buildDir = path3.join(projectDir, "build");
-  let functionCount = 0;
-  const routes = [];
-  if (framework.isSSR) {
-    const serverDir = path3.join(buildDir, "server");
-    const clientDir = path3.join(buildDir, "client");
-    if (fs3.existsSync(clientDir)) {
-      copyDir(clientDir, staticDir);
-    }
-    if (fs3.existsSync(serverDir)) {
-      fs3.mkdirSync(functionsDir, { recursive: true });
-      const defaultFuncDir = path3.join(functionsDir, "default.func");
-      fs3.mkdirSync(defaultFuncDir, { recursive: true });
-      copyDir(serverDir, defaultFuncDir);
-      const funcConfig = {
-        runtime: "nodejs20.x",
-        handler: "index.handler",
-        memory: 1024,
-        maxDuration: 30
-      };
-      fs3.writeFileSync(path3.join(defaultFuncDir, ".vc-config.json"), JSON.stringify(funcConfig, null, 2));
-      functionCount = 1;
-    }
-    routes.push({ src: "^/_app/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { handle: "filesystem" }, { src: "^/(.*)$", dest: "/functions/default" });
-  } else {
-    if (fs3.existsSync(buildDir)) {
-      copyDir(buildDir, staticDir);
-    }
-    routes.push({ src: "^/_app/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { handle: "filesystem" });
-  }
-  const staticFileCount = countFiles(staticDir);
-  return {
-    config: {
-      version: 1,
-      framework: { name: "sveltekit", version: framework.version || undefined },
-      routes
-    },
-    staticDir,
-    functionsDir: functionCount > 0 ? functionsDir : null,
-    staticFileCount,
-    functionCount
-  };
-}
-async function transformVite(projectDir, framework, staticDir, _functionsDir) {
-  const distDir = path3.join(projectDir, "dist");
-  if (!fs3.existsSync(distDir)) {
-    throw new Error('Vite build output not found. Run "npm run build" first.');
-  }
-  copyDir(distDir, staticDir);
-  const routes = [
-    { src: "^/assets/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } },
-    { handle: "filesystem" }
+function checkHandlerExport(code, exportName, filePath) {
+  const patterns = [
+    new RegExp(`exports\\.${exportName}\\s*=`),
+    new RegExp(`module\\.exports\\.${exportName}\\s*=`),
+    new RegExp(`module\\.exports\\s*=\\s*{[^}]*${exportName}\\s*:`),
+    new RegExp(`export\\s+(const|let|var|async\\s+function|function)\\s+${exportName}`),
+    new RegExp(`export\\s*{[^}]*${exportName}`)
   ];
-  const staticFileCount = countFiles(staticDir);
-  return {
-    config: {
-      version: 1,
-      framework: { name: "vite", version: framework.version || undefined },
-      routes
-    },
-    staticDir,
-    functionsDir: null,
-    staticFileCount,
-    functionCount: 0
-  };
+  for (const pattern of patterns) {
+    if (pattern.test(code)) {
+      return { exists: true, hint: "" };
+    }
+  }
+  const foundExports = [];
+  const exportsMatch = code.match(/exports\.(\w+)\s*=/g);
+  if (exportsMatch) {
+    foundExports.push(...exportsMatch.map((m) => m.replace("exports.", "").replace(/\s*=/, "")));
+  }
+  const moduleExportsMatch = code.match(/module\.exports\s*=\s*{([^}]+)}/);
+  if (moduleExportsMatch) {
+    const keys = moduleExportsMatch[1].match(/(\w+)\s*:/g);
+    if (keys) {
+      foundExports.push(...keys.map((k) => k.replace(/\s*:/, "")));
+    }
+  }
+  const hint = foundExports.length > 0 ? `Found exports: ${foundExports.join(", ")}
+Did you mean one of these?` : `No exports found in ${path2.basename(filePath)}`;
+  return { exists: false, hint };
 }
-async function transformGatsby(projectDir, framework, staticDir, _functionsDir) {
-  const publicDir = path3.join(projectDir, "public");
-  if (!fs3.existsSync(publicDir)) {
-    throw new Error('Gatsby build output not found. Run "npm run build" first.');
-  }
-  copyDir(publicDir, staticDir);
-  const routes = [
-    { src: "^/static/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } },
-    { handle: "filesystem" }
-  ];
-  const staticFileCount = countFiles(staticDir);
-  return {
-    config: {
-      version: 1,
-      framework: { name: "gatsby", version: framework.version || undefined },
-      routes
+async function smokeTestHandler(funcDir, entryPath, exportName) {
+  const testEvent = {
+    httpMethod: "GET",
+    path: "/",
+    headers: {
+      host: "test.rebyte.pro",
+      "user-agent": "rebyte-cli-smoke-test"
     },
-    staticDir,
-    functionsDir: null,
-    staticFileCount,
-    functionCount: 0
-  };
-}
-async function transformRemix(projectDir, framework, staticDir, functionsDir) {
-  const buildDir = path3.join(projectDir, "build");
-  const publicDir = path3.join(projectDir, "public");
-  if (!fs3.existsSync(buildDir)) {
-    throw new Error('Remix build output not found. Run "npm run build" first.');
-  }
-  let functionCount = 0;
-  const routes = [];
-  if (fs3.existsSync(publicDir)) {
-    copyDir(publicDir, staticDir);
-  }
-  const clientDir = path3.join(buildDir, "client");
-  if (fs3.existsSync(clientDir)) {
-    copyDir(clientDir, staticDir);
-  }
-  const serverDir = path3.join(buildDir, "server");
-  if (fs3.existsSync(serverDir)) {
-    fs3.mkdirSync(functionsDir, { recursive: true });
-    const defaultFuncDir = path3.join(functionsDir, "default.func");
-    fs3.mkdirSync(defaultFuncDir, { recursive: true });
-    copyDir(serverDir, defaultFuncDir);
-    const funcConfig = {
-      runtime: "nodejs20.x",
-      handler: "index.handler",
-      memory: 1024,
-      maxDuration: 30
-    };
-    fs3.writeFileSync(path3.join(defaultFuncDir, ".vc-config.json"), JSON.stringify(funcConfig, null, 2));
-    functionCount = 1;
-    routes.push({ src: "^/build/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { handle: "filesystem" }, { src: "^/(.*)$", dest: "/functions/default" });
-  } else {
-    routes.push({ src: "^/build/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } }, { handle: "filesystem" });
-  }
-  const staticFileCount = countFiles(staticDir);
-  return {
-    config: {
-      version: 1,
-      framework: { name: "remix", version: framework.version || undefined },
-      routes
-    },
-    staticDir,
-    functionsDir: functionCount > 0 ? functionsDir : null,
-    staticFileCount,
-    functionCount
-  };
-}
-async function transformStatic(projectDir, _framework, staticDir, _functionsDir) {
-  const candidates = ["dist", "build", "public", "out", "."];
-  let sourceDir = null;
-  for (const candidate of candidates) {
-    const candidatePath = path3.join(projectDir, candidate);
-    if (fs3.existsSync(candidatePath)) {
-      if (fs3.existsSync(path3.join(candidatePath, "index.html"))) {
-        sourceDir = candidatePath;
-        break;
+    queryStringParameters: null,
+    body: null,
+    isBase64Encoded: false,
+    requestContext: {
+      http: {
+        method: "GET",
+        path: "/"
       }
     }
-  }
-  if (!sourceDir) {
-    throw new Error("Could not find static files. Make sure your project has an index.html " + "in one of: dist/, build/, public/, out/, or project root.");
-  }
-  copyDir(sourceDir, staticDir);
-  const routes = [
-    { handle: "filesystem" }
-  ];
-  const staticFileCount = countFiles(staticDir);
-  return {
-    config: {
-      version: 1,
-      routes
-    },
-    staticDir,
-    functionsDir: null,
-    staticFileCount,
-    functionCount: 0
   };
-}
-function copyDir(src, dest) {
-  if (!fs3.existsSync(dest)) {
-    fs3.mkdirSync(dest, { recursive: true });
-  }
-  for (const entry of fs3.readdirSync(src, { withFileTypes: true })) {
-    const srcPath = path3.join(src, entry.name);
-    const destPath = path3.join(dest, entry.name);
-    if (entry.isDirectory()) {
-      copyDir(srcPath, destPath);
-    } else {
-      fs3.copyFileSync(srcPath, destPath);
+  const testContext = {
+    functionName: "test",
+    functionVersion: "$LATEST",
+    invokedFunctionArn: "arn:aws:lambda:us-east-1:000000000000:function:test",
+    memoryLimitInMB: "1024",
+    awsRequestId: "test-request-id",
+    logGroupName: "/aws/lambda/test",
+    logStreamName: "test-stream",
+    getRemainingTimeInMillis: () => 30000,
+    done: () => {},
+    fail: () => {},
+    succeed: () => {}
+  };
+  try {
+    const originalCwd = process.cwd();
+    process.chdir(funcDir);
+    const fullPath = path2.resolve(entryPath);
+    let handler;
+    try {
+      const fileUrl = `file://${fullPath}`;
+      let module;
+      if (fullPath.endsWith(".mjs")) {
+        module = await import(fileUrl);
+      } else {
+        const { createRequire: createRequire2 } = await import("module");
+        const require2 = createRequire2(import.meta.url);
+        delete require2.cache[fullPath];
+        try {
+          module = require2(fullPath);
+        } catch (cjsError) {
+          const err = cjsError;
+          if (err.message.includes("Cannot use import statement") || err.message.includes("Unexpected token")) {
+            module = await import(fileUrl);
+          } else {
+            throw cjsError;
+          }
+        }
+      }
+      handler = module[exportName];
+      if (typeof handler !== "function") {
+        process.chdir(originalCwd);
+        return {
+          passed: false,
+          shortError: `exports.${exportName} is not a function (got ${typeof handler})`,
+          error: `exports.${exportName} is not a function
+
+Got: ${typeof handler}
+
+The handler must be an async function:
+  exports.${exportName} = async (event, context) => {
+    return { statusCode: 200, body: 'OK' };
+  };`
+        };
+      }
+    } catch (loadError) {
+      process.chdir(originalCwd);
+      const err = loadError;
+      if (err.message.includes("Cannot find module") || err.message.includes("Cannot find package")) {
+        const missingModule = err.message.match(/Cannot find (?:module|package) '([^']+)'/)?.[1] || "unknown";
+        return {
+          passed: false,
+          shortError: `Missing module: ${missingModule}`,
+          error: `Cannot load handler: missing module "${missingModule}"
+
+Make sure all dependencies are included in the function directory.
+For Next.js SSR, use OpenNext which bundles dependencies correctly:
+  npx @opennextjs/aws build`
+        };
+      }
+      return {
+        passed: false,
+        shortError: `Module load error: ${err.message}`,
+        error: `Cannot load handler module:
+
+${err.message}
+
+${err.stack || ""}`
+      };
     }
+    const timeoutMs = 5000;
+    const timeoutPromise = new Promise((_2, reject) => {
+      setTimeout(() => reject(new Error("Handler timeout (5s) - may be waiting for request events")), timeoutMs);
+    });
+    try {
+      const result = await Promise.race([
+        handler(testEvent, testContext),
+        timeoutPromise
+      ]);
+      process.chdir(originalCwd);
+      if (result && typeof result === "object" && "statusCode" in result) {
+        return { passed: true };
+      }
+      return { passed: true };
+    } catch (invokeError) {
+      process.chdir(originalCwd);
+      const err = invokeError;
+      if (err.message.includes(".on is not a function") || err.message.includes("request.on is not a function")) {
+        return {
+          passed: false,
+          shortError: "Handler expects HTTP request, got Lambda event",
+          error: `Handler Error: ${err.message}
+
+This handler expects Node.js HTTP IncomingMessage (with .on() method)
+but Lambda provides API Gateway event objects.
+
+This usually happens when:
+1. Using Next.js standalone output directly (doesn't work)
+2. Missing a proper Lambda adapter
+
+For Next.js SSR, use OpenNext which creates proper Lambda handlers:
+  npx @opennextjs/aws build
+
+OpenNext transforms Next.js output into Lambda-compatible format.`
+        };
+      }
+      if (err.message.includes("timeout") || err.message.includes("Handler timeout")) {
+        return {
+          passed: false,
+          shortError: "Handler timeout - may expect HTTP streams",
+          error: `Handler timed out after 5 seconds.
+
+This usually means the handler is waiting for HTTP request events
+that won't come in Lambda environment.
+
+For Next.js SSR, use OpenNext:
+  npx @opennextjs/aws build`
+        };
+      }
+      if (err.message.includes("ECONNREFUSED") || err.message.includes("ENOTFOUND")) {
+        return { passed: true };
+      }
+      return {
+        passed: false,
+        shortError: err.message.slice(0, 100),
+        error: `Handler error during smoke test:
+
+${err.message}
+
+${err.stack || ""}
+
+This may be a configuration issue. Check:
+1. Environment variables are set
+2. All dependencies are bundled
+3. Handler signature matches Lambda format`
+      };
+    }
+  } catch (err) {
+    return {
+      passed: false,
+      shortError: err.message.slice(0, 100),
+      error: `Smoke test failed: ${err.message}`
+    };
   }
 }
-function countFiles(dir) {
-  if (!fs3.existsSync(dir))
+function countFiles2(dir) {
+  if (!fs2.existsSync(dir))
     return 0;
   let count = 0;
-  for (const entry of fs3.readdirSync(dir, { withFileTypes: true })) {
-    const fullPath = path3.join(dir, entry.name);
+  for (const entry of fs2.readdirSync(dir, { withFileTypes: true })) {
     if (entry.isDirectory()) {
-      count += countFiles(fullPath);
+      count += countFiles2(path2.join(dir, entry.name));
     } else {
       count++;
     }
   }
   return count;
 }
+function formatValidationOutput(result) {
+  const lines = [];
+  for (const check of result.checks) {
+    const icon = check.passed ? "✓" : "✗";
+    lines.push(`${icon} ${check.name}: ${check.message}`);
+    if (!check.passed && check.details) {
+      const detailLines = check.details.split(`
+`).map((l) => `    ${l}`);
+      lines.push("");
+      lines.push(...detailLines);
+      lines.push("");
+    }
+  }
+  return lines.join(`
+`);
+}
 
-// src/cli.ts
-import { execSync } from "child_process";
-import * as path4 from "path";
-import * as fs4 from "fs";
+// packages/rebyte-appbuilder-cli/dist/cli.js
+import * as path3 from "path";
+import * as fs3 from "fs";
 import * as os from "os";
-var VERSION = "0.3.0";
+var VERSION = "0.4.0";
 function getAuthCredentials() {
   let apiUrl = process.env.REBYTE_API_URL || "https://api.rebyte.ai";
   let apiToken = null;
-  const authJsonPath = path4.join(os.homedir(), ".rebyte.ai", "auth.json");
+  const authJsonPath = path3.join(os.homedir(), ".rebyte.ai", "auth.json");
   try {
-    if (fs4.existsSync(authJsonPath)) {
-      const authData = JSON.parse(fs4.readFileSync(authJsonPath, "utf-8"));
-      if (authData.sandbox?.token) {
+    if (fs3.existsSync(authJsonPath)) {
+      const authData = JSON.parse(fs3.readFileSync(authJsonPath, "utf-8"));
+      if (authData.sandbox?.token)
         apiToken = authData.sandbox.token;
-      }
-      if (authData.sandbox?.relay_url) {
+      if (authData.sandbox?.relay_url)
         apiUrl = authData.sandbox.relay_url;
-      }
     }
   } catch {}
   if (!apiToken && process.env.REBYTE_API_TOKEN) {
@@ -26378,238 +26267,255 @@ function formatBytes(bytes) {
     return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
-function formatExtensions(byExt) {
-  const entries = Object.entries(byExt);
-  if (entries.length === 0)
-    return "(none)";
-  return entries.sort((a, b) => b[1] - a[1]).slice(0, 5).map(([ext, count]) => `${ext} (${count})`).join(", ");
-}
-function printReport(result, pkg) {
-  const mode = pkg.function.exists ? "ssr" : "static";
-  console.log(`
-Deployed to ${result.url}
-
-Deployment Report:
-──────────────────
-Mode:      ${mode}
-URL:       ${result.url}
-Deploy ID: ${result.deployId}
-Status:    ${result.status}
-
-Static Assets:
-  Files:      ${pkg.static.count}
-  Total size: ${formatBytes(pkg.static.totalSize)}
-  Types:      ${formatExtensions(pkg.static.byExtension)}
-`);
-  if (pkg.function.exists) {
-    console.log(`Function:
-  Handler:    ${pkg.function.config.handler}
-  Runtime:    ${pkg.function.config.runtime}
-  Memory:     ${pkg.function.config.memory} MB
-  Timeout:    ${pkg.function.config.timeout}s
-  Size:       ${formatBytes(pkg.function.size)}
-  Config:     ${pkg.function.configSource === "file" ? "from config.json" : "using defaults"}
-`);
+function printPackageSummary(pkg) {
+  console.log("");
+  console.log("Package Summary");
+  console.log("═══════════════");
+  console.log("");
+  console.log("Routes (from config.json):");
+  if (pkg.routes.length === 0) {
+    console.log("  (no routes)");
   } else {
-    console.log(`Function:   (none - static deployment)
-`);
+    for (const route of pkg.routes) {
+      if (route.handle) {
+        console.log(`  [${route.handle}]`);
+      } else if (route.src && route.dest) {
+        const target = route.dest.startsWith("/functions/") ? `Lambda: ${route.dest.replace("/functions/", "").replace(".func", "")}` : "static/";
+        console.log(`  ${route.src.padEnd(30)} → ${target}`);
+      } else if (route.src) {
+        console.log(`  ${route.src.padEnd(30)} → (passthrough)`);
+      }
+    }
   }
-  console.log(`Environment:
-  Variables:  ${pkg.envVars}
-
-Package:
-  ZIP size:   ${formatBytes(pkg.zipBuffer.length)}
-`);
-}
-program.name("rebyte").description("Deploy web applications to Rebyte infrastructure").version(VERSION);
-program.command("build").description("Detect framework, run build, and transform to .rebyte/").option("-d, --dir <path>", "Project directory", ".").option("--skip-build", "Skip running the build command (use existing build output)").action(async (options) => {
-  try {
-    const projectDir = path4.resolve(options.dir);
-    console.log("Detecting framework...");
-    const framework = detectFramework(projectDir);
-    console.log(`  Framework: ${getFrameworkDescription(framework)}`);
+  console.log("");
+  console.log("Functions (Lambda):");
+  if (pkg.functions.length === 0) {
+    console.log("  (none - static deployment)");
+  } else {
+    for (const func of pkg.functions) {
+      console.log(`  ${func.name}`);
+      console.log(`    Entry:   ${func.entryFile}`);
+      console.log(`    Handler: ${func.handler}`);
+      console.log(`    Runtime: ${func.runtime}`);
+      console.log(`    Size:    ${formatBytes(func.size)}`);
+      if (func.topFiles.length > 0) {
+        console.log(`    Files:   ${func.topFiles.slice(0, 5).join(", ")}`);
+      }
+    }
+  }
+  console.log("");
+  console.log("Static (CDN):");
+  console.log(`  ${pkg.static.totalFiles} files, ${formatBytes(pkg.static.totalSize)}`);
+  for (const item of pkg.static.breakdown.slice(0, 8)) {
+    const exts = item.extensions.length > 0 ? ` (${item.extensions.join(", ")})` : "";
+    if (item.fileCount === 1) {
+      console.log(`    ${item.path}`);
+    } else {
+      console.log(`    ${item.path}/ - ${item.fileCount} files${exts}`);
+    }
+  }
+  if (pkg.static.breakdown.length > 8) {
+    console.log(`    ... and ${pkg.static.breakdown.length - 8} more`);
+  }
+  if (pkg.envVars > 0) {
     console.log("");
-    if (!options.skipBuild && framework.buildCommand) {
-      console.log(`Running build: ${framework.buildCommand}`);
-      try {
-        execSync(framework.buildCommand, {
-          cwd: projectDir,
-          stdio: "inherit"
-        });
-      } catch (err) {
-        console.error("Build failed. Fix the errors above and try again.");
+    console.log(`Environment: ${pkg.envVars} variables`);
+  }
+  console.log("");
+}
+program.name("rebyte").description("Deploy web applications to Rebyte").version(VERSION);
+program.command("deploy").description("Deploy .rebyte/ directory to Rebyte infrastructure").option("-d, --dir <path>", "Project directory", ".").option("-p, --prefix <name>", "Deployment prefix").option("--skip-validation", "Skip validation checks (not recommended)").option("--api-url <url>", "API URL override").option("--api-token <token>", "API token override").action(async (options) => {
+  try {
+    const projectDir = path3.resolve(options.dir);
+    const outputDir = path3.join(projectDir, ".rebyte");
+    const configPath = path3.join(outputDir, "config.json");
+    if (!fs3.existsSync(outputDir)) {
+      console.error("Error: .rebyte/ directory not found");
+      console.error("");
+      console.error("The .rebyte/ directory must be created before deployment.");
+      console.error("");
+      console.error("For static sites:");
+      console.error("  1. Build your project (npm run build)");
+      console.error("  2. Create .rebyte/static/ with your built files");
+      console.error("  3. Create .rebyte/config.json with routes");
+      console.error("");
+      console.error("For Next.js SSR:");
+      console.error("  1. Install OpenNext: npm install -D @opennextjs/aws");
+      console.error("  2. Build: npx @opennextjs/aws build");
+      console.error("  3. This creates .open-next/ which you transform to .rebyte/");
+      console.error("");
+      console.error("For other SSR frameworks, use their respective Lambda adapters.");
+      process.exit(1);
+    }
+    if (!fs3.existsSync(configPath)) {
+      console.error("Error: .rebyte/config.json not found");
+      console.error("");
+      console.error("Create config.json with your routes. Example:");
+      console.error("");
+      console.error("Static site:");
+      console.error(JSON.stringify({
+        version: 1,
+        routes: [{ handle: "filesystem" }]
+      }, null, 2));
+      console.error("");
+      console.error("SSR site:");
+      console.error(JSON.stringify({
+        version: 1,
+        routes: [
+          { handle: "filesystem" },
+          { src: "^/(.*)$", dest: "/functions/default" }
+        ]
+      }, null, 2));
+      process.exit(1);
+    }
+    if (!options.skipValidation) {
+      console.log("Validating .rebyte/...");
+      console.log("");
+      const validation = await validatePackage(outputDir);
+      console.log(formatValidationOutput(validation));
+      if (!validation.valid) {
+        console.error("");
+        console.error("Validation failed. Fix the errors above before deploying.");
+        console.error("");
+        console.error("Use --skip-validation to deploy anyway (not recommended).");
         process.exit(1);
       }
       console.log("");
     }
-    console.log("Transforming build output...");
-    const result = await transformBuildOutput(projectDir, framework);
+    const auth = getAuthCredentials();
+    const apiUrl = options.apiUrl || auth.apiUrl;
+    const apiToken = options.apiToken || auth.apiToken;
+    if (!apiToken) {
+      console.error("Error: No API token found.");
+      console.error("");
+      console.error("Set REBYTE_API_TOKEN environment variable or configure ~/.rebyte.ai/auth.json");
+      process.exit(1);
+    }
+    console.log("Scanning .rebyte/...");
+    const pkg = await scanAndPackage(outputDir);
+    printPackageSummary(pkg);
+    console.log("Deploying...");
+    const result = await deployPackage(pkg, { apiUrl, apiToken, prefix: options.prefix });
+    const mode = pkg.functions.length > 0 ? "ssr" : "static";
     console.log(`
-Build Complete
---------------
-Output directory: .rebyte/
-Static files:     ${result.staticFileCount}
-Functions:        ${result.functionCount}
-Routes:           ${result.config.routes.length}
+Deployed to ${result.url}
 
-Next step: Run 'rebyte deploy' to deploy your site.
+  Mode:      ${mode}
+  Deploy ID: ${result.deployId}
+  Status:    ${result.status}
+  ZIP size:  ${formatBytes(pkg.zipBuffer.length)}
 `);
   } catch (err) {
     console.error(`Error: ${err.message}`);
     process.exit(1);
   }
 });
-program.command("deploy").description("Deploy the .rebyte/ directory").option("-d, --dir <path>", "Project directory", ".").option("-p, --prefix <name>", "Deployment prefix (for multiple sites per workspace)").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (options) => {
+program.command("validate").description("Validate .rebyte/ directory without deploying").option("-d, --dir <path>", "Project directory", ".").action(async (options) => {
   try {
-    const projectDir = path4.resolve(options.dir);
-    const outputDir = path4.join(projectDir, ".rebyte");
-    const configPath = path4.join(outputDir, "config.json");
-    if (!fs4.existsSync(configPath)) {
-      console.error("Error: No .rebyte/config.json found");
-      console.error("");
-      console.error('Run "rebyte build" first to generate the build output.');
-      console.error("");
-      console.error("Expected structure:");
-      console.error("  .rebyte/");
-      console.error("  ├── config.json        # Routes and framework config (required)");
-      console.error("  ├── static/            # Static files");
-      console.error("  └── functions/         # Lambda functions (optional)");
-      console.error("      └── default.func/");
-      console.error("          ├── .vc-config.json");
-      console.error("          └── index.js");
+    const projectDir = path3.resolve(options.dir);
+    const outputDir = path3.join(projectDir, ".rebyte");
+    if (!fs3.existsSync(outputDir)) {
+      console.error("Error: .rebyte/ directory not found");
       process.exit(1);
     }
-    const auth = getAuthCredentials();
-    const apiUrl = options.apiUrl || auth.apiUrl;
-    const apiToken = options.apiToken || auth.apiToken;
-    if (!apiToken) {
-      console.error("Error: No API token found.");
-      console.error("   In VM: Ensure ~/.rebyte.ai/auth.json exists");
-      console.error("   For testing: Set REBYTE_API_TOKEN environment variable");
-      process.exit(1);
-    }
-    console.log("Scanning .rebyte/ directory...");
-    const pkg = await scanAndPackage(outputDir);
-    console.log(`   Static files: ${pkg.static.count}`);
-    console.log(`   Functions: ${pkg.function.exists ? "yes" : "no"}`);
-    console.log(`   Package size: ${formatBytes(pkg.zipBuffer.length)}`);
+    console.log("Validating .rebyte/...");
     console.log("");
-    const result = await deployPackage(pkg, {
-      apiUrl,
-      apiToken,
-      prefix: options.prefix
-    });
-    printReport(result, pkg);
+    const validation = await validatePackage(outputDir);
+    console.log(formatValidationOutput(validation));
+    if (!validation.valid) {
+      console.error("");
+      console.error("Validation failed.");
+      process.exit(1);
+    }
+    console.log("");
+    console.log('Validation passed. Run "rebyte deploy" to deploy.');
+    const pkg = await scanAndPackage(outputDir);
+    printPackageSummary(pkg);
   } catch (err) {
     console.error(`Error: ${err.message}`);
     process.exit(1);
   }
 });
-program.command("info").description("Get deployment info for current workspace").option("-p, --prefix <name>", "Deployment prefix").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (options) => {
+program.command("info").description("Get deployment info").option("-p, --prefix <name>", "Deployment prefix").option("--api-url <url>", "API URL override").option("--api-token <token>", "API token override").action(async (options) => {
   try {
     const auth = getAuthCredentials();
     const apiUrl = options.apiUrl || auth.apiUrl;
     const apiToken = options.apiToken || auth.apiToken;
     if (!apiToken) {
-      console.error("Error: No API token found.");
+      console.error("Error: No API token.");
       process.exit(1);
     }
     const info = await getDeploymentInfo(apiUrl, apiToken, options.prefix);
     if (!info.exists) {
-      console.log("No deployment found for this workspace.");
-      console.log("Run `rebyte deploy` to create one.");
+      console.log("No deployment found.");
       process.exit(0);
     }
-    console.log("");
-    console.log("Deployment Info");
-    console.log("───────────────");
-    console.log(`URL:        ${info.url}`);
-    console.log(`Deploy ID:  ${info.deployId}`);
-    console.log(`Status:     ${info.status}`);
-    if (info.mode) {
-      console.log(`Mode:       ${info.mode}`);
-    }
-    if (info.deployedAt) {
-      console.log(`Deployed:   ${info.deployedAt}`);
-    }
-    console.log("");
+    console.log(`
+Deployment Info
+───────────────
+URL:       ${info.url}
+Deploy ID: ${info.deployId}
+Status:    ${info.status}
+Mode:      ${info.mode || "unknown"}
+Deployed:  ${info.deployedAt || "unknown"}
+`);
   } catch (err) {
     console.error(`Error: ${err.message}`);
     process.exit(1);
   }
 });
-program.command("delete").description("Delete deployment and all associated resources").option("-p, --prefix <name>", "Deployment prefix").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (options) => {
+program.command("delete").description("Delete deployment").option("-p, --prefix <name>", "Deployment prefix").option("--api-url <url>", "API URL override").option("--api-token <token>", "API token override").action(async (options) => {
   try {
     const auth = getAuthCredentials();
     const apiUrl = options.apiUrl || auth.apiUrl;
     const apiToken = options.apiToken || auth.apiToken;
     if (!apiToken) {
-      console.error("Error: No API token found.");
+      console.error("Error: No API token.");
       process.exit(1);
     }
-    console.log("Deleting deployment...");
+    console.log("Deleting...");
     const result = await deleteDeployment(apiUrl, apiToken, options.prefix);
-    if (result.success) {
-      console.log(result.message);
-      if (result.deletedResources && result.deletedResources.length > 0) {
-        console.log("");
-        console.log("Deleted resources:");
-        for (const resource of result.deletedResources) {
-          console.log(`  - ${resource}`);
-        }
-      }
-    } else {
-      console.log(result.message);
-    }
-    console.log("");
+    console.log(result.message);
   } catch (err) {
     console.error(`Error: ${err.message}`);
     process.exit(1);
   }
 });
-program.command("logs").description("Get Lambda function logs for SSR/API deployments").option("-p, --prefix <name>", "Deployment prefix").option("-m, --minutes <number>", "Time range in minutes (default: 5, max: 480)", "5").option("--api-url <url>", "API URL (override)").option("--api-token <token>", "API token (override)").action(async (options) => {
+program.command("logs").description("Get Lambda logs (SSR/API only)").option("-p, --prefix <name>", "Deployment prefix").option("-m, --minutes <number>", "Time range (default: 5, max: 480)", "5").option("--api-url <url>", "API URL override").option("--api-token <token>", "API token override").action(async (options) => {
   try {
     const auth = getAuthCredentials();
     const apiUrl = options.apiUrl || auth.apiUrl;
     const apiToken = options.apiToken || auth.apiToken;
     if (!apiToken) {
-      console.error("Error: No API token found.");
+      console.error("Error: No API token.");
       process.exit(1);
     }
     const minutes = Math.min(Math.max(parseInt(options.minutes, 10) || 5, 1), 480);
-    console.log(`Fetching logs (last ${minutes} minutes)...`);
+    console.log(`Fetching logs (last ${minutes} min)...`);
     const result = await getDeploymentLogs(apiUrl, apiToken, options.prefix, minutes);
     if (result.message) {
       console.log(result.message);
       process.exit(0);
     }
-    console.log("");
-    console.log("Deployment Logs");
-    console.log("───────────────");
-    console.log(`Deploy ID:  ${result.deployId}`);
-    console.log(`Mode:       ${result.mode}`);
-    if (result.functionName) {
-      console.log(`Function:   ${result.functionName}`);
-    }
-    if (result.timeRange) {
-      console.log(`Time range: ${result.timeRange.start} to ${result.timeRange.end}`);
-    }
-    console.log("");
+    console.log(`
+Logs
+────
+Deploy ID: ${result.deployId}
+Mode:      ${result.mode}
+Function:  ${result.functionName || "N/A"}
+`);
     if (result.entries.length === 0) {
-      console.log("No log entries found in this time range.");
+      console.log("No log entries in this time range.");
     } else {
-      console.log(`Log entries (${result.entryCount}${result.hasMore ? "+" : ""}):`);
-      console.log("");
       for (const entry of result.entries) {
-        const timestamp = entry.timestamp ? `[${entry.timestamp}] ` : "";
-        console.log(`${timestamp}${entry.message}`);
+        const ts = entry.timestamp ? `[${entry.timestamp}] ` : "";
+        console.log(`${ts}${entry.message}`);
+      }
+      if (result.hasMore) {
+        console.log(`
+(More entries available - increase --minutes)`);
       }
     }
-    if (result.hasMore) {
-      console.log("");
-      console.log("(More entries available - increase --minutes to see more)");
-    }
-    console.log("");
   } catch (err) {
     console.error(`Error: ${err.message}`);
     process.exit(1);

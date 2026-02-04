@@ -5,7 +5,7 @@ description: Provision DynamoDB NoSQL database for web apps. Use for key-value s
 
 # DynamoDB Database
 
-Provision DynamoDB NoSQL database access for your web apps.
+Provision DynamoDB NoSQL database access for your apps.
 
 {{include:auth.md}}
 
@@ -22,6 +22,20 @@ Use this skill when your app needs:
 - You need relational data with joins
 - You need complex SQL queries
 - You prefer traditional SQL syntax
+
+## Two Usage Modes
+
+### 1. Standalone Mode (No Site Deployment)
+Use DynamoDB as a pure key-value store without deploying a website. Perfect for:
+- Backend data storage
+- Caching
+- Session storage
+- Any key-value needs
+
+Just call `provision` and use the API operations (get, put, delete, query, scan) directly.
+
+### 2. With Lambda Functions
+When you deploy a site with Lambda functions, DynamoDB credentials are automatically injected as environment variables (`DYNAMODB_TABLE`, `DYNAMODB_PREFIX`).
 
 ## Provision DynamoDB Access
 
@@ -148,14 +162,15 @@ Auto-expire items by setting the `ttl` attribute (Unix timestamp in seconds):
 
 ## Important Notes
 
+- **No site deployment required** - DynamoDB can be used standalone as a key-value store
 - **Always use PREFIX** - Never write items without the prefix
-- **No npm install needed** - AWS SDK is built into Lambda
+- **No npm install needed** - AWS SDK is built into Lambda (when using Lambda)
 - **One table, many deployments** - Your data is isolated by prefix
 - **pk is partition key** - Use for primary lookups
 - **sk is sort key** - Use for secondary grouping
 - **TTL is optional** - Only set it for items that should auto-expire
-- **Use CommonJS format** - `exports.handler`, NOT `export default`
-- **Data cleanup** - DynamoDB data is automatically deleted when the site is deleted
+- **Use CommonJS format** - `exports.handler`, NOT `export default` (when using Lambda)
+- **Data cleanup** - DynamoDB data is automatically deleted when the workspace is deleted
 
 ## Debugging & Inspection
 
@@ -237,7 +252,9 @@ curl -X POST "$API_URL/api/data/dynamodb/scan" \
 POST /api/data/dynamodb/provision
 ```
 
-Enables DynamoDB for the deployment and sets Lambda env vars.
+Enables DynamoDB for the workspace. Works in two modes:
+- **Standalone**: Creates a DynamoDB-only record for key-value storage
+- **With Lambda**: Also sets Lambda environment variables (`DYNAMODB_TABLE`, `DYNAMODB_PREFIX`)
 
 ### Get DynamoDB Info
 

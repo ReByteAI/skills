@@ -22,13 +22,21 @@ This creates output in `dist/`.
 ```bash
 mkdir -p .rebyte/static
 cp -r dist/* .rebyte/static/
+cat > .rebyte/config.json << 'EOF'
+{
+  "version": 1,
+  "routes": [
+    { "handle": "filesystem" }
+  ]
+}
+EOF
 ```
 
 Or create `scripts/prepare-rebyte.js`:
 
 ```javascript
 #!/usr/bin/env node
-import { cpSync, mkdirSync, rmSync, existsSync } from 'fs';
+import { cpSync, mkdirSync, rmSync, existsSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -41,6 +49,15 @@ if (existsSync(rebyteDir)) rmSync(rebyteDir, { recursive: true });
 mkdirSync(join(rebyteDir, 'static'), { recursive: true });
 
 cpSync(distDir, join(rebyteDir, 'static'), { recursive: true });
+
+// Create config.json with static routes
+const config = {
+  version: 1,
+  routes: [
+    { handle: "filesystem" }
+  ]
+};
+writeFileSync(join(rebyteDir, 'config.json'), JSON.stringify(config, null, 2));
 
 console.log('Build output ready at .rebyte/');
 ```

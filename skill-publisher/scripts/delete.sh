@@ -12,7 +12,8 @@ if [ -z "$SKILL_ID" ]; then
   exit 1
 fi
 
-AUTH_TOKEN=$(rebyte-auth)
+# Get auth token (absolute path to avoid PATH issues)
+AUTH_TOKEN=$(/home/user/.local/bin/rebyte-auth)
 
 echo "Deleting skill $SKILL_ID..."
 curl -s -X POST "https://api.rebyte.ai/api/data/skills/delete-org" \

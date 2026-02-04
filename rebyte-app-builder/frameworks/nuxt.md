@@ -35,12 +35,26 @@ const rebyteDir = join(projectRoot, ".rebyte");
 
 if (existsSync(rebyteDir)) rmSync(rebyteDir, { recursive: true });
 mkdirSync(join(rebyteDir, "static"), { recursive: true });
-mkdirSync(join(rebyteDir, "function"), { recursive: true });
+mkdirSync(join(rebyteDir, "functions", "default.func"), { recursive: true });
 
+// Copy static assets
 cpSync(join(outputDir, "public"), join(rebyteDir, "static"), { recursive: true });
-cpSync(join(outputDir, "server"), join(rebyteDir, "function"), { recursive: true });
 
-writeFileSync(join(rebyteDir, "function", "index.js"), `export { handler } from './index.mjs';`);
+// Copy server function
+cpSync(join(outputDir, "server"), join(rebyteDir, "functions", "default.func"), { recursive: true });
+
+// Create wrapper for ESM handler
+writeFileSync(join(rebyteDir, "functions", "default.func", "index.js"), `export { handler } from './index.mjs';`);
+
+// Create config.json with routes
+const config = {
+  version: 1,
+  routes: [
+    { handle: "filesystem" },
+    { src: "^/(.*)$", dest: "/functions/default" }
+  ]
+};
+writeFileSync(join(rebyteDir, "config.json"), JSON.stringify(config, null, 2));
 
 console.log("Build output ready at .rebyte/");
 ```
@@ -65,7 +79,8 @@ npm run build
 
 ```bash
 ls .rebyte/static/
-ls .rebyte/function/
+ls .rebyte/functions/default.func/
+cat .rebyte/config.json
 ```
 
 ## Key Code Patterns

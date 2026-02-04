@@ -40,7 +40,7 @@ Create `scripts/package-deploy.js`:
 
 ```javascript
 #!/usr/bin/env node
-import { cpSync, mkdirSync, rmSync, existsSync } from "fs";
+import { cpSync, mkdirSync, rmSync, existsSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
 
@@ -51,10 +51,24 @@ const rebyteDir = join(projectRoot, ".rebyte");
 
 if (existsSync(rebyteDir)) rmSync(rebyteDir, { recursive: true });
 mkdirSync(join(rebyteDir, "static"), { recursive: true });
-mkdirSync(join(rebyteDir, "function"), { recursive: true });
+mkdirSync(join(rebyteDir, "functions", "default.func"), { recursive: true });
 
+// Copy static assets
 cpSync(join(openNextDir, "assets"), join(rebyteDir, "static"), { recursive: true });
-cpSync(join(openNextDir, "server-functions", "default"), join(rebyteDir, "function"), { recursive: true });
+
+// Copy server function
+cpSync(join(openNextDir, "server-functions", "default"), join(rebyteDir, "functions", "default.func"), { recursive: true });
+
+// Create config.json with routes
+const config = {
+  version: 1,
+  routes: [
+    { src: "^/_next/static/(.*)$", headers: { "Cache-Control": "public, max-age=31536000, immutable" } },
+    { handle: "filesystem" },
+    { src: "^/(.*)$", dest: "/functions/default" }
+  ]
+};
+writeFileSync(join(rebyteDir, "config.json"), JSON.stringify(config, null, 2));
 
 console.log("Build output ready at .rebyte/");
 ```
@@ -79,7 +93,8 @@ npm run build
 
 ```bash
 ls .rebyte/static/_next/static/
-ls .rebyte/function/
+ls .rebyte/functions/default.func/
+cat .rebyte/config.json
 ```
 
 ## Key Code Patterns

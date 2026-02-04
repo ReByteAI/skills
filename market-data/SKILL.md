@@ -181,7 +181,7 @@ import requests
 import json
 
 # Get auth token and API URL
-AUTH_TOKEN = subprocess.check_output(["rebyte-auth"]).decode().strip()
+AUTH_TOKEN = subprocess.check_output(["/home/user/.local/bin/rebyte-auth"]).decode().strip()
 with open('/home/user/.rebyte.ai/auth.json') as f:
     API_URL = json.load(f)['sandbox']['relay_url']
 

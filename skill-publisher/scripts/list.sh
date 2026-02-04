@@ -5,7 +5,8 @@
 
 set -e
 
-AUTH_TOKEN=$(rebyte-auth)
+# Get auth token (absolute path to avoid PATH issues)
+AUTH_TOKEN=$(/home/user/.local/bin/rebyte-auth)
 
 curl -s -X POST "https://api.rebyte.ai/api/data/skills/list-org" \
   -H "Authorization: Bearer $AUTH_TOKEN" \

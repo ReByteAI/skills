@@ -5,7 +5,9 @@ description: Add AI/LLM capabilities to deployed applications. Provision an API 
 
 # AI Gateway for Deployed Applications
 
-Provision an AI Gateway API key for your deployed application to access LLM APIs (OpenAI, Anthropic, Google) through an OpenAI-compatible interface.
+Provision an AI Gateway API key to access LLM APIs (OpenAI, Anthropic, Google) through an OpenAI-compatible interface.
+
+{{include:auth.md}}
 
 ## When to Use This Skill
 
@@ -13,17 +15,12 @@ Use this skill when:
 - Building an AI chat application
 - Adding AI-powered features to a web app
 - Need LLM access from a serverless function
-- Want to use Vercel AI SDK, LangChain, or OpenAI SDK in deployed code
-
-## Prerequisites
-
-**You must deploy your app first** using the `rebyte-app-builder` skill before provisioning an AI Gateway key. The key is tied to a specific deployment.
+- Setting up OpenClaw or other AI agents
+- Want to use Vercel AI SDK, LangChain, or OpenAI SDK
 
 ## Quick Start
 
 ### Step 1: Provision the API Key
-
-After deploying your app:
 
 ```bash
 # Provision AI Gateway key (uses default deployment for workspace)
@@ -178,11 +175,10 @@ Base URL: `https://api.rebyte.ai/api/ai`
 ### Provision Key
 
 ```bash
-# Create or get existing key
+# Create or get existing key for your workspace
 curl -X POST "$API_URL/api/data/aigateway/provision" \
   -H "Authorization: Bearer $AUTH_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"deployId": "myapp-f33ad2defb"}'  # Optional, uses default if omitted
+  -H "Content-Type: application/json"
 ```
 
 ### Get Key Info
@@ -368,7 +364,6 @@ Your AI chat app is now live at `https://<deploy-id>.rebyte.pro`!
 
 | Issue | Cause | Fix |
 |-------|-------|-----|
-| "No deployment found" | App not deployed yet | Deploy with rebyte-app-builder first |
 | "Invalid API key" | Key revoked or wrong | Run `aigateway/provision` again |
 | CORS error in browser | Calling from frontend | Move API call to server function |
 | 401 Unauthorized | Missing/wrong env var | Check OPENAI_API_KEY is set |

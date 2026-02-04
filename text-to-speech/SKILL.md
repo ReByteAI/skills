@@ -140,7 +140,7 @@ ffmpeg -i video.mp4 -i voiceover.mp3 -filter_complex "[1:a]volume=0.8[voice];[0:
 
 ```bash
 # Get auth
-AUTH_TOKEN=$(rebyte-auth)
+AUTH_TOKEN=$(/home/user/.local/bin/rebyte-auth)
 API_URL=$(python3 -c "import json; print(json.load(open('/home/user/.rebyte.ai/auth.json'))['sandbox']['relay_url'])")
 
 # Generate narration

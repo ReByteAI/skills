@@ -184,8 +184,8 @@ rm /tmp/skill.zip
 ### Complete Rebyte API Workflow
 
 ```bash
-# Get auth credentials
-AUTH_TOKEN=$(rebyte-auth)
+# Get auth credentials (use absolute path to avoid PATH issues)
+AUTH_TOKEN=$(/home/user/.local/bin/rebyte-auth)
 API_URL=$(python3 -c "import json; print(json.load(open('/home/user/.rebyte.ai/auth.json'))['sandbox']['relay_url'])")
 
 # Step 1: Search for skills

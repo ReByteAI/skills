@@ -30,7 +30,7 @@ Create `scripts/bundle-lambda.js`:
 ```javascript
 #!/usr/bin/env node
 import { build } from 'esbuild';
-import { cpSync, mkdirSync, rmSync, existsSync } from 'fs';
+import { cpSync, mkdirSync, rmSync, existsSync, writeFileSync } from 'fs';
 import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -38,20 +38,23 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const projectRoot = join(__dirname, '..');
 const sstOutput = join(projectRoot, '.svelte-kit', 'svelte-kit-sst');
 const rebyteDir = join(projectRoot, '.rebyte');
+const funcDir = join(rebyteDir, 'functions', 'default.func');
 
 if (existsSync(rebyteDir)) rmSync(rebyteDir, { recursive: true });
 mkdirSync(join(rebyteDir, 'static'), { recursive: true });
-mkdirSync(join(rebyteDir, 'function'), { recursive: true });
+mkdirSync(funcDir, { recursive: true });
 
+// Copy static assets
 cpSync(join(sstOutput, 'client'), join(rebyteDir, 'static'), { recursive: true });
 
+// Bundle Lambda handler
 await build({
   entryPoints: [join(sstOutput, 'server', 'lambda-handler', 'index.js')],
   bundle: true,
   platform: 'node',
   target: 'node20',
   format: 'esm',
-  outfile: join(rebyteDir, 'function', 'index.mjs'),
+  outfile: join(funcDir, 'index.mjs'),
   banner: {
     js: `import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
@@ -61,6 +64,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);`
   }
 });
+
+// Create config.json with routes
+const config = {
+  version: 1,
+  routes: [
+    { handle: "filesystem" },
+    { src: "^/(.*)$", dest: "/functions/default" }
+  ]
+};
+writeFileSync(join(rebyteDir, 'config.json'), JSON.stringify(config, null, 2));
 
 console.log("Build output ready at .rebyte/");
 ```
@@ -85,7 +98,8 @@ npm run build
 
 ```bash
 ls .rebyte/static/
-ls .rebyte/function/index.mjs
+ls .rebyte/functions/default.func/index.mjs
+cat .rebyte/config.json
 ```
 
 ## Key Code Patterns

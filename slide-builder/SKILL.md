@@ -2,9 +2,7 @@
 name: slide-builder
 description: Create presentations using Slidev (Markdown-based slides). Triggers include "create presentation", "make slides", "build slides", "slide deck", "tech talk", "conference slides", "pitch deck". Handles the full workflow from content planning to deployment at rebyte.pro.
 ---
-If you look at the skill builder history, we've fixed a lot of things. This includes restructuring the skill and making the skill.md less bloated.
 
-We have some important skills like Rebuy App Builder and others. Take a look and give me some suggestions, but don't fix anything yet.
 # Slide Builder
 
 Create Markdown presentations with Slidev. Deploy to rebyte.pro.
@@ -69,7 +67,29 @@ cd /code/<name> && pnpm build
 
 Then **invoke the `rebyte-app-builder` skill** to deploy the `dist/` folder.
 
-### 5. Test
+### 5. Export
+
+If the user requests a downloadable file (PDF, PPTX, PNG, etc.):
+
+```bash
+cd /code/<name>
+
+# PDF (most common)
+pnpm exec slidev export --output slides.pdf
+
+# PowerPoint
+pnpm exec slidev export --format pptx --output slides.pptx
+
+# PNG images (one per slide)
+pnpm exec slidev export --format png --output slides
+
+# Dark mode
+pnpm exec slidev export --dark --output slides-dark.pdf
+```
+
+{{include:artifact-upload.md}}
+
+### 6. Test
 
 After deployment, use the `browser-automation` skill to verify the presentation:
 
@@ -80,7 +100,7 @@ After deployment, use the `browser-automation` skill to verify the presentation:
 
 This automated walkthrough shows the user exactly how the presentation looks and confirms all slides render correctly.
 
-### 6. Iterate
+### 7. Iterate
 
 User views the live site and provides feedback:
 - "Slide 3: change the title"

@@ -15,7 +15,7 @@ Create Markdown presentations with Slidev. Deploy to rebyte.pro.
 
 ## Workflow
 
-### 1. Plan (Intention Collection)
+### 1. Plan
 
 Understand the presentation before writing:
 - **Goal**: What should the audience learn or do?
@@ -23,11 +23,11 @@ Understand the presentation before writing:
 - **Structure**: How many slides? What sections?
 - **Tone**: Formal, casual, technical, inspirational?
 
-If any of these are unclear, ask the user. This step is optional if the user's request is already detailed.
+If any of these are unclear, ask the user. Skip this step if the user's request is already detailed.
 
-### 2. Pick a Theme
+### 2. Initialize
 
-Initialize the project with a theme:
+Create the project with a theme:
 
 ```bash
 bash $SKILL_DIR/scripts/init.sh <name> [theme]
@@ -35,7 +35,7 @@ bash $SKILL_DIR/scripts/init.sh <name> [theme]
 
 This creates `/code/<name>/` with the Slidev project.
 
-**Theme selection**: See `references/themes.md` for the full list. Default is `seriph` (elegant serif, good for most use cases).
+**Theme selection**: See `references/themes.md` for the full list. Default is `seriph`.
 
 Quick picks:
 - Conference/keynote → `seriph`
@@ -45,14 +45,9 @@ Quick picks:
 
 ### 3. Write Slides
 
-Edit `/code/<name>/slides.md`. Focus on content first:
+Edit `/code/<name>/slides.md`:
 
 - One idea per slide
-- Write speaker notes as you go
-- Use simple layouts initially
-- **Save animations for later** - get content approved first
-
-**Content rules:**
 - 6 words per bullet, 6 bullets max
 - No walls of text
 - Prefer diagrams/code/images over prose
@@ -62,30 +57,9 @@ Edit `/code/<name>/slides.md`. Focus on content first:
 - Body (80%): Main content in logical sections
 - Closing (1-2 slides): Summary + call-to-action
 
-### 4. Preview
+### 4. Deploy
 
-Export slides as PNG thumbnails and upload for user review:
-
-```bash
-cd /code/<name>
-pnpm exec slidev export --format png --output ./preview
-bash $SKILL_DIR/scripts/upload-preview.sh ./preview
-```
-
-This exports slide thumbnails and uploads them to artifact storage. The user can view the previews without any VM interaction.
-
-### 5. Iterate
-
-User reviews the preview thumbnails and provides feedback:
-- "Page 3: change the title"
-- "Add more detail to page 5"
-- "Remove page 7"
-
-Edit the specified slides (slides separated by `---`, Page N = after (N-1)th separator), then re-export previews. Repeat until user approves.
-
-### 6. Deploy
-
-Once user is happy with the preview:
+Build and deploy automatically - don't ask the user:
 
 ```bash
 cd /code/<name> && pnpm build
@@ -93,17 +67,35 @@ cd /code/<name> && pnpm build
 
 Then **invoke the `rebyte-app-builder` skill** to deploy the `dist/` folder.
 
-### 7. Polish (Optional)
+### 5. Test
 
-After deployment, enhance selectively if requested:
+After deployment, use the `browser-automation` skill to verify the presentation:
+
+1. Open the deployed URL
+2. Take a screenshot of slide 1
+3. Press `→` (right arrow) to advance
+4. Repeat for each slide
+
+This automated walkthrough shows the user exactly how the presentation looks and confirms all slides render correctly.
+
+### 6. Iterate
+
+User views the live site and provides feedback:
+- "Slide 3: change the title"
+- "Add more detail to slide 5"
+- "Remove slide 7"
+
+Edit the slides (separated by `---`), rebuild, and redeploy. Repeat until user is satisfied.
+
+**Optional enhancements** (only if requested):
 - Add click animations where they aid understanding
 - Sync presenter notes with `[click]` markers
-- Max 5-6 clicks per slide
 
 ## Agent Rules
 
 - Ask only when blocked - don't over-clarify
-- One slide at a time - never batch edit
+- Deploy automatically after writing - don't ask permission
+- One slide at a time when editing - never batch edit
 - Prefer MDI icons over emoji (see `references/icons.md`)
 - Never invent frontmatter options (see `references/core-frontmatter.md`)
 

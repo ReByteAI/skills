@@ -64,13 +64,15 @@ Edit `/code/<name>/slides.md`. Focus on content first:
 
 ### 4. Preview
 
-Export slides as PNG thumbnails for user review:
+Export slides as PNG thumbnails and upload for user review:
 
 ```bash
-cd /code/<name> && pnpm exec slidev export --format png --output ./preview
+cd /code/<name>
+pnpm exec slidev export --format png --output ./preview
+bash $SKILL_DIR/scripts/upload-preview.sh ./preview
 ```
 
-This creates `./preview/001.png`, `002.png`, etc. Show these images to the user.
+This exports slide thumbnails and uploads them to artifact storage. The user can view the previews without any VM interaction.
 
 ### 5. Iterate
 

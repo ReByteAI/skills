@@ -7,6 +7,8 @@ description: Deploy web apps to Rebyte hosting. You (the agent) create the .reby
 
 Deploy web applications to Rebyte's AWS-based hosting platform.
 
+{{include:non-technical-user.md}}
+
 ## Architecture: Agent Creates, CLI Deploys
 
 **You (the coding agent)** are responsible for:

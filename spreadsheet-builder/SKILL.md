@@ -7,6 +7,8 @@ description: Build and edit online spreadsheets using Univer. Use when user want
 
 Build and edit professional online spreadsheets using Univer. Better than Excel for sharing - recipients can view instantly via link without installing Office.
 
+{{include:non-technical-user.md}}
+
 {{include:auth.md}}
 
 ## API Endpoints

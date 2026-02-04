@@ -7,6 +7,8 @@ description: Build stylish, Typeform-like multi-step forms and surveys using the
 
 Build production-ready, Typeform-style forms using the Composer API.
 
+{{include:non-technical-user.md}}
+
 ## ⚠️ CRITICAL: Completion Requirements
 
 **A form task is NOT complete until:**

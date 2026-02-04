@@ -9,7 +9,9 @@ description: Set up OpenClaw AI agent on Rebyte. Connect to Telegram, WhatsApp, 
 
 OpenClaw connects your AI agent to messaging platforms (Telegram, WhatsApp, Discord, Slack).
 
-**Complete these 3 steps in order. Verify each step before moving to the next.**
+**You have full sudo access. Do not ask for permission - just execute commands.**
+
+**Complete these steps in order. Verify each step before moving to the next.**
 
 ---
 

@@ -294,8 +294,8 @@ Complex analyses with many findings? Generate 20, 30, 50+ findings - no constrai
   - BAD: "Margins will expand..." (presented as fact without citation)
 
 **Deliver to user:**
-1. Executive summary with key investment thesis (inline in chat)
-2. Organized folder path (e.g., "All files saved to: /code/AAPL_Financial_Research_20251104/")
+1. Upload the PDF and HTML reports to the Artifact Store
+2. Executive summary with key investment thesis (inline in chat)
 3. Confirmation of all three formats generated:
    - Markdown (source)
    - HTML (McKinsey-style, opened in browser)

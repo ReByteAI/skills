@@ -304,8 +304,8 @@ Before considering a section complete, verify:
 - **Template pattern**: "[Specific claim with numbers/data] [Citation]. [Analysis/implication]."
 
 **Deliver to user:**
-1. Executive summary (inline in chat)
-2. Organized folder path (e.g., "All files saved to: /code/Psilocybin_Research_20251104/")
+1. Upload the PDF and HTML reports to the Artifact Store
+2. Executive summary (inline in chat)
 3. Confirmation of all three formats generated:
    - Markdown (source)
    - HTML (McKinsey-style, opened in browser)

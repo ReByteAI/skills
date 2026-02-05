@@ -157,6 +157,10 @@ curl -s -X POST "$API_URL/api/data/tts/synthesize" \
 echo "Saved narration.mp3"
 ```
 
+## Delivering Output
+
+After generating audio files, upload them to the Artifact Store so the user can access them.
+
 ## Tips
 
 - Use `nova` voice for most narration - it sounds natural and friendly

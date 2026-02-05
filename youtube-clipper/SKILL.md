@@ -250,8 +250,9 @@ Chapter 1 processing complete
    └── <chapter_title>_summary.md            # Summary content
    ```
 
-3. Show user:
-   - Output directory path
+3. Upload the video clips and subtitle files to the Artifact Store so the user can access them.
+
+4. Show user:
    - File list (with file sizes)
    - Quick preview command
 

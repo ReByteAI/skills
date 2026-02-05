@@ -647,6 +647,10 @@ def get_channel_safe(handle):
 
 ---
 
+## Delivering Output
+
+After generating the EPUB ebook, upload it to the Artifact Store so the user can access it.
+
 ## Example Output
 
 The generated EPUB contains:

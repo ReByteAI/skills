@@ -113,6 +113,10 @@ See `tips/ppt-image-generation.md` for prompt keywords per style.
 
 ---
 
+## Delivering Output
+
+After generating slide images, upload them to the Artifact Store so the user can access them.
+
 ## Tips
 
 | Topic | File |

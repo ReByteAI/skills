@@ -89,7 +89,7 @@ pnpm exec slidev export --format png --output slides
 pnpm exec slidev export --dark --output slides-dark.pdf
 ```
 
-Then upload the exported file to the artifact store (see Authentication section above).
+Then upload the exported file to the Artifact Store.
 
 ### 6. Test
 

@@ -311,6 +311,10 @@ This occurs when the prompt triggers content safety filters.
 
 ---
 
+## Delivering Output
+
+After generating images, upload them to the Artifact Store so the user can access them.
+
 ## Important Notes
 
 - All generated images include invisible **SynthID watermarking**

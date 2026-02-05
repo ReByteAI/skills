@@ -1,6 +1,8 @@
-# Next.js
+# Next.js SSR
 
-**Adapter:** OpenNext
+**Adapter:** OpenNext (`@opennextjs/aws`)
+
+**DO NOT** manually copy `.next/standalone/`. It won't work because the standalone server expects Node.js HTTP streams, not Lambda events.
 
 ## Initialize New Project
 
@@ -9,7 +11,22 @@ npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --
 npm install -D @opennextjs/aws
 ```
 
-Create `open-next.config.ts`:
+### Required: next.config.ts
+
+```typescript
+const nextConfig = {
+  output: 'standalone',
+  images: {
+    unoptimized: true, // REQUIRED: Lambda doesn't support on-demand image optimization
+  },
+};
+
+export default nextConfig;
+```
+
+Both `output: 'standalone'` and `images.unoptimized` are required. Without `standalone`, OpenNext cannot build. Without `unoptimized`, image requests will fail at runtime.
+
+### Required: open-next.config.ts
 
 ```typescript
 import type { OpenNextConfig } from "@opennextjs/aws/types/open-next.js";
@@ -26,15 +43,20 @@ const config: OpenNextConfig = {
 export default config;
 ```
 
-Update `next.config.ts`:
+## Build
 
-```typescript
-const nextConfig = {
-  output: 'standalone',
-};
-
-export default nextConfig;
+```bash
+npx @opennextjs/aws build
 ```
+
+This creates `.open-next/` with:
+- `assets/` — Static files (HTML, CSS, JS)
+- `server-functions/default/` — Lambda handler + bundled server code
+- `cache/` — Pre-rendered page cache
+
+## Prepare .rebyte/ Directory
+
+### Option A: Package Script (Recommended)
 
 Create `scripts/package-deploy.js`:
 
@@ -56,7 +78,7 @@ mkdirSync(join(rebyteDir, "functions", "default.func"), { recursive: true });
 // Copy static assets
 cpSync(join(openNextDir, "assets"), join(rebyteDir, "static"), { recursive: true });
 
-// Copy server function
+// Copy server function (cpSync correctly copies hidden directories like .next/)
 cpSync(join(openNextDir, "server-functions", "default"), join(rebyteDir, "functions", "default.func"), { recursive: true });
 
 // Create config.json with routes
@@ -83,17 +105,71 @@ Update `package.json`:
 }
 ```
 
-## Build
+### Option B: Shell Commands
 
 ```bash
-npm run build
+mkdir -p .rebyte/static .rebyte/functions/default.func
+
+# Copy static assets
+cp -r .open-next/assets/* .rebyte/static/ 2>/dev/null || true
+
+# Copy server function — MUST use /. to include hidden directories (.next/)
+cp -r .open-next/server-functions/default/. .rebyte/functions/default.func/
+
+# Create routes
+cat > .rebyte/config.json << 'EOF'
+{
+  "version": 1,
+  "routes": [
+    { "src": "^/_next/static/(.*)$", "headers": { "Cache-Control": "public, max-age=31536000, immutable" } },
+    { "handle": "filesystem" },
+    { "src": "^/(.*)$", "dest": "/functions/default" }
+  ]
+}
+EOF
 ```
+
+**CRITICAL — You MUST use `cp -r .../default/.` (with `/.`) instead of `cp -r .../default/*`.**
+
+Shell glob `*` does NOT match hidden directories. The OpenNext build puts a `.next/` directory inside `server-functions/default/` containing:
+- `required-server-files.json` (server will crash without this)
+- `package.json` with `"type": "commonjs"` (required for correct module resolution)
+- Pre-built server files
+
+If you use `*`, the Lambda will crash with `ENOENT: required-server-files.json` or `ERR_REQUIRE_ESM` errors.
+
+**CRITICAL — Do NOT manually copy `.next/` from the project build directory.** If the smoke test fails with missing `.next/` files, fix the `cp` command — do NOT copy from the project's raw `.next/` directory. The project's `.next/package.json` has `"type": "module"` while OpenNext's packaged `.next/package.json` has `"type": "commonjs"`. Copying the wrong one causes `ERR_REQUIRE_ESM` at runtime.
+
+## Deploy
+
+```bash
+node $SKILL_DIR/bin/rebyte.js deploy
+```
+
+## Post-Deploy Verification
+
+SSR deployments need ~90 seconds for full propagation (Lambda@Edge config cache + CloudFront invalidation).
+
+```bash
+echo "Waiting 90 seconds for deployment to propagate..."
+sleep 90
+
+# Verify
+curl -s -o /dev/null -w '%{http_code}' https://<deploy-id>.rebyte.pro
+# Should return 200
+
+# Only if non-200 after waiting:
+node $SKILL_DIR/bin/rebyte.js logs
+```
+
+**Do NOT debug 500/502/403 errors that appear immediately after deploy — these are propagation delays, not bugs.** Only investigate if errors persist after 2 minutes.
 
 ## Verify Build
 
 ```bash
 ls .rebyte/static/_next/static/
 ls .rebyte/functions/default.func/
+ls .rebyte/functions/default.func/.next/   # MUST exist (hidden directory)
 cat .rebyte/config.json
 ```
 
@@ -126,8 +202,13 @@ export async function GET() {
 
 ## Troubleshooting
 
-| Error | Fix |
-|-------|-----|
-| `@opennextjs/aws not found` | `npm install -D @opennextjs/aws` |
-| `output: 'standalone' required` | Add to `next.config.js` |
-| API returns 404 | File must be `route.ts` not `index.ts` |
+| Error | Cause | Fix |
+|-------|-------|-----|
+| `@opennextjs/aws not found` | Not installed | `npm install -D @opennextjs/aws` |
+| `output: 'standalone' required` | Missing config | Add `output: 'standalone'` to `next.config.ts` |
+| `ENOENT: required-server-files.json` | Hidden `.next/` dir not copied | Use `cp -r .../default/.` instead of `cp -r .../default/*` |
+| `ERR_REQUIRE_ESM` | Wrong `.next/` copied | Re-copy with `/.`, never copy raw project `.next/` |
+| `req.on is not a function` | Standalone server, not OpenNext | Use `npx @opennextjs/aws build`, not raw `.next/standalone/` |
+| API returns 404 | Wrong file convention | File must be `route.ts` not `index.ts` |
+| 500/502 right after deploy | Propagation delay | Wait 90 seconds, then retry |
+| Image optimization errors | Missing config | Add `images: { unoptimized: true }` to next.config |

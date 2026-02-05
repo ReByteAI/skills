@@ -235,6 +235,10 @@ window.addEventListener('resize', () => chart.resize());
 - [ ] Proper grid padding and subtle grid lines
 - [ ] Tooltip, toolbox, and resize handler included
 
+## Delivering Output
+
+After generating chart HTML files, upload them to the Artifact Store so the user can access them.
+
 ## Testing Visualizations
 
 ```bash

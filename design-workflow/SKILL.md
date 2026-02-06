@@ -9,13 +9,29 @@ Create visual design work — logos, brand assets, UI mockups, illustrations, in
 
 ## Sub-Skills
 
+**Pre-installed (no setup needed):**
 - `rebyteai/nano-banana` — AI image generation (text-to-image and image-to-image editing) via Google Gemini. Flash model for fast iteration, Pro model for 4K final output.
-- `nextlevelbuilder/ui-ux-pro-max` — Design intelligence: 50+ styles, 97 color palettes, 57 font pairings, 99 UX guidelines. Use for design decisions, style selection, and UI review.
-- `anthropics/web-artifacts-builder` — Build interactive visual artifacts (React + Tailwind + shadcn/ui) bundled as single HTML files. For mockups, prototypes, and interactive demos.
 - `rebyteai/internet-search` — Research design trends, brand references, competitor visuals, and inspiration.
 - `rebyteai/rebyte-app-builder` — Deploy finished designs as live web pages on rebyte.pro.
 
+**Requires installation (install before use):**
+- `nextlevelbuilder/ui-ux-pro-max` — Design intelligence: 50+ styles, 97 color palettes, 57 font pairings, 99 UX guidelines. Use for design decisions, style selection, and UI review.
+  - Install: `npx skills add -y nextlevelbuilder/ui-ux-pro-max-skill`
+- `anthropics/web-artifacts-builder` — Build interactive visual artifacts (React + Tailwind + shadcn/ui) bundled as single HTML files. For mockups, prototypes, and interactive demos.
+  - Install: `npx skills add -y anthropics/skills`
+
 ## Workflow
+
+### Step 0: Install Required Skills
+
+Before starting, install skills that are not pre-installed in the VM:
+
+```bash
+npx skills add -y nextlevelbuilder/ui-ux-pro-max-skill
+npx skills add -y anthropics/skills
+```
+
+Run these commands first. They only need to be run once per session.
 
 ### Step 1: Understand the Design Brief
 

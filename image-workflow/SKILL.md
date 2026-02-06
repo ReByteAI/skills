@@ -101,4 +101,4 @@ Note any limitations:
 
 - **"Text in images?"** — AI image generation struggles with precise text rendering. If the image needs specific text (logo wordmark, poster headline), generate the image without text and suggest compositing text in a design tool, or use HTML/CSS for pixel-perfect text.
 
-- **"The user wants something very specific (exact layout, pixel-perfect)"** — AI image generation is better for creative/organic work. For precise layouts, consider suggesting the `workflow-design` skill instead, which can build interactive mockups with HTML/CSS.
+- **"The user wants something very specific (exact layout, pixel-perfect)"** — AI image generation is better for creative/organic work. For precise layouts, consider suggesting the `design-workflow` skill instead, which can build interactive mockups with HTML/CSS.

@@ -9,6 +9,21 @@ Search the web and get structured results (titles, URLs, snippets).
 
 {{include:auth.md}}
 
+## Step 1: Get Current Time
+
+**IMPORTANT:** Before performing any search, always get the current date and time. Language models have a knowledge cutoff, so you must know the current date to:
+- Include the correct year in time-sensitive queries (e.g., "TypeScript best practices 2025" not "2024")
+- Understand what "recent", "latest", or "new" means in context
+- Evaluate the freshness of search results
+
+```bash
+# Get current date and time
+date "+%Y-%m-%d %H:%M:%S %Z"
+# Example output: 2025-01-15 14:30:00 UTC
+```
+
+Use this information to adjust your search queries accordingly. For example, if the current year is 2025, search for "React 19 features 2025" rather than an outdated year.
+
 ## When to Use
 
 Use this skill when you need to:
